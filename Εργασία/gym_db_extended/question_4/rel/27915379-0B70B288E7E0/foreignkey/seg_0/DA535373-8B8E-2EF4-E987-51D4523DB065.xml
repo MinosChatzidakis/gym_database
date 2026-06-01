@@ -1,0 +1,17 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="DA535373-8B8E-2EF4-E987-51D4523DB065" containerWithKeyObject="69418EE5-F4DD-8EBE-B7E9-7D3ABBCF9CA7" localFKIndex="41DFD6B3-6AA6-DF80-9BD1-61E2DD03123A" name="Reservation_Session_FK">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>64B8647E-74A9-7F43-F4C1-C12EFBF3D5E6</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<referredTableLongName>Session</referredTableLongName>
+<deleteRule>NO ACTION</deleteRule>
+<referredTableID>ACA92873-4017-044A-346F-CB21E7142B8A</referredTableID>
+<keyObject>E5FC61CC-1765-361C-86D0-49ABF9FD1F49</keyObject>
+<referredKeyID>E5FC61CC-1765-361C-86D0-49ABF9FD1F49</referredKeyID>
+<mandatory>true</mandatory>
+<refColNames>Session_Code</refColNames>
+<transferable>true</transferable>
+<rely>false</rely>
+<columnDependencyConstraintGenerateInDDL>true</columnDependencyConstraintGenerateInDDL>
+</FKIndexAssociation>

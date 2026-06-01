@@ -1,0 +1,21 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Relation class="oracle.dbtools.crest.model.design.logical.Relation" name="ασδ" directorySegmentName="seg_0" id="71235F58-9B87-4506-2F97-691995CFC679">
+<createdBy>aggeloskarahalis</createdBy>
+<createdTime>2026-05-31 12:55:14 UTC</createdTime>
+<ownerDesignName>question_4</ownerDesignName>
+<engineerTo>
+<item key="27915379-7EEB-0A13-824B-0B70B288E7E0" value="true"/>
+</engineerTo>
+<sourcePk>73554FCE-8113-5830-397F-C0FDD39B6AF5</sourcePk>
+<identifying>false</identifying>
+<nameOnSource>offers</nameOnSource>
+<nameOnTarget>belongs to </nameOnTarget>
+<optionalSource>false</optionalSource>
+<optionalTarget>false</optionalTarget>
+<sourceCardinality>1</sourceCardinality>
+<sourceEntity>B95B3F86-286C-65B4-D7A8-59576FC84849</sourceEntity>
+<targetCardinalityString>*</targetCardinalityString>
+<targetEntity>AEDA8909-031B-39DF-34CD-3D2F12CD0142</targetEntity>
+<transferable>true</transferable>
+<deleteRule>NO ACTION</deleteRule>
+</Relation>

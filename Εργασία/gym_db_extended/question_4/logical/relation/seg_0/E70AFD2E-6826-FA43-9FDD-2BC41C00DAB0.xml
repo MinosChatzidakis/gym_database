@@ -1,0 +1,21 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Relation class="oracle.dbtools.crest.model.design.logical.Relation" name="Relation_18" directorySegmentName="seg_0" id="E70AFD2E-6826-FA43-9FDD-2BC41C00DAB0">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 15:42:23 UTC</createdTime>
+<ownerDesignName>question_4</ownerDesignName>
+<engineerTo>
+<item key="27915379-7EEB-0A13-824B-0B70B288E7E0" value="true"/>
+</engineerTo>
+<targetPk>73554FCE-8113-5830-397F-C0FDD39B6AF5</targetPk>
+<identifying>false</identifying>
+<nameOnSource>is available at</nameOnSource>
+<nameOnTarget>offers</nameOnTarget>
+<optionalSource>true</optionalSource>
+<optionalTarget>false</optionalTarget>
+<sourceCardinality>*</sourceCardinality>
+<sourceEntity>B7547283-0F61-B19B-C607-0373795DB6AA</sourceEntity>
+<targetCardinalityString>1</targetCardinalityString>
+<targetEntity>B95B3F86-286C-65B4-D7A8-59576FC84849</targetEntity>
+<transferable>true</transferable>
+<deleteRule>NO ACTION</deleteRule>
+</Relation>
