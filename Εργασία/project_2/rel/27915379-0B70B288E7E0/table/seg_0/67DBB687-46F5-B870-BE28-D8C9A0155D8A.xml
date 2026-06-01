@@ -1,0 +1,111 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="67DBB687-46F5-B870-BE28-D8C9A0155D8A" name="Trainer">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>42D74E0A-9407-F06C-C4C7-427F4BB37C16</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="Trainer_id" id="F7D93BAE-2BC5-AB45-4F6C-2E5D463271B4">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>B032F207-7EF5-C7F2-4007-5281E9B47819</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="name" id="FBF58C30-315D-3ABC-5FF2-C614E202292D">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>DFCF5A1E-23DD-ADC4-AE85-EB6606346DDA</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Specialty" id="96F98C73-B7CD-B992-4763-1C9AB85EBB0D">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>39665010-84E8-E7AC-B4A9-F9DCE58540AB</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="phone" id="AC788867-CCAC-8BA1-EFF4-AAA9532371F1">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>9822D7A0-9FFC-BEF9-8E2A-FBC1A69700BA</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="email" id="347092E1-5F47-4F7B-2867-95772494EA70">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>A49E2B87-7FE7-2B7D-8BF7-845397E840EA</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="GYM_Gym_code" id="AEC8D6DA-9AF8-4F51-A1D3-E9974D46AEB4">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>4FC2B473-EA0B-8873-DFB3-E8A2B53213E8</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="8589AEBB-2E46-F929-8C1D-D164125FDD8C" referredColumn="9AA17174-8B34-2B64-F21B-5A86E75FDA74"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="B85A30FE-E3C2-ABEE-2C46-790D1747C17C" name="Trainer_PK">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>3A017536-2274-75E7-BC5A-4AD392EF211A</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="F7D93BAE-2BC5-AB45-4F6C-2E5D463271B4"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="02F32521-F449-CA0D-525F-040BAE2AF275" name="Trainer_GYM_FK">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>BCF7EF42-0EF8-50E3-789A-6FED5F1CC8A0</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="AEC8D6DA-9AF8-4F51-A1D3-E9974D46AEB4"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

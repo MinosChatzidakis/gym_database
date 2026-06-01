@@ -1,0 +1,61 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="B7547283-0F61-B19B-C607-0373795DB6AA" name="Services">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 15:41:24 UTC</createdTime>
+<ownerDesignName>project_2</ownerDesignName>
+<engineerTo>
+<item key="27915379-7EEB-0A13-824B-0B70B288E7E0" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="Service_Name" id="96714B01-9847-C150-A0E3-C4C94AF3B546">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 15:41:41 UTC</createdTime>
+<ownerDesignName>project_2</ownerDesignName>
+<engineerTo>
+<item key="27915379-7EEB-0A13-824B-0B70B288E7E0" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="Gym_code" id="6408DDE9-9C42-B220-670C-EEDC6B9B823B">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 15:42:33 UTC</createdTime>
+<generatorID>E70AFD2E-6826-FA43-9FDD-2BC41C00DAB0</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<engineerTo>
+<item key="27915379-7EEB-0A13-824B-0B70B288E7E0" value="true"/>
+</engineerTo>
+<referedAttribute>5F54D12B-2859-EBE8-2BDC-632E8F8E247B</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="7D37E8DF-82DD-8D9F-AD77-706B45046DDA" name="Services PK">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 15:44:37 UTC</createdTime>
+<ownerDesignName>project_2</ownerDesignName>
+<engineerTo>
+<item key="27915379-7EEB-0A13-824B-0B70B288E7E0" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>96714B01-9847-C150-A0E3-C4C94AF3B546</attributeRef>
+<attributeRef>6408DDE9-9C42-B220-670C-EEDC6B9B823B</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

@@ -1,0 +1,99 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="8F837E5F-27B4-0A90-51EF-1E8CEB165E0F" name="Customer">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>109AD661-3363-E04D-ECC0-CCF513736038</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="Customer_ID" id="A8658CC9-9E71-BA35-E879-A7BE10461777">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>74649D01-B483-C6B2-B7E0-8C38450B8EEC</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Name" id="87EE0346-B985-29CA-1404-1989DA377C2D">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>8DC91330-4E07-97C8-2542-A66858061038</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Email" id="6D096B50-9EC4-F6D1-EE9B-7C403BCC64A0">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>A0161370-9703-50FB-5E25-4CECA733ABD2</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Phone" id="08B32B30-1C7E-F5A6-8C8A-27E8E139D0EB">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>2C760A1E-09F3-D852-765A-BD306280C115</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="GYM_Gym_code" id="FA25B72E-14FB-B537-B516-612BD44E14DE">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>3DB908DE-7A38-3E9E-7B46-4D6415B23388</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="35B2EC44-5679-8F02-7A8C-1E73265CBF92" referredColumn="9AA17174-8B34-2B64-F21B-5A86E75FDA74"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="19CBF2B4-ADD3-2438-1490-BED11A762D8D" name="Customer_PK">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>9211609A-7CA9-C6B4-D029-36B8D801BAE8</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="A8658CC9-9E71-BA35-E879-A7BE10461777"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="E2F69BE5-BA0A-AD5A-EEA5-EEEAE277665A" name="Customer_GYM_FK">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>36378449-2E43-0CD3-61CE-9A1A64C6FC08</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="FA25B72E-14FB-B537-B516-612BD44E14DE"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

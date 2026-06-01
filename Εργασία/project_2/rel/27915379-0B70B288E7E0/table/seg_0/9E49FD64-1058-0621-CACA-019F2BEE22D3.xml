@@ -1,0 +1,109 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="9E49FD64-1058-0621-CACA-019F2BEE22D3" name="GYM">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>B95B3F86-286C-65B4-D7A8-59576FC84849</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="Gym_code" id="9AA17174-8B34-2B64-F21B-5A86E75FDA74">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>5F54D12B-2859-EBE8-2BDC-632E8F8E247B</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Name" id="47E9CF35-6953-0B8E-4C68-1A2C05436FE8">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>91F7E73A-25EF-C7BC-815C-9A385D4E3A7F</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="address" id="26129F74-6288-054D-4083-A915C0E15E20">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>C5485134-8299-E9E9-8A42-D66AC4C9DEED</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="city" id="F5E02280-CD92-A690-A99C-D6DC25362E4E">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>CED5C055-3DAD-CB8E-4C75-24DED5527E5C</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="phone" id="D9633F93-9B46-C62A-90D9-2646930F3FE4">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>696FE390-2E34-7E23-A9AE-959981330496</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="email" id="9A61F2C9-7DA7-E838-0C80-F7741454CDAD">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>2C965A40-62FA-9D8D-C433-31E50F9D4544</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Services" id="05BDFC98-ADCE-83AB-0A95-296BD7A4ED5E">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>8D847DB1-9B8E-4899-8591-CCFA3F58559C</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100</dataTypeSize>
+<ownDataTypeParameters>100,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="93EAFC95-8364-FC16-836C-FEBDB392B725" name="GYM_PK">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>73554FCE-8113-5830-397F-C0FDD39B6AF5</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="9AA17174-8B34-2B64-F21B-5A86E75FDA74"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

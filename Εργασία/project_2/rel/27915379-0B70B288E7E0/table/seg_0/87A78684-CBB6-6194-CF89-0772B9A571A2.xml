@@ -1,0 +1,121 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="87A78684-CBB6-6194-CF89-0772B9A571A2" name="Payment">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>F997437F-F6FE-CEDD-8D1C-90B1AEA0B663</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="Payment_ID" id="2131E484-3CD6-B8D2-9D67-971B08D6B442">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>F81715F6-AB8E-664F-7391-CEFCA1F81625</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Amount" id="652D827B-9000-AF12-3FA7-9E99F31E510A">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>37E0B670-A0B8-C830-FBC1-07CBA6DE5D77</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Payment_Method" id="A0543747-166D-9D88-E06E-977187A1DC1D">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>F3298BF4-53F2-D59A-1DD5-7911C9CC48F6</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Payment_Date" id="3198FEF3-1E1F-F1CE-D01E-4BA764473B67">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>B2CB5742-33CF-0BFF-BC4D-C5ADBBF2AE78</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Payment_Status" id="BADC50A6-EDDC-6F28-2B02-779D61ED274D">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>E4B0688D-D841-80B0-C751-23A8E1EA2ACB</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Reservation_Reservation_code" id="C817A47E-FD26-871E-02C5-11831DE0E044">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>A0247BB0-139E-0D61-2A62-31D8FBE5434D</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="AA0E59F0-2879-7436-4971-A78A85153C08" referredColumn="06E65BD3-2BA2-06E0-6340-AF07CE921EEC"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="1C15DCA8-7B1D-4C53-3CEE-C7B36D844C5F" name="Payment_PK">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>6BE3A319-9CDC-D3F7-482D-0A2E4D92EB30</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="2131E484-3CD6-B8D2-9D67-971B08D6B442"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="86809810-F11B-8AB1-E039-7E8BE8FF7037" name="Payment__IDX">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<ownerDesignName>project_2</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<relationGeneratorID>C01F0EDC-1BC3-2BF7-6A93-399EAB736960</relationGeneratorID>
+<indexColumnUsage>
+<colUsage columnID="C817A47E-FD26-871E-02C5-11831DE0E044"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="B2C4939C-EF3E-D15B-67CB-4A291C043B82" name="Payment_Reservation_FK">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>C01F0EDC-1BC3-2BF7-6A93-399EAB736960</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="C817A47E-FD26-871E-02C5-11831DE0E044"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

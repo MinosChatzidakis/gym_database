@@ -1,0 +1,117 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="42D74E0A-9407-F06C-C4C7-427F4BB37C16" name="Trainer">
+<createdBy>mino1</createdBy>
+<createdTime>2026-05-20 18:42:48 UTC</createdTime>
+<ownerDesignName>project_2</ownerDesignName>
+<engineerTo>
+<item key="27915379-7EEB-0A13-824B-0B70B288E7E0" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="Trainer_id" id="B032F207-7EF5-C7F2-4007-5281E9B47819">
+<createdBy>mino1</createdBy>
+<createdTime>2026-05-20 18:42:48 UTC</createdTime>
+<ownerDesignName>project_2</ownerDesignName>
+<importedID>9D27A5A5-5C4D-A02D-4CE3-5B58566ACD77</importedID>
+<engineerTo>
+<item key="27915379-7EEB-0A13-824B-0B70B288E7E0" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="name" id="DFCF5A1E-23DD-ADC4-AE85-EB6606346DDA">
+<createdBy>mino1</createdBy>
+<createdTime>2026-05-20 18:42:48 UTC</createdTime>
+<ownerDesignName>project_2</ownerDesignName>
+<importedID>88F4C4B3-51FB-69B1-A188-4647F2CFFD12</importedID>
+<engineerTo>
+<item key="27915379-7EEB-0A13-824B-0B70B288E7E0" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="Specialty" id="39665010-84E8-E7AC-B4A9-F9DCE58540AB">
+<createdBy>mino1</createdBy>
+<createdTime>2026-05-20 18:42:48 UTC</createdTime>
+<ownerDesignName>project_2</ownerDesignName>
+<importedID>B2AD92A5-C0E9-D570-0B92-5CA752BE2FA5</importedID>
+<engineerTo>
+<item key="27915379-7EEB-0A13-824B-0B70B288E7E0" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="phone" id="9822D7A0-9FFC-BEF9-8E2A-FBC1A69700BA">
+<createdBy>mino1</createdBy>
+<createdTime>2026-05-20 18:42:48 UTC</createdTime>
+<ownerDesignName>project_2</ownerDesignName>
+<importedID>E7348D4B-3770-36B5-6C93-D3FB6FF64DDB</importedID>
+<engineerTo>
+<item key="27915379-7EEB-0A13-824B-0B70B288E7E0" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="email" id="A49E2B87-7FE7-2B7D-8BF7-845397E840EA">
+<createdBy>mino1</createdBy>
+<createdTime>2026-05-20 18:42:48 UTC</createdTime>
+<ownerDesignName>project_2</ownerDesignName>
+<importedID>A8DDBFC9-DD8E-D565-D095-385E73637445</importedID>
+<engineerTo>
+<item key="27915379-7EEB-0A13-824B-0B70B288E7E0" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="Gym_code" id="4FC2B473-EA0B-8873-DFB3-E8A2B53213E8">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 14:40:09 UTC</createdTime>
+<generatorID>BCF7EF42-0EF8-50E3-789A-6FED5F1CC8A0</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<engineerTo>
+<item key="27915379-7EEB-0A13-824B-0B70B288E7E0" value="true"/>
+</engineerTo>
+<referedAttribute>5F54D12B-2859-EBE8-2BDC-632E8F8E247B</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="3A017536-2274-75E7-BC5A-4AD392EF211A" name="Trainer PK">
+<createdBy>mino1</createdBy>
+<createdTime>2026-05-20 18:42:48 UTC</createdTime>
+<ownerDesignName>project_2</ownerDesignName>
+<shouldEngineer>false</shouldEngineer>
+<engineerTo>
+<item key="27915379-7EEB-0A13-824B-0B70B288E7E0" value="false"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>B032F207-7EF5-C7F2-4007-5281E9B47819</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>
