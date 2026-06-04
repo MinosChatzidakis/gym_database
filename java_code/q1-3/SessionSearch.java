@@ -7,7 +7,7 @@ public class SessionSearch {
     private String date;
 	private String time;
 	private String trainer;
-	private String additionalServices΄
+	private String additionalServices;
 	private boolean receipt;
 	
 	
