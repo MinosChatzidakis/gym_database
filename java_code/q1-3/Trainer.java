@@ -2,7 +2,7 @@ package Test;
 
 public class Trainer {
 	
-	    private int Trainer_id;
+	    private int TrainerID;
 	    private String name;
 	    private String Specialty;
 	    private String phone;
@@ -10,20 +10,20 @@ public class Trainer {
 	    
 	    
 	    
-	    public Trainer(int Trainer_id, String name, String email, String phone, int gymCode) {
-	        this.Trainer_id = Trainer_id;
+	    public Trainer(int TrainerID, String name, String email, String phone, int gymCode) {
+	        this.TrainerID = TrainerID;
 	        this.name = name;
 	        this.email = email;
 	        this.phone = phone;
 	        
 	    }
 	    
-	    public int getTrainer_id() {
-	        return Trainer_id;
+	    public int getTrainerID() {
+	        return TrainerID;
 	    }
 	    
-	    public void setTrainer_id(int Trainer_id) {
-	        this.Trainer_id = Trainer_id;
+	    public void setTrainerID(int TrainerID) {
+	        this.TrainerID = TrainerID;
 	    }
 	    
 	    public String getName() {
