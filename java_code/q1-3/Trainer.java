@@ -1,4 +1,4 @@
-package Test;
+package gym_project;
 
 public class Trainer {
 	
