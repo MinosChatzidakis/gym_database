@@ -1,27 +1,27 @@
 package gym_project;
 
 public class Customer {
-	 private int customer_ID;
+	 private int customerID;
 	 private String name;
 	 private String email;
 	 private String phone;
-	 private int gym_Code;
+	 private int gymCode;
 
 
-	 public Customer(int customer_ID, String name, String email, String phone, int gym_Code) {
-		 this.customer_ID = customer_ID;
+	 public Customer(int customerID, String name, String email, String phone, int gymCode) {
+		 this.customerID = customerID;
 		 this.name = name;
 		 this.email = email;
 		 this.phone = phone;
 		 this.gym_Code = gym_Code;
 	 }
 
-	 public int getCustomerId() {
-		 return customer_ID;
+	 public int getCustomerID() {
+		 return customerID;
 	 }
 
-	 public void setCustomerId(int customerId) {
-		 this.customer_ID = customerId;
+	 public void setCustomerID(int customerID) {
+		 this.customerID = customerID;
 	 }
 
 	 public String getName() {
@@ -47,11 +47,11 @@ public class Customer {
 		 this.phone = phone;
 	 }
 
-	 public int getGym_Code() {
-		 return gym_Code; 
+	 public int gymCode() {
+		 return gymCode; 
 	 }
 
-	 public void setGymCode(int gym_Code) {
-		 this.gym_Code = gym_Code; 
+	 public void setGymCode(int gymCode) {
+		 this.gymCode = gymCode; 
 	 }
 }

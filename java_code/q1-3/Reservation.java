@@ -1,68 +1,68 @@
 package gym_project;
 
 public class Reservation {
-	private String reservation_code;
-	private String date_and_time;
-	private String invoice_Needed;
-	private String reservation_status;
-	private int session_code;
-	private int customer_ID;
+	private String reservationCode;
+	private String dateAndTime;
+	private String invoiceNeeded;
+	private String reservationStatus;
+	private int sessionCode;
+	private int customerID;
 	
-	public Reservation(String reservation_code, String date_and_time, String invoice_Needed, String reservation_status, int session_code, int customer_ID) {
-		this.reservation_code = reservation_code;
-		this.date_and_time = date_and_time;
-		this.invoice_Needed = invoice_Needed;
-		this.reservation_status = reservation_status;
-		this.session_code = session_code;
-		this.customer_ID = customer_ID;
+	public Reservation(String reservationCode, String dateAndTime, String invoiceNeeded, String reservationStatus, int sessionCode, int customerID) {
+		this.reservationCode = reservationCode;
+		this.dateAndTime = dateAndTime;
+		this.invoiceNeeded = invoiceNeeded;
+		this.reservationStatus = reservationStatus;
+		this.sessionCode = sessionCode;
+		this.customerID = customerID;
 	}
 	
-	public String getReservation_code() {
-		return reservation_code;
+	public String getReservationCode() {
+		return reservationCode;
 	}
 	
-	public void setReservation_code(String reservation_code) {
-		this.reservation_code = reservation_code;
+	public void setReservationCode(String reservationCode) {
+		this.reservationCode = reservationCode;
 	}
 	
-	public String getDate_and_time() {
-		return date_and_time;
+	public String getDateAndTime() {
+		return dateAndTime;
 	}
 	
-	public void setDate_and_time(String date_and_time) {
-		this.date_and_time = date_and_time;
+	public void setDateAndTime(String dateAndTime) {
+		this.dateAndTime = dateAndTime;
 	}
 	
-	public String getInvoice_Needed() {
-		return invoice_Needed;
+	public String getInvoiceNeeded() {
+		return invoiceNeeded;
 	}
 	
-	public void setInvoice_Needed(String invoice_Needed) {
-		this.invoice_Needed = invoice_Needed;
+	public void setInvoiceNeeded(String invoiceNeeded) {
+		this.invoiceNeeded = invoiceNeeded;
 	}
 	
-	public String getReservation_status() {
-		return reservation_status;
+	public String getReservationStatus() {
+		return reservationStatus;
 	}
 	
-	public void setReservation_status(String reservation_status) {
-		this.reservation_status = reservation_status;
+	public void setReservationStatus(String reservationStatus) {
+		this.reservationStatus = reservationStatus;
 	}
 	
-	public int getSession_code() {
-		return session_code;
+	public int getSessionCode() {
+		return sessionCode;
 	}
 	
-	public void setSession_code(int session_code) {
-		this.session_code = session_code;
+	public void setSessionCode(int sessionCode) {
+		this.sessionCode = sessionCode;
 	}
 	
-	public int getcustomer_ID() {
-		return customer_ID;
+	public int getcustomerID() {
+		return customerID;
 	}
 	
-	public void setCustomer_ID(int customer_ID) {
-		this.customer_ID = customer_ID;
+	public void setCustomerID(int customerID) {
+		this.customerID = customerID;
 	}
 
 }
