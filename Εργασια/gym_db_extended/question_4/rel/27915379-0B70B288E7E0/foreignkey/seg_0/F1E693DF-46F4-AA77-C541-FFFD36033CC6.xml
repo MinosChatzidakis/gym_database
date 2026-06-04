@@ -1,0 +1,17 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="F1E693DF-46F4-AA77-C541-FFFD36033CC6" containerWithKeyObject="70FB65A1-71F7-9120-52F0-225F349F27E6" localFKIndex="5EE669D7-6650-AB0C-2168-5C4F1C312A76" name="Customer_GYM_FK">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>36378449-2E43-0CD3-61CE-9A1A64C6FC08</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<referredTableLongName>GYM</referredTableLongName>
+<deleteRule>NO ACTION</deleteRule>
+<referredTableID>B9C44468-B399-0ADA-E250-7361BC8241E6</referredTableID>
+<keyObject>D6DE4D60-FD71-6F71-3893-4F0DC7945801</keyObject>
+<referredKeyID>D6DE4D60-FD71-6F71-3893-4F0DC7945801</referredKeyID>
+<mandatory>true</mandatory>
+<refColNames>Gym_code</refColNames>
+<transferable>true</transferable>
+<rely>false</rely>
+<columnDependencyConstraintGenerateInDDL>true</columnDependencyConstraintGenerateInDDL>
+</FKIndexAssociation>

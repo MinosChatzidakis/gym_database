@@ -1,0 +1,125 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="69418EE5-F4DD-8EBE-B7E9-7D3ABBCF9CA7" name="Reservation">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>9C2B4297-0E7A-2FD6-8A7E-77133F9C3D3F</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="Reservation_code" id="06E65BD3-2BA2-06E0-6340-AF07CE921EEC">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>B86C361A-F59B-A1F0-0A52-B454707606EB</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="date_and_time" id="28260C81-D08F-DB1F-CCA6-688F78EC3C63">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>A74FC68C-5673-7AD0-907C-AC470F76A234</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="invoice_needed" id="DE33C428-C50E-4288-CF07-1D556186717E">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>DA939100-7FCB-7637-6E7C-C62BBB2FD8EF</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT006</logicalDatatype>
+<dataTypeSize>1</dataTypeSize>
+<ownDataTypeParameters>1,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="reservation_status" id="79BC4987-5465-EEB3-348E-8A9EB3D60636">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>BFD5EC6C-40AB-1377-9742-A9F3240DA450</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>30</dataTypeSize>
+<ownDataTypeParameters>30,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Session_Session_Code" id="E2A3ECE1-4405-4ED1-D0AE-99E07D83B8CB">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>B25629B4-2257-C6F9-A892-8C626438EA1B</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="DA535373-8B8E-2EF4-E987-51D4523DB065" referredColumn="97AC76A5-36F5-3351-0380-2659DB827B92"/>
+</associations>
+</Column>
+<Column name="Customer_Customer_ID" id="EE768088-E307-7D5C-92DF-30984B622984">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>AC2977A6-9D8F-1EC0-90C8-6F710D37A5A2</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="E219EBEE-A7C0-9DD9-D716-CD639D458CE8" referredColumn="A8658CC9-9E71-BA35-E879-A7BE10461777"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="045C9477-91F5-CD89-CA16-B16AC14BBFD6" name="Reservation_PK">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>1B3A9EF2-2949-3EFC-622B-B7BF96B3FF2F</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="06E65BD3-2BA2-06E0-6340-AF07CE921EEC"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="41DFD6B3-6AA6-DF80-9BD1-61E2DD03123A" name="Reservation_Session_FK">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>64B8647E-74A9-7F43-F4C1-C12EFBF3D5E6</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="E2A3ECE1-4405-4ED1-D0AE-99E07D83B8CB"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="AB451891-A33B-5E7A-8654-04693F45D1CC" name="Reservation_Customer_FK">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 16:00:02 UTC</createdTime>
+<generatorID>0F84C0A1-566C-5FB5-B807-A632DC9B3B7B</generatorID>
+<ownerDesignName>project_2</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="EE768088-E307-7D5C-92DF-30984B622984"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

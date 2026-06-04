@@ -1,0 +1,65 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="1F1345B4-D1AE-A18F-8A7B-1E1460BDB124" name="Services">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>B7547283-0F61-B19B-C607-0373795DB6AA</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="Service_Name" id="6A7704FE-4FD3-FF5D-02C8-68543180D768">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>96714B01-9847-C150-A0E3-C4C94AF3B546</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="GYM_Gym_code" id="A6CABEEF-2658-EE0A-DB5A-1530C0665C99">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>6408DDE9-9C42-B220-670C-EEDC6B9B823B</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="1AD45A1F-92EE-5618-211A-B184720AB593" referredColumn="0E900F0A-4F8F-B4EB-5DD0-8C6FD8F5DE4B"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="72741468-3DC6-7048-1661-47F8ACD08539" name="Services_PK">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>7D37E8DF-82DD-8D9F-AD77-706B45046DDA</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="6A7704FE-4FD3-FF5D-02C8-68543180D768"/>
+<colUsage columnID="A6CABEEF-2658-EE0A-DB5A-1530C0665C99"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="EB67B910-8652-2709-9889-68568B2CF70B" name="Services_GYM_FK">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>E70AFD2E-6826-FA43-9FDD-2BC41C00DAB0</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="A6CABEEF-2658-EE0A-DB5A-1530C0665C99"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

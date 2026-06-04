@@ -1,0 +1,126 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="6068060A-A5EE-B967-028E-AB434E6BC02B" name="Reservation">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>9C2B4297-0E7A-2FD6-8A7E-77133F9C3D3F</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="Reservation_code" id="5016E376-52CA-C6E0-F9E3-A57D38ED4967">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>B86C361A-F59B-A1F0-0A52-B454707606EB</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="date_and_time" id="BFDBFACE-E057-29AE-9F0A-3BB84DF0C923">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>A74FC68C-5673-7AD0-907C-AC470F76A234</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="invoice_needed" id="F5131B9A-F48C-6051-4912-294E6DB522FE">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>DA939100-7FCB-7637-6E7C-C62BBB2FD8EF</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT006</logicalDatatype>
+<dataTypeSize>1</dataTypeSize>
+<ownDataTypeParameters>1,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="reservation_status" id="D81E82A0-244C-54B1-3F3E-09262233B207">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>BFD5EC6C-40AB-1377-9742-A9F3240DA450</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>30</dataTypeSize>
+<ownDataTypeParameters>30,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Session_Session_Code" id="B674EDD6-362C-6512-58AF-5E93481B19DB">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>B25629B4-2257-C6F9-A892-8C626438EA1B</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="26A591E5-8FF7-63D5-FB51-E5F0BBF907E1" referredColumn="D7A7BB33-45A0-0961-F686-95D57875AF69"/>
+</associations>
+</Column>
+<Column name="Customer_Customer_ID" id="A838800A-9890-7639-2133-19879291B017">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>AC2977A6-9D8F-1EC0-90C8-6F710D37A5A2</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="2A52E37D-974B-1089-AC44-A3D5D337C4E9" referredColumn="8AE8746B-DF39-0B44-8811-052CE3CD08F2"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="F2C988EE-BD92-F623-D02A-63ECE4803606" name="Reservation_PK">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>1B3A9EF2-2949-3EFC-622B-B7BF96B3FF2F</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="5016E376-52CA-C6E0-F9E3-A57D38ED4967"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="0D03019A-3E15-CCE5-E972-9824D0C44E46" name="Reservation_Session_FK">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>64B8647E-74A9-7F43-F4C1-C12EFBF3D5E6</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="B674EDD6-362C-6512-58AF-5E93481B19DB"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="85E4CA42-A433-41F1-B7C1-1E79864A6CF4" name="Reservation_Customer_FK">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>0F84C0A1-566C-5FB5-B807-A632DC9B3B7B</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="A838800A-9890-7639-2133-19879291B017"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

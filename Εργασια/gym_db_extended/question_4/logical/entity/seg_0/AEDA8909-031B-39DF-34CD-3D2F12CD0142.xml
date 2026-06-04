@@ -1,0 +1,157 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="AEDA8909-031B-39DF-34CD-3D2F12CD0142" name="Session">
+<createdBy>mino1</createdBy>
+<createdTime>2026-05-20 18:49:51 UTC</createdTime>
+<ownerDesignName>question_4</ownerDesignName>
+<engineerTo>
+<item key="27915379-7EEB-0A13-824B-0B70B288E7E0" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="Session_Code" id="FA263CFF-C169-4E36-5BF6-CFA97AA57EC3">
+<createdBy>mino1</createdBy>
+<createdTime>2026-05-20 18:49:51 UTC</createdTime>
+<ownerDesignName>question_4</ownerDesignName>
+<importedID>65525722-1F7C-27A9-6EE1-23A074B0F72A</importedID>
+<engineerTo>
+<item key="27915379-7EEB-0A13-824B-0B70B288E7E0" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="Session_Type" id="1BB3E0CE-E56D-3B52-0EFD-0194DC5D588D">
+<createdBy>mino1</createdBy>
+<createdTime>2026-05-20 18:49:51 UTC</createdTime>
+<ownerDesignName>question_4</ownerDesignName>
+<importedID>E4D05E13-6CFC-7FCB-D3AB-330BE665DE24</importedID>
+<engineerTo>
+<item key="27915379-7EEB-0A13-824B-0B70B288E7E0" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="Description" id="12CD5713-8257-0E8F-E220-99D13E4E4BBB">
+<createdBy>mino1</createdBy>
+<createdTime>2026-05-20 18:49:51 UTC</createdTime>
+<ownerDesignName>question_4</ownerDesignName>
+<importedID>D00AC0C9-94A4-48F3-E02F-C8C74B69FFAE</importedID>
+<engineerTo>
+<item key="27915379-7EEB-0A13-824B-0B70B288E7E0" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100</dataTypeSize>
+<ownDataTypeParameters>100,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="Max_participants" id="2E39949A-FDB0-9CE3-2E00-5CA02820CD45">
+<createdBy>mino1</createdBy>
+<createdTime>2026-05-20 18:49:51 UTC</createdTime>
+<ownerDesignName>question_4</ownerDesignName>
+<importedID>D53ED52C-A8A8-4FAF-6867-AA31DD09132C</importedID>
+<engineerTo>
+<item key="27915379-7EEB-0A13-824B-0B70B288E7E0" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="Time" id="BCB68C16-EADB-FB64-A1C8-F3A788D83A75">
+<createdBy>mino1</createdBy>
+<createdTime>2026-05-20 18:49:51 UTC</createdTime>
+<ownerDesignName>question_4</ownerDesignName>
+<importedID>997ED306-2AB3-B471-95D4-D77B6849EA97</importedID>
+<engineerTo>
+<item key="27915379-7EEB-0A13-824B-0B70B288E7E0" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="Price" id="CAE8E22D-3D8D-F20F-614C-F792AA3C026E">
+<createdBy>mino1</createdBy>
+<createdTime>2026-05-20 18:49:51 UTC</createdTime>
+<ownerDesignName>question_4</ownerDesignName>
+<importedID>C4E43F1A-6213-3314-D0C8-86B5BBE2B924</importedID>
+<engineerTo>
+<item key="27915379-7EEB-0A13-824B-0B70B288E7E0" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>10</dataTypeSize>
+<ownDataTypeParameters>10,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="Availability" id="FB622C66-58FF-41FF-FE50-0870D1FB70AC">
+<createdBy>mino1</createdBy>
+<createdTime>2026-05-20 18:49:51 UTC</createdTime>
+<ownerDesignName>question_4</ownerDesignName>
+<importedID>322DE667-BB45-6030-3EFF-3A14D041E9C2</importedID>
+<engineerTo>
+<item key="27915379-7EEB-0A13-824B-0B70B288E7E0" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT006</logicalDatatype>
+<dataTypeSize>1</dataTypeSize>
+<ownDataTypeParameters>1,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="Trainer_id" id="A63BDB74-60FA-7BC9-5F79-8D1C46F84CC5">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 14:39:52 UTC</createdTime>
+<generatorID>CBA3B6B6-8239-F169-99CC-90F88165FE5B</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<engineerTo>
+<item key="27915379-7EEB-0A13-824B-0B70B288E7E0" value="true"/>
+</engineerTo>
+<referedAttribute>B032F207-7EF5-C7F2-4007-5281E9B47819</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="Gym_code" id="EB5D09F8-EF86-7779-04B7-F3F5CCCBBE28">
+<createdBy>kosti</createdBy>
+<createdTime>2026-05-31 14:40:09 UTC</createdTime>
+<generatorID>71235F58-9B87-4506-2F97-691995CFC679</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<engineerTo>
+<item key="27915379-7EEB-0A13-824B-0B70B288E7E0" value="true"/>
+</engineerTo>
+<referedAttribute>5F54D12B-2859-EBE8-2BDC-632E8F8E247B</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="C185FFB7-DEA3-364F-685E-79A796B8B4C1" name="Session PK">
+<createdBy>mino1</createdBy>
+<createdTime>2026-05-20 18:49:51 UTC</createdTime>
+<ownerDesignName>question_4</ownerDesignName>
+<shouldEngineer>false</shouldEngineer>
+<engineerTo>
+<item key="27915379-7EEB-0A13-824B-0B70B288E7E0" value="false"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>FA263CFF-C169-4E36-5BF6-CFA97AA57EC3</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

@@ -1,0 +1,159 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="9B483916-3AD5-7E94-9894-211B5F1321F0" name="Session">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>AEDA8909-031B-39DF-34CD-3D2F12CD0142</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="Session_Code" id="D7A7BB33-45A0-0961-F686-95D57875AF69">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>FA263CFF-C169-4E36-5BF6-CFA97AA57EC3</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Session_Type" id="5364C1E1-47F9-F037-4055-2E08C39C43CC">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>1BB3E0CE-E56D-3B52-0EFD-0194DC5D588D</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Description" id="A588AE4B-61C4-3DC7-7F71-D33672B15304">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>12CD5713-8257-0E8F-E220-99D13E4E4BBB</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100</dataTypeSize>
+<ownDataTypeParameters>100,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Max_participants" id="AB036754-0704-2093-08D1-DADD04733D1C">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>2E39949A-FDB0-9CE3-2E00-5CA02820CD45</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Time" id="7000821C-7C0F-FCAB-BA3B-2AA00ED25CD3">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>BCB68C16-EADB-FB64-A1C8-F3A788D83A75</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Price" id="28F7B3EA-38DD-CACC-D9CA-7F3F1C6C16DE">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>CAE8E22D-3D8D-F20F-614C-F792AA3C026E</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>10</dataTypeSize>
+<ownDataTypeParameters>10,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Availability" id="2507F910-D588-9CEF-D3CF-9200A3576C5A">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>FB622C66-58FF-41FF-FE50-0870D1FB70AC</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT006</logicalDatatype>
+<dataTypeSize>1</dataTypeSize>
+<ownDataTypeParameters>1,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Trainer_Trainer_id" id="67597E3B-C4F1-C262-12FF-CD4123076B62">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>A63BDB74-60FA-7BC9-5F79-8D1C46F84CC5</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="493EA02B-77E0-5BD8-03BF-B30018C6A368" referredColumn="3C6EB3DF-6698-D0B7-712B-FEF77FD50D5A"/>
+</associations>
+</Column>
+<Column name="GYM_Gym_code" id="897E930A-2657-F497-3E88-E0975E3C22E9">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>EB5D09F8-EF86-7779-04B7-F3F5CCCBBE28</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="73190566-705D-78F6-5FF5-C0A5E26CD0EE" referredColumn="0E900F0A-4F8F-B4EB-5DD0-8C6FD8F5DE4B"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="2F9A5BD4-B7E3-8107-5976-2D6A9C60559B" name="Session_PK">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>C185FFB7-DEA3-364F-685E-79A796B8B4C1</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="D7A7BB33-45A0-0961-F686-95D57875AF69"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="69E95EF7-161B-7182-FBEF-6A69C95083D1" name="Session_Trainer_FK">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>CBA3B6B6-8239-F169-99CC-90F88165FE5B</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="67597E3B-C4F1-C262-12FF-CD4123076B62"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="D84CEEC8-28AC-A658-64AB-F64AB4CCE6DF" name="Session_GYM_FK">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>71235F58-9B87-4506-2F97-691995CFC679</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="897E930A-2657-F497-3E88-E0975E3C22E9"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

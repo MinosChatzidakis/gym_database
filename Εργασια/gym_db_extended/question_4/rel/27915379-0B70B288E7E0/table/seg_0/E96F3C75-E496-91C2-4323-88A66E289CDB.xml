@@ -1,0 +1,151 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="E96F3C75-E496-91C2-4323-88A66E289CDB" name="pts_transactions">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>C777EADE-72A8-252E-C15D-B9EE8AC891A7</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="trans_id" id="DA940843-61C1-92C7-C2EF-71F8F37C5E4F">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>FD1684C1-469D-399F-A2E5-601FBFE63B4A</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="amount" id="7746BA99-9485-7131-6E6E-DF1BDD71870C">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>1A43C6F1-4EF4-23A5-1CF7-90AD507139D0</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="source" id="6C163A1E-3686-164F-FBE4-61CE501D068B">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>ACC9D7D8-CCF0-D986-EE3E-1F2E4C0FDCBF</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="date" id="25CD7E26-465B-ACFC-974A-A05779162AC8">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>A4DCEC12-9F93-6ECF-9152-5DB5C0C1CC4E</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="description" id="E4D848DD-EFAB-D03F-4738-3DF32FA23B81">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>9EAEF254-6A61-F3FA-EBD7-4EB5241A6F02</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100</dataTypeSize>
+<ownDataTypeParameters>100,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Customer_Customer_ID" id="AE3490F8-55B9-6BD8-45DF-E8C57FC794CC">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>85D24006-DF3C-DF47-2638-C336C0278822</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="317440C2-EF98-6228-9693-3F2B8B7AA30A" referredColumn="8AE8746B-DF39-0B44-8811-052CE3CD08F2"/>
+</associations>
+</Column>
+<Column name="Payment_Payment_ID" id="FD3457AA-A657-2DC4-3174-F51F77626E72">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>A3D88E5E-C991-F388-2D4D-A14A2E32DBB2</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="838DA8D9-D95F-F6E5-E152-1C33A5CF3C8A" referredColumn="0ED766F9-7201-E771-D619-B28712FA6776"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="8A977108-5668-6C62-E938-AA310CF6395A" name="pts_transactions_PK">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>28FA3135-E847-53A3-2ADB-3FC07F52360A</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="DA940843-61C1-92C7-C2EF-71F8F37C5E4F"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="0CD47048-BD97-4210-A8ED-990EAEC11360" name="pts_transactions__IDX">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<ownerDesignName>question_4</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<relationGeneratorID>6BF6D8EC-87DE-6247-5B51-408D05962DB6</relationGeneratorID>
+<indexColumnUsage>
+<colUsage columnID="FD3457AA-A657-2DC4-3174-F51F77626E72"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="F008111C-F717-8CC4-8287-9562AF3581AB" name="pts_transactions_Customer_FK">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>207BD222-9BD4-10CD-6ECF-03D5251560B7</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="AE3490F8-55B9-6BD8-45DF-E8C57FC794CC"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="109322EF-64C7-E18F-FE91-D204EA4A85A1" name="pts_transactions_Payment_FK">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>6BF6D8EC-87DE-6247-5B51-408D05962DB6</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="FD3457AA-A657-2DC4-3174-F51F77626E72"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

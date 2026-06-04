@@ -1,0 +1,85 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="4F0C42DE-35C4-6AA0-12E8-6B341CF93E92" name="available_rewards">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-01 09:43:43 UTC</createdTime>
+<ownerDesignName>question_4</ownerDesignName>
+<engineerTo>
+<item key="27915379-7EEB-0A13-824B-0B70B288E7E0" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="reward_id" id="5BDF086B-680A-B962-0E89-0C26A681D9D2">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-01 10:10:06 UTC</createdTime>
+<ownerDesignName>question_4</ownerDesignName>
+<engineerTo>
+<item key="27915379-7EEB-0A13-824B-0B70B288E7E0" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="description" id="2827780D-E631-1477-7EB0-130ECE4F3075">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-01 09:43:51 UTC</createdTime>
+<ownerDesignName>question_4</ownerDesignName>
+<engineerTo>
+<item key="27915379-7EEB-0A13-824B-0B70B288E7E0" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>30</dataTypeSize>
+<ownDataTypeParameters>30,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="pts_required" id="FA268AA4-45C4-8AEF-A467-4E8EBA490794">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-01 09:46:52 UTC</createdTime>
+<ownerDesignName>question_4</ownerDesignName>
+<engineerTo>
+<item key="27915379-7EEB-0A13-824B-0B70B288E7E0" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="valid_for" id="31CDB5B4-56F0-AFA2-560E-6F8F6A278FB2">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-01 09:47:25 UTC</createdTime>
+<ownerDesignName>question_4</ownerDesignName>
+<engineerTo>
+<item key="27915379-7EEB-0A13-824B-0B70B288E7E0" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="6DD3DF56-8762-0D0E-B5B7-D4FA093311A0" name="rewards PK">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-01 09:44:30 UTC</createdTime>
+<ownerDesignName>question_4</ownerDesignName>
+<engineerTo>
+<item key="27915379-7EEB-0A13-824B-0B70B288E7E0" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>5BDF086B-680A-B962-0E89-0C26A681D9D2</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

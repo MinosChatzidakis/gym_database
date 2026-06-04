@@ -1,0 +1,21 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Relation class="oracle.dbtools.crest.model.design.logical.Relation" name="employs" directorySegmentName="seg_0" id="BCF7EF42-0EF8-50E3-789A-6FED5F1CC8A0">
+<createdBy>mino1</createdBy>
+<createdTime>2026-05-20 18:53:33 UTC</createdTime>
+<ownerDesignName>question_4</ownerDesignName>
+<engineerTo>
+<item key="27915379-7EEB-0A13-824B-0B70B288E7E0" value="true"/>
+</engineerTo>
+<sourcePk>73554FCE-8113-5830-397F-C0FDD39B6AF5</sourcePk>
+<identifying>false</identifying>
+<nameOnSource>has</nameOnSource>
+<nameOnTarget>works</nameOnTarget>
+<optionalSource>false</optionalSource>
+<optionalTarget>false</optionalTarget>
+<sourceCardinality>1</sourceCardinality>
+<sourceEntity>B95B3F86-286C-65B4-D7A8-59576FC84849</sourceEntity>
+<targetCardinalityString>*</targetCardinalityString>
+<targetEntity>42D74E0A-9407-F06C-C4C7-427F4BB37C16</targetEntity>
+<transferable>true</transferable>
+<deleteRule>NO ACTION</deleteRule>
+</Relation>

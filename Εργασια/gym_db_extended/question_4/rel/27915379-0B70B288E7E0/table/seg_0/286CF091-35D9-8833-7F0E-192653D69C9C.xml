@@ -1,0 +1,140 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="286CF091-35D9-8833-7F0E-192653D69C9C" name="rewards_distribution">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>784288B8-B05E-E0CB-7E9C-EB6ED5458FEC</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="distr_id" id="87440156-DA04-1735-F3B1-5C04F57B97CD">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>FBF53735-FF9F-EBE4-2A85-24B35785FC6A</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="available_rewards_reward_id" id="18C33A04-8639-AB5B-653B-F14C734EFE0B">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>83755B1E-93AD-BF41-CFB0-BD18D05446E4</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="1EFB7938-9349-8B73-60AC-B77C318E5FB7" referredColumn="70C3771F-3445-84A8-1C34-3DF995C4E6F8"/>
+</associations>
+</Column>
+<Column name="is_used" id="622508F4-1091-03E0-A4A1-3D3ADD8D2D39">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>6B6EB079-521F-8010-789A-D77F34EF944E</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT006</logicalDatatype>
+<dataTypeSize>1</dataTypeSize>
+<ownDataTypeParameters>1,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="date_obtained" id="5CE5E81A-2967-A4EC-A35C-3D49958626EB">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>804C57F8-F82B-4B40-BD11-78F0FE6EEAD7</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="date_used" id="8A081233-FA91-29C8-DB2E-60CE18E59C04">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>34AAADEA-FCD0-D4D0-8318-499A284B1F6B</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="valid_until" id="3DB1DDBB-D803-6550-1C20-4DF52E766D05">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>503A9E65-8313-D4E0-EE3A-11F787057390</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Customer_Customer_ID" id="4B392957-B0C8-8AAF-BA83-007950117AE7">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>71A13188-6114-EBA5-8DCD-78D8C78151F1</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="6D9F18F3-B0AD-ADA2-7CC9-1C4E1F617EE8" referredColumn="8AE8746B-DF39-0B44-8811-052CE3CD08F2"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="2F41ECD3-97C7-55B4-EF6E-860963129E8E" name="rewards_distribution_PK">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>F2A75868-5E62-386F-8B3F-369FD4D9427D</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="87440156-DA04-1735-F3B1-5C04F57B97CD"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="F037C94B-31AF-C535-EE13-A71AFF82D7FB" name="rewards_distribution_Customer_FK">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>E77D4C6F-EBCD-4C98-7D34-1DF98E1E698F</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="4B392957-B0C8-8AAF-BA83-007950117AE7"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="DBA3314D-FDE1-3F87-BD7D-8C16BEA21B5A" name="rewards_distribution_available_rewards_FK">
+<createdBy>mino1</createdBy>
+<createdTime>2026-06-02 17:00:21 UTC</createdTime>
+<generatorID>C1306241-72F5-306B-BAC8-F67DB8568179</generatorID>
+<ownerDesignName>question_4</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="18C33A04-8639-AB5B-653B-F14C734EFE0B"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>
