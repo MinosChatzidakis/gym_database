@@ -2,23 +2,17 @@ package Gym_project;
 
 public class Gym {
 	private static int num;
-	private int customerId;
     private String name;
     private String email;
     private String phone;
     public int gymCode;
 
 
-    public Gym(int customerId, String name, String email, String phone, int gymCode) {
-        this.customerId = num;
+    public Gym(String name, String email, String phone, int gymCode) {
         this.name = name;
         this.email = email;
         this.phone = phone;
-        this.gymCode = gymCode;
-    }
-
-    public int getCustomerId() {
-        return customerId;
+        this.gymCode = num;
     }
 
     public String getName() {
@@ -54,9 +48,5 @@ public class Gym {
 
     public int getGymCode() { 
         return gymCode; 
-    }
-
-    public void setGymCode(int gymCode) {
-        this.gymCode = gymCode; 
     }
 }
