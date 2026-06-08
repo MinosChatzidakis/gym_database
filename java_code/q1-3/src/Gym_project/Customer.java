@@ -30,7 +30,7 @@ public class Customer {
 
 	 public void setName(String name) {
 		 if(name==null || name.lenght() == 0){
-			System.out.print("The name field cant be empty.");
+			throw new IllegalArgumentException("The name field cant be empty.");
 		}
 		 this.name = name;
 	 }
@@ -40,7 +40,7 @@ public class Customer {
 	    
 	 public void setEmail(String email) {
 		 if(email==null || email.lenght() == 0){
-			System.out.print("The email field cant be empty.");
+			throw new IllegalArgumentException("The email field cant be empty.");
 		}
 		 this.email = email;
 	 }
@@ -51,7 +51,7 @@ public class Customer {
 
 	 public void setPhone(String phone) {
 		 if(phone==null || phone.lenght() == 0){
-			System.out.print("The phone field cant be empty.");
+			throw new IllegalArgumentException("The phone field cant be empty.");
 		}
 		 this.phone = phone;
 	 }
