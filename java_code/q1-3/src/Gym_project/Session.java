@@ -28,6 +28,9 @@
 	    }
 	
 	    public void setSession_Code(int Session_Code) {
+			if(Session_Code<=0){
+			System.out.print("The Session_Code can't be a negative number.");
+			}	
 	        this.Session_Code = Session_Code;
 	    }
 	
@@ -36,6 +39,9 @@
 	    }
 	
 	    public void setSession_Type(String Session_Type) {
+			if(Session_Type==null || Session_Type.lenght() == 0){
+			System.out.print("The Session_Type field cant be empty.");
+			}
 	        this.Session_Type = Session_Type;
 	    }
 	    public String getDescription() { 
