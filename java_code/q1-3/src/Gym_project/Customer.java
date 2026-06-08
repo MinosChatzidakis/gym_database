@@ -1,7 +1,7 @@
 package Gym_project;
 
 public class Customer {
-	 private static int num;
+	
 	 private int customerID;
 	 private String name;
 	 private String email;
@@ -10,7 +10,7 @@ public class Customer {
 
 
 	 public Customer(String name, String email, String phone, int gymCode) {
-		 this.customerID = num++;
+		 this.customerID = customerID;
 		 this.name = name;
 		 this.email = email;
 		 this.phone = phone;
@@ -19,6 +19,10 @@ public class Customer {
 
 	 public int getCustomerID() {
 		 return customerID;
+	 }
+
+	 public void setCustomerID(int customerID) {
+		 this.customerID = customerID; 
 	 }
 
 	 public String getName() {
