@@ -12,7 +12,7 @@ public class Gym {
         this.name = name;
         this.email = email;
         this.phone = phone;
-        this.gymCode = num;
+        this.gymCode = num++;
     }
 
     public String getName() {
