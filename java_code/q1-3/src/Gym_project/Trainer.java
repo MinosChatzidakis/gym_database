@@ -32,12 +32,18 @@ public class Trainer {
 	    }
 	    
 	    public void setName(String name) {
+			if(name==null || name.lenght() == 0){
+			System.out.print("The name field cant be empty.");
+			}
 	        this.name = name;
 	    }
 	    public String getEmail() { 
 	        return email; 
 	    }
 	    public void setEmail(String email) {
+			if(email==null || email.lenght() == 0){
+			System.out.print("The email field cant be empty.");
+			}
 	        this.email = email;
 	    }
 
@@ -46,6 +52,9 @@ public class Trainer {
 	    }
 	    
 	    public void setPhone(String phone) {
+			if(phone==null || phone.lenght() == 0){
+			System.out.print("The phone field cant be empty.");
+			}
 	        this.phone = phone;
 	    }
 
@@ -62,6 +71,9 @@ public class Trainer {
 	    }
 	    
 	    public void setSpecialty(String specialty) {
+			if(specialty==null || specialty.lenght() == 0){
+			System.out.print("The specialty field cant be empty.");
+			}
 	        this.specialty = specialty; 
 	    }
 	    
