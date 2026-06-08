@@ -2,7 +2,7 @@ package Gym_project;
 
 public class Payment {
 
-	private static int num;
+	
 	private int paymentID;
 	private int amount;
 	private String paymentMethod;
@@ -12,9 +12,9 @@ public class Payment {
 	
 	
 	
-	public Payment(int amount, String paymentMethod, String paymentDate, String reservationCode, String transID) {
+	public Payment(int paymentID , int amount, String paymentMethod, String paymentDate, String reservationCode, String transID) {
 		
-		this.paymentID = num++;
+		this.paymentID = paymentID;
 		this.amount = amount;
 		this.paymentMethod = paymentMethod;
 		this.paymentDate = paymentDate;
@@ -26,6 +26,10 @@ public class Payment {
 	
 	public int getPaymentID() {
 		return paymentID;
+	}
+	
+	public void setPaymentID(int paymentID) {
+		this.paymentID = paymentID;
 	}
 	
 	public int getAmount() {
