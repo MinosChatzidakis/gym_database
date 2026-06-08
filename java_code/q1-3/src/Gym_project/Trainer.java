@@ -1,7 +1,8 @@
 package Gym_project;
 
 public class Trainer {
-	
+
+	    private static int num;;
 	    private int TrainerID;
 	    private String name;
 	    private String specialty;
@@ -10,8 +11,8 @@ public class Trainer {
 	    private int gymCode;
 	    
 	    
-	    public Trainer(int TrainerID, String name, String email, String phone, int gymCode , String specialty) {
-	        this.TrainerID = TrainerID;
+	    public Trainer(String name, String email, String phone, int gymCode , String specialty) {
+	        this.TrainerID = num++;
 	        this.name = name;
 	        this.email = email;
 	        this.phone = phone;
@@ -21,10 +22,6 @@ public class Trainer {
 	    
 	    public int getTrainerID() {
 	        return TrainerID;
-	    }
-	    
-	    public void setTrainerID(int TrainerID) {
-	        this.TrainerID = TrainerID;
 	    }
 	    
 	    public String getName() {
