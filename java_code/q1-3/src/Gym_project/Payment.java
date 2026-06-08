@@ -48,10 +48,6 @@ public class Payment {
 		return reservationCode;
 	}
 	
-	public void setReservationCode(String reservationCode) {
-		this.reservationCode = reservationCode;
-	}
-	
 	public String getTransID() {
 		return transID;
 	}
