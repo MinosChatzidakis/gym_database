@@ -56,6 +56,9 @@
 	    }
 	
 	    public void setMax_participants(int Max_participants) {
+			if(Max_participants<=0){
+			System.out.print("The number of Max participants can't be negative.");
+			}
 	        this.Max_participants = Max_participants;
 	    }
 	    
