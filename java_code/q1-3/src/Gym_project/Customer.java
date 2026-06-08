@@ -10,7 +10,7 @@ public class Customer {
 
 
 	 public Customer(String name, String email, String phone, int gymCode) {
-		 this.customerID = num;
+		 this.customerID = num++;
 		 this.name = name;
 		 this.email = email;
 		 this.phone = phone;
