@@ -30,7 +30,7 @@ public class Gym {
 
     public void setName(String name) {
 		if(name==null || name.lenght() == 0){
-			System.out.print("The name field cant be empty.")΄
+			System.out.print("The name field cant be empty.");
 		}	
         this.name = name;
     }
@@ -39,7 +39,7 @@ public class Gym {
     }
     public void setEmail(String email) {
 		if(email==null || email.lenght() == 0){
-			System.out.print("The email field cant be empty.")΄
+			System.out.print("The email field cant be empty.");
 		}
         this.email = email;
     }
@@ -50,7 +50,7 @@ public class Gym {
 
     public void setPhone(String phone) {
 		if(phone==null || phone.lenght() == 0){
-			System.out.print("The phone field cant be empty.")΄
+			System.out.print("The phone field cant be empty.");
 		}
         this.phone = phone;
     }
