@@ -27,6 +27,9 @@ public class SessionSearch {
     }
 
     public void setPreferredGymCode(int preferredGymCode) {
+		if(preferredGymCode<=0){
+			System.out.print("The preferred Gym Code can't be a negative number.");
+		}
         this.preferredGymCode = preferredGymCode;
     }
 
@@ -35,6 +38,9 @@ public class SessionSearch {
     }
 
     public void setCity(String city) {
+		if(city==null || city.lenght() == 0){
+			System.out.print("The city field cant be empty.");
+		}
         this.city = city;
     }
 	
@@ -51,6 +57,9 @@ public class SessionSearch {
     }
 
     public void setDate(String date) {
+		if(Session_Type==null || Session_Type.lenght() == 0){
+			System.out.print("The Session_Type field cant be empty.");
+		}
         this.date = date;
     }
 
@@ -60,6 +69,9 @@ public class SessionSearch {
     }
 
     public void setTime(String time) {
+		if(time==null || time.lenght() == 0){
+			System.out.print("The time field cant be empty.");
+		}
         this.time = time;
     }
 
