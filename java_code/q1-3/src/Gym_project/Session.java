@@ -29,7 +29,7 @@
 	
 	    public void setSession_Code(int Session_Code) {
 			if(Session_Code<=0){
-			System.out.print("The Session_Code can't be a negative number.");
+			throw new IllegalArgumentException("The Session_Code can't be a negative number.");
 			}	
 	        this.Session_Code = Session_Code;
 	    }
@@ -40,7 +40,7 @@
 	
 	    public void setSession_Type(String Session_Type) {
 			if(Session_Type==null || Session_Type.lenght() == 0){
-			System.out.print("The Session_Type field cant be empty.");
+			throw new IllegalArgumentException("The Session_Type field cant be empty.");
 			}
 	        this.Session_Type = Session_Type;
 	    }
@@ -57,7 +57,7 @@
 	
 	    public void setMax_participants(int Max_participants) {
 			if(Max_participants<=0){
-			System.out.print("The number of Max participants can't be negative.");
+			throw new IllegalArgumentException("The number of Max participants can't be negative.");
 			}
 	        this.Max_participants = Max_participants;
 	    }
