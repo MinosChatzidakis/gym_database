@@ -1,7 +1,7 @@
 package Gym_project;
 
 public class Gym {
-	private static int num;
+	
     private String name;
     private String email;
     private String phone;
@@ -12,7 +12,7 @@ public class Gym {
         this.name = name;
         this.email = email;
         this.phone = phone;
-        this.gymCode = num++;
+        this.gymCode = gymCode;
     }
 
     public String getName() {
@@ -48,5 +48,9 @@ public class Gym {
 
     public int getGymCode() { 
         return gymCode; 
+    }
+
+	public void setGymCode(String gymCode) {
+        this.gymCode = gymCode;
     }
 }
