@@ -1,4 +1,4 @@
-package gym_project;
+package Gym_project;
 
 public class Payment {
 	

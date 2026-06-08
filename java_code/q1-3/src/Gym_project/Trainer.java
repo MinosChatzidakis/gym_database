@@ -1,4 +1,4 @@
-package gym_project;
+package Gym_project;
 
 public class Trainer {
 	
@@ -15,8 +15,8 @@ public class Trainer {
 	        this.name = name;
 	        this.email = email;
 	        this.phone = phone;
-			this.specialty = specialty
-	        this.gymCode = gymCode
+			this.specialty = specialty;
+	        this.gymCode = gymCode;
 	    }
 	    
 	    public int getTrainerID() {

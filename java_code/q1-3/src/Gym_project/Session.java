@@ -1,4 +1,4 @@
-	package Test;
+	package Gym_project;
 	
 	public class Session {
 		private int Session_Code;

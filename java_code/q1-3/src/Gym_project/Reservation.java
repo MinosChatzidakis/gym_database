@@ -1,4 +1,4 @@
-package gym_project;
+package Gym_project;
 
 public class Reservation {
 	private String reservationCode;
@@ -17,7 +17,7 @@ public class Reservation {
 		this.customerID = customerID;
 	}
 	
-	public String getReservationCode() {
+	public String getReservationCode() { 
 		return reservationCode;
 	}
 	

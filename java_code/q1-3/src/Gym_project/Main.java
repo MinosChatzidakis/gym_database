@@ -1,25 +1,23 @@
-package gym_project;
+package Gym_project;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Main {
 
 	public static void main(String[] args) {
-		Connection conn;
-		try {
-			conn = SQLConnector.getConnection();
-			if (conn != null) {
-            System.out.println("[ΕΠΙΤΥΧΙΑ] Η βάση είναι συνδεδεμένη και έτοιμη να δεχτεί δεδομένα!");
-            try { 
-                conn.close();
-            } catch (Exception e) {}
-        }
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		Connection conn;
+//		try {
+//			conn = SQLConnector.getConnection();
+//			if (conn != null) {
+//            System.out.println("[ΕΠΙΤΥΧΙΑ] Η βάση είναι συνδεδεμένη και έτοιμη να δεχτεί δεδομένα!");
+//            try { 
+//                conn.close();
+//            } catch (Exception e) {}
+//        }
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		
 		
 		Scanner scanner = new Scanner(System.in);

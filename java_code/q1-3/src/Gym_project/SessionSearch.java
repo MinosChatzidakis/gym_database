@@ -1,4 +1,4 @@
-package gym_project;
+package Gym_project;
 
 public class SessionSearch {
 	private String city;
@@ -6,20 +6,20 @@ public class SessionSearch {
     private String trainingType;
     private String date;
 	private String time;
-	private String trainer;
+	private String trainerId;
 	private String additionalServices;
-	private boolean receipt;
+	private boolean invoiceNeeded;
 	
 	
-    public SessionSearch(int preferredGymCode, String city, String trainingType , String date , String time , String trainer , String additionalServices , boolean receipt) {
+    public SessionSearch(int preferredGymCode, String city, String trainingType , String date , String time , String trainerId , String additionalServices , boolean invoiceNeeded) {
         this.preferredGymCode = preferredGymCode;
         this.city = city;
         this.trainingType = trainingType;
         this.date = date;
 		this.time = time;
-		this.trainer = trainer;
+		this.trainerId = trainerId;
 		this.additionalServices = additionalServices;
-		this.receipt = receipt;
+		this.invoiceNeeded = invoiceNeeded;
     }
 
     public int getPreferredGymCode() {
@@ -63,20 +63,20 @@ public class SessionSearch {
         this.time = time;
     }
 
-	public String getTrainer() {
-        return trainer;
+	public String getTrainerId() {
+        return trainerId;
     }
 
-    public void setTrainer(String trainer) {
-        this.trainer = trainer;
+    public void setTrainerId(String trainerId) {
+        this.trainerId = trainerId;
     }
 
-	public boolean getReceipt() {
-        return receipt;
+	public boolean getInvoiceNeeded() {
+        return invoiceNeeded;
     }
 
-    public void setReceipt(boolean receipt) {
-        this.receipt = receipt;
+    public void setInvoiceNeeded(boolean invoiceNeeded) {
+        this.invoiceNeeded = invoiceNeeded;
     }
 
 	public String getAdditionalServices() {

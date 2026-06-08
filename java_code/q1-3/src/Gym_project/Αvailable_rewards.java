@@ -1,4 +1,4 @@
-package Test;
+package Gym_project;
 
 public class Αvailable_rewards {
 	private int reward_id;
