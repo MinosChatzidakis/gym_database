@@ -8,11 +8,11 @@ public class Payment {
 	private String paymentMethod;
 	private String paymentDate;
 	private String reservationCode;
-	private String transID;
+	private int transID;
 	
 	
 	
-	public Payment(int paymentID , int amount, String paymentMethod, String paymentDate, String reservationCode, String transID) {
+	public Payment(int paymentID , int amount, String paymentMethod, String paymentDate, String reservationCode, int transID) {
 		
 		this.paymentID = paymentID;
 		this.amount = amount;
@@ -52,11 +52,11 @@ public class Payment {
 		return reservationCode;
 	}
 	
-	public String getTransID() {
+	public int getTransID() {
 		return transID;
 	}
 	
-	public void setTransID(String transID) {
+	public void setTransID(int transID) {
 		this.transID = transID;
 	}
 	
