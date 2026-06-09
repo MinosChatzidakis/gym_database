@@ -1,120 +1,120 @@
 	package Gym_project;
 	
 	public class Session {
-		private int Session_Code;
-	    private String Session_Type;
-	    private String Description;
-	    private int Max_participants;
-	    private int Time;
-	    private int Price;
-	    private boolean Availability;
-	    private int Trainer_Trainer_id;
-	    private int GYM_Gym_code;
-		private String date_And_Time;
-		private int amount_Of_Participants;
+		private int sessionCode;
+	    private String sessionType;
+	    private String description;
+	    private int maxParticipants;
+	    private int time;
+	    private int price;
+	    private boolean availability;
+	    private int trainerTrainerID;
+	    private int gymGymCode;
+		private String dateAndTime;
+		private int amountOfParticipants;
 	
-	    public Session(int Session_Code, String Session_Type, String Description, int Max_participants , int Time , int Price , boolean Availability , int Trainer_Trainer_id , int GYM_Gym_code , String date_And_Time) {
-	        this.Session_Code = Session_Code;
-	        this.Session_Type = Session_Type;
-	        this.Description = Description;
-	        this.Max_participants = Max_participants;
-	        this.Time = Time;
-	        this.Price = Price;
-	        this.Availability = Availability;
-	        this.Trainer_Trainer_id = Trainer_Trainer_id;
-	        this.GYM_Gym_code = GYM_Gym_code;
-			this.date_And_Time = date_And_Time;
+	    public Session(int sessionCode, String sessionType, String description, int maxParticipants , int time , int price , boolean availability , int trainerTrainerID , int gymGymCode , String dateAndTime) {
+	        this.sessionCode = sessionCode;
+	        this.sessionType = sessionType;
+	        this.description = description;
+	        this.maxParticipants = maxParticipants;
+	        this.time = time;
+	        this.price = price;
+	        this.availability = availability;
+	        this.trainerTrainerID = trainerTrainerID;
+	        this.gymGymCode = gymGymCode;
+			this.dateAndTime = dateAndTime;
 			this.amount_Of_Participants = 0;
 	    }
 	
-	    public int getSession_Code() {
-	        return Session_Code;
+	    public int getSessionCode() {
+	        return sessionCode;
 	    }
 	
-	    public void setSession_Code(int Session_Code) {
-			if(Session_Code<=0){
+	    public void setSessionCode(int sessionCode) {
+			if(sessionCode<=0){
 			throw new IllegalArgumentException("The Session Code can't be a negative number.");
 			}	
-	        this.Session_Code = Session_Code;
+	        this.sessionCode = sessionCode;
 	    }
 	
-	    public String getSession_Type() {
-	        return Session_Type;
+	    public String getSessionType() {
+	        return sessionType;
 	    }
 	
-	    public void setSession_Type(String Session_Type) {
-			if(Session_Type==null || Session_Type.lenght() == 0){
+	    public void setSessionType(String sessionType) {
+			if(sessionType==null || sessionType.lenght() == 0){
 			throw new IllegalArgumentException("The Session Type field cant be empty.");
 			}
-	        this.Session_Type = Session_Type;
+	        this.sessionType = sessionType;
 	    }
 	    public String getDescription() { 
-	        return Description; 
+	        return description; 
 	    }
-	    public void setDescription(String Description) {
-	        this.Description = Description;
-	    }
-	
-	    public int getMax_participants() {
-	        return Max_participants;
+	    public void setDescription(String description) {
+	        this.description = description;
 	    }
 	
-	    public void setMax_participants(int Max_participants) {
-			if(Max_participants<=0){
+	    public int getMaxParticipants() {
+	        return maxParticipants;
+	    }
+	
+	    public void setMaxParticipants(int maxParticipants) {
+			if(maxParticipants<=0){
 			throw new IllegalArgumentException("The number of Max participants can't be negative.");
 			}
-	        this.Max_participants = Max_participants;
+	        this.maxParticipants = maxParticipants;
 	    }
 	    
 	    public int getTime() {
-	        return Time;
+	        return time;
 	    }
 	
-	    public void setTime(int Time) {
-	        this.Time = Time;
+	    public void setTime(int time) {
+	        this.time = time;
 	    }
 	    
 	    public int getPrice() {
-	        return Price;
+	        return price;
 	    }
 	
-	    public void setPrice(int Price) {
-	        this.Price = Price;
+	    public void setPrice(int price) {
+	        this.price = price;
 	    }
 	    
 	    public boolean getAvailability() {
-	        return Availability;
+	        return availability;
 	    }
 	    
-	    public void setAvailability(boolean Availability) {
-	        this.Availability = Availability;
+	    public void setAvailability(boolean availability) {
+	        this.availability = availability;
 	    }
 	    
-	    public int getTrainer_Trainer_id() {
-	        return Trainer_Trainer_id;
+	    public int getTrainerTrainerID() {
+	        return trainerTrainerID;
 	    }
 	
-	    public void setTrainer_Trainer_id(int Trainer_Trainer_id) {
-	        this.Trainer_Trainer_id = Trainer_Trainer_id;
+	    public void setTrainerTrainerID(int trainerTrainerID) {
+	        this.trainerTrainerID = trainerTrainerID;
 	    }
 	    
-	    public int getGYM_Gym_code() {
-	        return GYM_Gym_code;
+	    public int getGymGymCode() {
+	        return gymGymCode;
 	    }
 	
-	    public void setGYM_Gym_code(int GYM_Gym_code) {
-	        this.GYM_Gym_code = GYM_Gym_code;
+	    public void setGymGymCode(int gymGymCode) {
+	        this.gymGymCode = gymGymCode;
 	    }
 
 		public int getDate_And_Time() {
-	        return date_And_Time;
+	        return dateAndTime;
 	    }
 	
-	    public void setDate_And_Time(int date_And_Time) {
-			if(date_And_Time==null || date_And_Time.lenght() == 0){
+	    public void setDateAndTime(int dateAndTime) {
+			if(dateAndTime==null || dateAndTime.lenght() == 0){
 			throw new IllegalArgumentException("The Date And Time field cant be empty.");
 			}
-	        this.date_And_Time = date_And_Time;
+	        this.dateAndTime = dateAndTime;
 	    }
 
 	}
