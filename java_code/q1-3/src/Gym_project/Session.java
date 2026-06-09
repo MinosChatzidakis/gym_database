@@ -1,95 +1,137 @@
 	package Gym_project;
 	
 	public class Session {
-		private int Session_Code;
-	    private String Session_Type;
-	    private String Description;
-	    private int Max_participants;
-	    private int Time;
-	    private int Price;
-	    private boolean Availability;
-	    private int Trainer_Trainer_id;
-	    private int GYM_Gym_code;
+		private int sessionCode;
+	    private String sessionType;
+	    private String description;
+	    private int maxParticipants;
+	    private int duration;
+	    private int price;
+	    private boolean availability;
+	    private int trainerTrainerID;
+	    private int gymGymCode;
+		private String dateAndTime;
+		private int amountOfParticipants;
 	
-	    public Session(int Session_Code, String Session_Type, String Description, int Max_participants , int Time , int Price , boolean Availability , int Trainer_Trainer_id , int GYM_Gym_code) {
-	        this.Session_Code = Session_Code;
-	        this.Session_Type = Session_Type;
-	        this.Description = Description;
-	        this.Max_participants = Max_participants;
-	        this.Time = Time;
-	        this.Price = Price;
-	        this.Availability = Availability;
-	        this.Trainer_Trainer_id = Trainer_Trainer_id;
-	        this.GYM_Gym_code = GYM_Gym_code;
-	    }
-	
-	    public int getSession_Code() {
-	        return Session_Code;
-	    }
-	
-	    public void setSession_Code(int Session_Code) {
-	        this.Session_Code = Session_Code;
-	    }
-	
-	    public String getSession_Type() {
-	        return Session_Type;
-	    }
-	
-	    public void setSession_Type(String Session_Type) {
-	        this.Session_Type = Session_Type;
-	    }
-	    public String getDescription() { 
-	        return Description; 
-	    }
-	    public void setDescription(String Description) {
-	        this.Description = Description;
-	    }
-	
-	    public int getMax_participants() {
-	        return Max_participants;
-	    }
-	
-	    public void setMax_participants(int Max_participants) {
-	        this.Max_participants = Max_participants;
+	    public Session(int sessionCode, String sessionType, String description, int maxParticipants , int duration , int price , boolean availability , int trainerTrainerID , int gymGymCode , String dateAndTime) {
+	        this.sessionCode = sessionCode;
+	        this.sessionType = sessionType;
+	        this.description = description;
+	        this.maxParticipants = maxParticipants;
+	        this.duration = duration;
+	        this.price = price;
+	        this.availability = availability;
+	        this.trainerTrainerID = trainerTrainerID;
+	        this.gymGymCode = gymGymCode;
+			this.dateAndTime = dateAndTime;
+			this.amountOfParticipants = 0;
 	    }
 	    
-	    public int getTime() {
-	        return Time;
+	
+	    public int getSessionCode() {
+	        return sessionCode;
 	    }
 	
-	    public void setTime(int Time) {
-	        this.Time = Time;
+	    public void setSessionCode(int sessionCode) {
+			if(sessionCode<=0){
+			throw new IllegalArgumentException("The Session Code can't be a negative number.");
+			}	
+	        this.sessionCode = sessionCode;
+	    }
+	
+	    public String getSessionType() {
+	        return sessionType;
+	    }
+	
+	    public void setSessionType(String sessionType) {
+			if(sessionType==null || sessionType.length() == 0){
+			throw new IllegalArgumentException("The Session Type field cant be empty.");
+			}
+	        this.sessionType = sessionType;
+	    }
+	    public String getDescription() { 
+	        return description; 
+	    }
+	    public void setDescription(String description) {
+	        this.description = description;
+	    }
+	
+	    public int getMaxParticipants() {
+	        return maxParticipants;
+	    }
+	
+	    public void setMaxParticipants(int maxParticipants) {
+			if(maxParticipants<=0){
+			throw new IllegalArgumentException("The number of Max participants can't be negative.");
+			}
+	        this.maxParticipants = maxParticipants;
+	    }
+	    
+	    public int getDuration() {
+	        return duration;
+	    }
+	
+	    public void setDuration(int duration) {
+	        this.duration = duration;
 	    }
 	    
 	    public int getPrice() {
-	        return Price;
+	        return price;
 	    }
 	
-	    public void setPrice(int Price) {
-	        this.Price = Price;
+	    public void setPrice(int price) {
+	        this.price = price;
 	    }
 	    
 	    public boolean getAvailability() {
-	        return Availability;
+	        return availability;
 	    }
 	    
-	    public void setAvailability(boolean Availability) {
-	        this.Availability = Availability;
+	    public void setAvailability(boolean availability) {
+	        this.availability = availability;
 	    }
 	    
-	    public int getTrainer_Trainer_id() {
-	        return Trainer_Trainer_id;
+	    public int getTrainerTrainerID() {
+	        return trainerTrainerID;
 	    }
 	
-	    public void setTrainer_Trainer_id(int Trainer_Trainer_id) {
-	        this.Trainer_Trainer_id = Trainer_Trainer_id;
+	    public void setTrainerID(int trainerTrainerID) {
+	        this.trainerTrainerID = trainerTrainerID;
 	    }
 	    
-	    public int getGYM_Gym_code() {
-	        return GYM_Gym_code;
+	    public int getGymGymCode() {
+	        return gymGymCode;
 	    }
 	
-	    public void setGYM_Gym_code(int GYM_Gym_code) {
-	        this.GYM_Gym_code = GYM_Gym_code;
+	    public void setGymGymCode(int gymGymCode) {
+	        this.gymGymCode = gymGymCode;
 	    }
+
+		public String getDateAndTime() {
+	        return dateAndTime;
+	    }
+	
+	    public void setDateAndTime(String dateAndTime) {
+			if(dateAndTime==null || dateAndTime.length() == 0){
+			throw new IllegalArgumentException("The Date And duration field cant be empty.");
+			}
+	        this.dateAndTime = dateAndTime;
+	    }
+	    
+	    public int getAmountOfParticipants() {
+	    	return this.amountOfParticipants;
+	    }
+	    
+	    public void setAmountOfParticipants(int amount) {
+	    	if (amount>=0) {
+	    		this.amountOfParticipants= amount;	    		
+	    	}else {
+	    		throw new IllegalArgumentException("The amount of participants in this session cannot be a negative number.");
+	    	}
+	    }
+	    
+	    public void addParticipant() {
+	    	setAmountOfParticipants(getAmountOfParticipants()+1);
+	    }
+
 	}

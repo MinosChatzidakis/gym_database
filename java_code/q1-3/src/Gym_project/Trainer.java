@@ -1,8 +1,9 @@
 package Gym_project;
 
 public class Trainer {
-	
-	    private int TrainerID;
+
+	    
+	    private int trainerID;
 	    private String name;
 	    private String specialty;
 	    private String phone;
@@ -10,8 +11,8 @@ public class Trainer {
 	    private int gymCode;
 	    
 	    
-	    public Trainer(int TrainerID, String name, String email, String phone, int gymCode , String specialty) {
-	        this.TrainerID = TrainerID;
+	    public Trainer(int trainerID, String name, String email, String phone, int gymCode , String specialty) {
+	    	this.trainerID = trainerID;
 	        this.name = name;
 	        this.email = email;
 	        this.phone = phone;
@@ -19,12 +20,16 @@ public class Trainer {
 	        this.gymCode = gymCode;
 	    }
 	    
-	    public int getTrainerID() {
-	        return TrainerID;
+	    public Trainer() {
+	    	
 	    }
 	    
-	    public void setTrainerID(int TrainerID) {
-	        this.TrainerID = TrainerID;
+	    public int getTrainerID() {
+	        return trainerID;
+	    }
+
+		public void setTrainerID(int trainerID) {
+	        this.trainerID = trainerID; 
 	    }
 	    
 	    public String getName() {
@@ -32,12 +37,18 @@ public class Trainer {
 	    }
 	    
 	    public void setName(String name) {
+			if(name==null || name.length() == 0){
+			throw new IllegalArgumentException("The name field cant be empty.");
+			}
 	        this.name = name;
 	    }
 	    public String getEmail() { 
 	        return email; 
 	    }
 	    public void setEmail(String email) {
+			if(email==null || email.length() == 0){
+			throw new IllegalArgumentException("The email field cant be empty.");
+			}
 	        this.email = email;
 	    }
 
@@ -46,6 +57,9 @@ public class Trainer {
 	    }
 	    
 	    public void setPhone(String phone) {
+			if(phone==null || phone.length() == 0){
+			throw new IllegalArgumentException("The phone field cant be empty.");
+			}
 	        this.phone = phone;
 	    }
 
@@ -62,6 +76,9 @@ public class Trainer {
 	    }
 	    
 	    public void setSpecialty(String specialty) {
+			if(specialty==null || specialty.length() == 0){
+			throw new IllegalArgumentException("The specialty field cant be empty.");
+			}
 	        this.specialty = specialty; 
 	    }
 	    

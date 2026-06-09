@@ -1,14 +1,15 @@
 package Gym_project;
 
 public class Reservation {
+	
 	private String reservationCode;
 	private String dateAndTime;
-	private String invoiceNeeded;
+	private boolean invoiceNeeded;
 	private String reservationStatus;
 	private int sessionCode;
 	private int customerID;
 	
-	public Reservation(String reservationCode, String dateAndTime, String invoiceNeeded, String reservationStatus, int sessionCode, int customerID) {
+	public Reservation(String reservationCode, String dateAndTime, boolean invoiceNeeded, String reservationStatus, int sessionCode, int customerID) {
 		this.reservationCode = reservationCode;
 		this.dateAndTime = dateAndTime;
 		this.invoiceNeeded = invoiceNeeded;
@@ -20,7 +21,7 @@ public class Reservation {
 	public String getReservationCode() { 
 		return reservationCode;
 	}
-	
+
 	public void setReservationCode(String reservationCode) {
 		this.reservationCode = reservationCode;
 	}
@@ -33,11 +34,11 @@ public class Reservation {
 		this.dateAndTime = dateAndTime;
 	}
 	
-	public String getInvoiceNeeded() {
+	public boolean getInvoiceNeeded() {
 		return invoiceNeeded;
 	}
 	
-	public void setInvoiceNeeded(String invoiceNeeded) {
+	public void setInvoiceNeeded(boolean invoiceNeeded) {
 		this.invoiceNeeded = invoiceNeeded;
 	}
 	
@@ -51,10 +52,6 @@ public class Reservation {
 	
 	public int getSessionCode() {
 		return sessionCode;
-	}
-	
-	public void setSessionCode(int sessionCode) {
-		this.sessionCode = sessionCode;
 	}
 	
 	public int getcustomerID() {

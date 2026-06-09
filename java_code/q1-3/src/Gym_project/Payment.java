@@ -1,17 +1,19 @@
 package Gym_project;
 
 public class Payment {
+
 	
 	private int paymentID;
 	private int amount;
 	private String paymentMethod;
 	private String paymentDate;
 	private String reservationCode;
-	private String transID;
+	private PaymentStatus paymentStatus;
+	private int transID;
 	
 	
 	
-	public Payment(int paymentID, int amount, String paymentMethod, String paymentDate, String reservationCode, String transID) {
+	public Payment(int paymentID , int amount, String paymentMethod, String paymentDate, String reservationCode, int transID) {
 		
 		this.paymentID = paymentID;
 		this.amount = amount;
@@ -19,7 +21,7 @@ public class Payment {
 		this.paymentDate = paymentDate;
 		this.reservationCode = reservationCode;
 		this.transID = transID;
-		
+		this.paymentStatus = PaymentStatus.PENDING;
 	}
 	
 	
@@ -27,7 +29,7 @@ public class Payment {
 		return paymentID;
 	}
 	
-	public void setPayment_ID(int paymentID) {
+	public void setPaymentID(int paymentID) {
 		this.paymentID = paymentID;
 	}
 	
@@ -51,15 +53,11 @@ public class Payment {
 		return reservationCode;
 	}
 	
-	public void setReservationCode(String reservationCode) {
-		this.reservationCode = reservationCode;
-	}
-	
-	public String getTransID() {
+	public int getTransID() {
 		return transID;
 	}
 	
-	public void setTransID(String transID) {
+	public void setTransID(int transID) {
 		this.transID = transID;
 	}
 	
@@ -71,6 +69,9 @@ public class Payment {
 		this.paymentDate = paymentDate;
 	}
 	
+	public PaymentStatus getPaymentStatus() {
+		return paymentStatus;
+	}
 }
 
 

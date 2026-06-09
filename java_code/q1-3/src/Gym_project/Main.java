@@ -1,5 +1,6 @@
 package Gym_project;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,20 +9,6 @@ import java.util.Scanner;
 public class Main {
 
 	public static void main(String[] args) {
-//		Connection conn;
-//		try {
-//			conn = SQLConnector.getConnection();
-//			if (conn != null) {
-//            System.out.println("[ΕΠΙΤΥΧΙΑ] Η βάση είναι συνδεδεμένη και έτοιμη να δεχτεί δεδομένα!");
-//            try { 
-//                conn.close();
-//            } catch (Exception e) {}
-//        }
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		
 		
 		Scanner scanner = new Scanner(System.in);
 		boolean isRunning = true;
@@ -151,31 +138,24 @@ public class Main {
 	private static void SearchAvailableSessions(Scanner scanner) {
 		
 		System.out.println("Enter City: ");
-		String city = scanner.nextLine();
+		String selectedCity = scanner.nextLine();
 		
 		
-		GymDBUtils gymUtils = new GymDBUtils();
-		ResultSet rsGym = gymUtils.getGymsByCity(city);
-		HashMap<String, Integer> gymMap = new HashMap<>();
-		
-		try {
-			while (rsGym.next()) {
-			    String gymName = rsGym.getString("Name");
-			    int gymCode = rsGym.getInt("Gym_code");
-			    
-			    gymMap.put(gymName.toLowerCase(), gymCode);
-			    System.out.println("Found Gym: " + gymName + "");
+		HashMap<String, Integer> gymMap = new HashMap<>(); //gym name, gym code
+		ArrayList<Gym> foundGyms = GymDBUtils.getGymsByCity(selectedCity);
+		if(foundGyms == null || foundGyms.isEmpty()) {
+			System.out.println("No gyms were found in " + selectedCity);
+		}else {
+			for(Gym g : foundGyms) {
+				System.out.println(g.getName());
+				gymMap.put(g.getName().toLowerCase(), g.getGymCode());
+
 			}
-			
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 		System.out.println("Enter Preferred Gym: ");
 		String gymName = scanner.nextLine();
 		
-		int selectedGymCode = 0;
+		int selectedGymCode = -1;
 		if (gymMap.containsKey(gymName.toLowerCase())) {
 			selectedGymCode = gymMap.get(gymName.toLowerCase());
 		}else {
@@ -194,7 +174,7 @@ public class Main {
 		int selectedTrainerId = 0;
 		if (selectedGymCode > 0) {
 			TrainerDBUtils trainerUtils = new TrainerDBUtils();
-			ResultSet rsTrainers = trainerUtils.getTrainerByGym(selectedGymCode);
+			ResultSet rsTrainers = trainerUtils.getTrainerByGymCode(selectedGymCode);
 			
 			HashMap<String, Integer> trainerMap = new HashMap<>();
 			
@@ -218,7 +198,6 @@ public class Main {
 				e.printStackTrace();
 			}
 		
-		
 		}
 		
 		System.out.println("Enter Additional Services: ");
@@ -228,33 +207,17 @@ public class Main {
 		boolean invoice = scanner.nextBoolean();
 		scanner.nextLine();
 		
-		SessionSearch criteria = new SessionSearch(selectedGymCode, city, type, date, time, selectedTrainerId, services,invoice);
-		SessionDBUtils sessionUtils = new SessionDBUtils();
-		ResultSet finalRs = sessionUtils.searchSessions(criteria);
-		try {
+		SessionSearch criteria = new SessionSearch(selectedGymCode, selectedCity, type, date, time, selectedTrainerId, services,invoice);
+		ArrayList<Session> availableSessions = SessionDBUtils.searchSessions(criteria);
+		if(availableSessions.isEmpty() || availableSessions == null) {
+			System.out.println("No sessions that match your criteria found ");
+		}else {
 			System.out.println("\n Available Sessions:");
-			boolean foundSessions = false;
-			
-			if(finalRs != null) {
-				while(finalRs.next()) {
-					foundSessions = true;
-					int sessionId = finalRs.getInt("Session_Code");
-					//String sDate = finalRs.getString("date");
-					int sTime = finalRs.getInt("Time");
-					String sType = finalRs.getString("Session_Type");
-					//String sServices = finalRs.getString("services");
-					
-					System.out.printf("%-12d | %-12d | %-15s\n", sessionId, sTime, sType);
-					
-				}
-				if (!foundSessions) {
-					System.out.println("⚠️ Δεν βρέθηκε κανένα διαθέσιμο μάθημα με αυτά τα κριτήρια.");
-				}
+			for(Session s : availableSessions) {	
+				System.out.printf("%-12d | %-15s | %-15s | %-15s | %-20s\n",s.getGymGymCode(), s.getSessionType(), s.getDateAndTime(), s.getDuration(), s.getPrice() );	
 			}
-		}catch (SQLException e) {
-			System.out.println("❌ Σφάλμα κατά την εκτύπωση: " + e.getMessage());
-			e.printStackTrace();
 		}
+		
 	}
 
 }
