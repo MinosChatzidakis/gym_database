@@ -6,12 +6,12 @@ public class SessionSearch {
     private String trainingType;
     private String date;
 	private String time;
-	private String trainerId;
+	private int trainerId;
 	private String additionalServices;
 	private boolean invoiceNeeded;
 	
 	
-    public SessionSearch(int preferredGymCode, String city, String trainingType , String date , String time , String trainerId , String additionalServices , boolean invoiceNeeded) {
+    public SessionSearch(int preferredGymCode, String city, String trainingType , String date , String time , int trainerId , String additionalServices , boolean invoiceNeeded) {
         this.preferredGymCode = preferredGymCode;
         this.city = city;
         this.trainingType = trainingType;
@@ -75,11 +75,11 @@ public class SessionSearch {
         this.time = time;
     }
 
-	public String getTrainerId() {
+	public int getTrainerId() {
         return trainerId;
     }
 
-    public void setTrainerId(String trainerId) {
+    public void setTrainerId(int trainerId) {
         this.trainerId = trainerId;
     }
 
