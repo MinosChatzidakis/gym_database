@@ -2,7 +2,8 @@ package Gym_project;
 
 public class Trainer {
 	
-	    private int TrainerID;
+	    //private static int num= 0000;
+		private int TrainerID;
 	    private String name;
 	    private String specialty;
 	    private String phone;
@@ -11,7 +12,7 @@ public class Trainer {
 	    
 	    
 	    public Trainer(int TrainerID, String name, String email, String phone, int gymCode , String specialty) {
-	        this.TrainerID = TrainerID;
+	    	this.TrainerID = TrainerID;
 	        this.name = name;
 	        this.email = email;
 	        this.phone = phone;

@@ -13,7 +13,7 @@ public class Customer {
 		 this.name = name;
 		 this.email = email;
 		 this.phone = phone;
-		 this.gym_Code = gym_Code;
+		 this.gymCode = gymCode;
 	 }
 
 	 public int getCustomerID() {
