@@ -1,6 +1,7 @@
 package Gym_project;
 
 public class Customer {
+	
 	 private int customerID;
 	 private String name;
 	 private String email;
@@ -8,7 +9,7 @@ public class Customer {
 	 private int gymCode;
 
 
-	 public Customer(int customerID, String name, String email, String phone, int gymCode) {
+	 public Customer(int customerID ,String name, String email, String phone, int gymCode) {
 		 this.customerID = customerID;
 		 this.name = name;
 		 this.email = email;
@@ -21,7 +22,7 @@ public class Customer {
 	 }
 
 	 public void setCustomerID(int customerID) {
-		 this.customerID = customerID;
+		 this.customerID = customerID; 
 	 }
 
 	 public String getName() {
@@ -29,6 +30,9 @@ public class Customer {
 	 }
 
 	 public void setName(String name) {
+		 if(name==null || name.lenght() == 0){
+			throw new IllegalArgumentException("The name field cant be empty.");
+		}
 		 this.name = name;
 	 }
 	 public String getEmail() { 
@@ -36,6 +40,9 @@ public class Customer {
 	 }
 	    
 	 public void setEmail(String email) {
+		 if(email==null || email.lenght() == 0){
+			throw new IllegalArgumentException("The email field cant be empty.");
+		}
 		 this.email = email;
 	 }
 
@@ -44,10 +51,13 @@ public class Customer {
 	 }
 
 	 public void setPhone(String phone) {
+		 if(phone==null || phone.lenght() == 0){
+			throw new IllegalArgumentException("The phone field cant be empty.");
+		}
 		 this.phone = phone;
 	 }
 
-	 public int gymCode() {
+	 public int setGymCode() {
 		 return gymCode; 
 	 }
 

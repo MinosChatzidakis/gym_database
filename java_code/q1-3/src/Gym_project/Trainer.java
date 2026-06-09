@@ -1,9 +1,9 @@
 package Gym_project;
 
 public class Trainer {
-	
-	    //private static int num= 0000;
-		private int TrainerID;
+
+	    
+	    private int TrainerID;
 	    private String name;
 	    private String specialty;
 	    private String phone;
@@ -23,9 +23,9 @@ public class Trainer {
 	    public int getTrainerID() {
 	        return TrainerID;
 	    }
-	    
-	    public void setTrainerID(int TrainerID) {
-	        this.TrainerID = TrainerID;
+
+		public void setTrainerID(int TrainerID) {
+	        this.TrainerID = TrainerID; 
 	    }
 	    
 	    public String getName() {
@@ -33,12 +33,18 @@ public class Trainer {
 	    }
 	    
 	    public void setName(String name) {
+			if(name==null || name.lenght() == 0){
+			throw new IllegalArgumentException("The name field cant be empty.");
+			}
 	        this.name = name;
 	    }
 	    public String getEmail() { 
 	        return email; 
 	    }
 	    public void setEmail(String email) {
+			if(email==null || email.lenght() == 0){
+			throw new IllegalArgumentException("The email field cant be empty.");
+			}
 	        this.email = email;
 	    }
 
@@ -47,6 +53,9 @@ public class Trainer {
 	    }
 	    
 	    public void setPhone(String phone) {
+			if(phone==null || phone.lenght() == 0){
+			throw new IllegalArgumentException("The phone field cant be empty.");
+			}
 	        this.phone = phone;
 	    }
 
@@ -63,6 +72,9 @@ public class Trainer {
 	    }
 	    
 	    public void setSpecialty(String specialty) {
+			if(specialty==null || specialty.lenght() == 0){
+			throw new IllegalArgumentException("The specialty field cant be empty.");
+			}
 	        this.specialty = specialty; 
 	    }
 	    

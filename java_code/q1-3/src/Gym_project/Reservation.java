@@ -1,6 +1,7 @@
 package Gym_project;
 
 public class Reservation {
+	
 	private String reservationCode;
 	private String dateAndTime;
 	private String invoiceNeeded;
@@ -20,7 +21,7 @@ public class Reservation {
 	public String getReservationCode() { 
 		return reservationCode;
 	}
-	
+
 	public void setReservationCode(String reservationCode) {
 		this.reservationCode = reservationCode;
 	}
@@ -51,10 +52,6 @@ public class Reservation {
 	
 	public int getSessionCode() {
 		return sessionCode;
-	}
-	
-	public void setSessionCode(int sessionCode) {
-		this.sessionCode = sessionCode;
 	}
 	
 	public int getcustomerID() {

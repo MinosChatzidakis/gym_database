@@ -1,5 +1,8 @@
 package Gym_project;
 
+import java.util.HashMap;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Main {
@@ -89,6 +92,14 @@ public class Main {
 			
 			switch (choice) {
 				case 1:
+					System.out.println("\n Search Gyms");
+				
+				case 2:
+					System.out.println("\nSearch Trainers");
+					
+				case 3:
+					System.out.println("\nSearch Available Sessions");
+					SearchAvailableSessions(scanner);
 					
 			}
 		}
@@ -134,6 +145,111 @@ public class Main {
                 
             default: 
             	System.out.println("Invalid option. Returning to Main Menu.");
+		}
+	}
+	
+	private static void SearchAvailableSessions(Scanner scanner) {
+		
+		System.out.println("Enter City: ");
+		String city = scanner.nextLine();
+		
+		
+		GymDBUtils gymUtils = new GymDBUtils();
+		ResultSet rsGym = gymUtils.getGymsByCity(city);
+		HashMap<String, Integer> gymMap = new HashMap<>();
+		
+		try {
+			while (rsGym.next()) {
+			    String gymName = rsGym.getString("Name");
+			    int gymCode = rsGym.getInt("Gym_Code");
+			    
+			    gymMap.put(gymName.toLowerCase(), gymCode);
+			    System.out.println("Found Gym: " + gymName + "");
+			}
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("Enter Preferred Gym: ");
+		String gymName = scanner.nextLine();
+		
+		int selectedGymCode = 0;
+		if (gymMap.containsKey(gymName.toLowerCase())) {
+			selectedGymCode = gymMap.get(gymName.toLowerCase());
+		}else {
+			System.out.println("The gym wasn't found");
+		}
+		
+		System.out.println("Enter Training Type: ");
+		String type = scanner.nextLine();
+		
+		System.out.println("Enter Date e.g. DD-MM-YYYY: ");
+		String date = scanner.nextLine();
+		
+		System.out.println("Enter Time e.g. HH:MM: ");
+		String time = scanner.nextLine();
+		
+		int selectedTrainerId = 0;
+		if (selectedGymCode > 0) {
+			TrainerDBUtils trainerUtils = new TrainerDBUtils();
+			ResultSet rsTrainers = trainerUtils.getTrainerByGym(selectedGymCode);
+			
+			HashMap<String, Integer> trainerMap = new HashMap<>();
+			
+			try {
+				while (rsTrainers.next()) {
+					int tId = rsTrainers.getInt("Trainer_id");
+					String tName = rsTrainers.getString("Name");
+					trainerMap.put(tName.toLowerCase(), tId);
+					
+					System.out.println("Found Trainer: " +tName);
+				}
+				
+				System.out.println("Enter Preferred Trainer Name: ");
+				String inputTrainerName = scanner.nextLine();
+				
+				if(!inputTrainerName.isEmpty() && trainerMap.containsKey(inputTrainerName.toLowerCase())) {
+					selectedTrainerId = trainerMap.get(inputTrainerName.toLowerCase());
+				}
+				
+			}catch (SQLException e) {
+				e.printStackTrace();
+			}
+		
+		
+		}
+		
+		System.out.println("Enter Additional Services: ");
+		String services = scanner.nextLine();
+		
+		System.out.println("Is Invoice Needed? (true/false):");
+		boolean invoice = scanner.nextBoolean();
+		scanner.nextLine();
+		
+		SessionSearch criteria = new SessionSearch(selectedGymCode, city, type, date, time, selectedTrainerId, services,invoice);
+		SessionDBUtils sessionUtils = new SessionDBUtils();
+		ResultSet finalRs = sessionUtils.searchSessions(criteria);
+		try {
+			System.out.println("\n Available Sessions:");
+			boolean foundSessions = false;
+			
+			if(finalRs != null) {
+				while(finalRs.next()) {
+					foundSessions = true;
+					int sessionId = finalRs.getInt("Session_Code");
+					String sDate = finalRs.getString("date");
+					String sTime = finalRs.getString("Time");
+					String sType = finalRs.getString("type");
+					String sServices = finalRs.getString("services");
+					
+					System.out.printf("%-12d | %-15s | %-15s | %-15s | %-20s\n", sessionId, sDate, sTime, sType, sServices);
+					
+				}
+			}
+		}catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 
