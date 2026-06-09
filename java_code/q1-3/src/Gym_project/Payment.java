@@ -21,7 +21,7 @@ public class Payment {
 		this.paymentDate = paymentDate;
 		this.reservationCode = reservationCode;
 		this.transID = transID;
-		
+		this.paymentStatus = PaymentStatus.PENDING;
 	}
 	
 	
