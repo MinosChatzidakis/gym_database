@@ -4,33 +4,56 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public abstract class SessionDBUtils {
-	public ResultSet searchSessions(SessionSearch s) {
-		StringBuilder sbQuery= new StringBuilder(); //init a new StringBuilder obj
+	public static ArrayList<Session> searchSessions(SessionSearch s) {
+		StringBuilder sbQuery= new StringBuilder(); //init complex sql query
 		//construct mySQL database query
-		sbQuery.append("SELECT * FROM DB WHERE availability=true");
-		sbQuery.append(s.getCity().isEmpty() ? "" : " AND DB.city = "+ s.getCity()); // city cannot be null either way -- handle that in data insertion
-		sbQuery.append(s.getPreferredGymCode()==-1 ? "" : " AND DB.gymCode = "+ s.getPreferredGymCode()); // we need to first fetch the code of the gym provided - if provided
-		sbQuery.append(s.getTrainingType().isEmpty() ? "" : " AND trainingType = "+ s.getTrainingType());
-		sbQuery.append(s.getDate().isEmpty() ? "" : " AND date = "+ s.getDate());
-		sbQuery.append(s.getTrainerId()==-1 ? "" : " AND coachId = "+ s.getTrainerId()); //check trainer id initialization
-		sbQuery.append(s.getAdditionalServices().isEmpty() ? "" : "services = "+ s.getAdditionalServices()); //this is probably an array - need to be careful -- right now a string
+		sbQuery.append("SELECT * FROM session WHERE availability=true");
+		//sbQuery.append(s.getCity().isEmpty() ? "" : " AND city = "+ s.getCity()); // city cannot be null either way -- handle that in data insertion
+		sbQuery.append(s.getPreferredGymCode()==-1 ? "" : " AND Gym_gymCode = "+ "'" + s.getPreferredGymCode() +"';"); // we need to first fetch the code of the gym provided - if provided
+		sbQuery.append(s.getTrainingType().isEmpty() ? "" : " AND Session_Type = "+ "'" + s.getTrainingType() +"';");
+		sbQuery.append(s.getDate().isEmpty() ? "" : " AND date = "+ "'" +  s.getDate() + "';");
+		sbQuery.append(s.getTrainerId()==-1 ? "" : " AND trainer_trainer_id = "+ "'" + s.getTrainerId() + "';"); //check trainer id initialization
+		//sbQuery.append(s.getAdditionalServices().isEmpty() ? "" : "services = "+ s.getAdditionalServices()); //this is probably an array - need to be careful -- right now a string
 		sbQuery.append(s.getInvoiceNeeded()==true ? "" : " AND invoiceNeeded = TRUE");
 		
 		
 		sbQuery.append("FROM DB");
 		String sqlQuery= sbQuery.toString();
-		ResultSet res= null;
-		try{
-			Connection conn = SQLConnector.getConnection(); //establish connection via the class we created
-			Statement stm= conn.createStatement();
-			res = stm.executeQuery(sqlQuery); //run the query on the database and store results
+		try(Connection conn = SQLConnector.getConnection(); //establish connection via the class we created
+			Statement stm= conn.createStatement()){			
+			ArrayList<Session> availableSessions = new ArrayList<>();
+			ResultSet res = stm.executeQuery(sqlQuery);
+
+			while (res.next()) {
+			    Session currentSession = new Session(
+			    		res.getInt("session_code"),
+			    		res.getString("session_type"),
+			    		res.getString("description"),
+			    		res.getInt("max_participants"),
+			    		res.getInt("duration"),
+			    		res.getInt("price"),
+			    		res.getBoolean("availability"),
+			    		res.getInt("trainer_trainer_id"),
+			    		res.getInt("gym_gymCode"),
+			    		res.getString("availability")
+			    		);
+			    
+			    availableSessions.add(currentSession);
+			}
+
+			res.close();
 			conn.close(); //connection to database closed
+			return availableSessions ;
+			
 		}catch(SQLException e) {
 			e.printStackTrace();
-		}	
-		return res;//this might be null
-			//once the user chooses a session => create reservation and add a customer to the session in the db alter the availability field if necessary(taking into consideration the type of training session)
+			return null; // an error must have occurred -- return nothing
+		}
 	}
 }
+
+
+

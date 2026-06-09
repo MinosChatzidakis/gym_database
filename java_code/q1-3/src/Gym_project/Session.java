@@ -5,7 +5,7 @@
 	    private String sessionType;
 	    private String description;
 	    private int maxParticipants;
-	    private int time;
+	    private int duration;
 	    private int price;
 	    private boolean availability;
 	    private int trainerTrainerID;
@@ -13,19 +13,20 @@
 		private String dateAndTime;
 		private int amountOfParticipants;
 	
-	    public Session(int sessionCode, String sessionType, String description, int maxParticipants , int time , int price , boolean availability , int trainerTrainerID , int gymGymCode , String dateAndTime) {
+	    public Session(int sessionCode, String sessionType, String description, int maxParticipants , int duration , int price , boolean availability , int trainerTrainerID , int gymGymCode , String dateAndTime) {
 	        this.sessionCode = sessionCode;
 	        this.sessionType = sessionType;
 	        this.description = description;
 	        this.maxParticipants = maxParticipants;
-	        this.time = time;
+	        this.duration = duration;
 	        this.price = price;
 	        this.availability = availability;
 	        this.trainerTrainerID = trainerTrainerID;
 	        this.gymGymCode = gymGymCode;
 			this.dateAndTime = dateAndTime;
-			this.amount_Of_Participants = 0;
+			this.amountOfParticipants = 0;
 	    }
+	    
 	
 	    public int getSessionCode() {
 	        return sessionCode;
@@ -43,7 +44,7 @@
 	    }
 	
 	    public void setSessionType(String sessionType) {
-			if(sessionType==null || sessionType.lenght() == 0){
+			if(sessionType==null || sessionType.length() == 0){
 			throw new IllegalArgumentException("The Session Type field cant be empty.");
 			}
 	        this.sessionType = sessionType;
@@ -66,12 +67,12 @@
 	        this.maxParticipants = maxParticipants;
 	    }
 	    
-	    public int getTime() {
-	        return time;
+	    public int getDuration() {
+	        return duration;
 	    }
 	
-	    public void setTime(int time) {
-	        this.time = time;
+	    public void setDuration(int duration) {
+	        this.duration = duration;
 	    }
 	    
 	    public int getPrice() {
@@ -94,7 +95,7 @@
 	        return trainerTrainerID;
 	    }
 	
-	    public void setTrainerTrainerID(int trainerTrainerID) {
+	    public void setTrainerID(int trainerTrainerID) {
 	        this.trainerTrainerID = trainerTrainerID;
 	    }
 	    
@@ -106,15 +107,31 @@
 	        this.gymGymCode = gymGymCode;
 	    }
 
-		public int getDate_And_Time() {
+		public String getDateAndTime() {
 	        return dateAndTime;
 	    }
 	
-	    public void setDateAndTime(int dateAndTime) {
-			if(dateAndTime==null || dateAndTime.lenght() == 0){
-			throw new IllegalArgumentException("The Date And Time field cant be empty.");
+	    public void setDateAndTime(String dateAndTime) {
+			if(dateAndTime==null || dateAndTime.length() == 0){
+			throw new IllegalArgumentException("The Date And duration field cant be empty.");
 			}
 	        this.dateAndTime = dateAndTime;
+	    }
+	    
+	    public int getAmountOfParticipants() {
+	    	return this.amountOfParticipants;
+	    }
+	    
+	    public void setAmountOfParticipants(int amount) {
+	    	if (amount>=0) {
+	    		this.amountOfParticipants= amount;	    		
+	    	}else {
+	    		throw new IllegalArgumentException("The amount of participants in this session cannot be a negative number.");
+	    	}
+	    }
+	    
+	    public void addParticipant() {
+	    	setAmountOfParticipants(getAmountOfParticipants()+1);
 	    }
 
 	}

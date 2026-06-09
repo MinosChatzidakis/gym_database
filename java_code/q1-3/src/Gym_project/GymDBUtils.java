@@ -4,8 +4,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
-public class GymDBUtils {
+public abstract class GymDBUtils {
 	public void addGym(Gym g) {
 		String sqlQuery= "INSERT INTO gym () VALUES ()";
 		try{
@@ -38,14 +39,20 @@ public class GymDBUtils {
 		return null;
 	}
 	
-	public ResultSet getGymsByCity(String city) {
+	public static ArrayList<Gym> getGymsByCity(String city) {
 		String sqlQuery= ("SELECT * FROM gym WHERE city = '" + city + "'");
-		try {
-			Connection con= SQLConnector.getConnection();
-			Statement stm= con.createStatement();
+		try (Connection con= SQLConnector.getConnection();
+				Statement stm= con.createStatement();){
 			ResultSet res= stm.executeQuery(sqlQuery);
-			if(res.next()) { //if we find something we return it 
-				return res;
+			ArrayList<Gym> fetchedGyms= new ArrayList<>();
+			while(res.next()) {
+				Gym currentGym = new Gym(
+						res.getString("name"),
+						res.getString("email"),
+						res.getString("phone"),
+						res.getInt("gym_code")
+												);
+				fetchedGyms.add(currentGym);
 			}
 		}catch(SQLException e) {
 			e.printStackTrace();
