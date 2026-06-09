@@ -11,10 +11,10 @@ public class SessionDBUtils {
 		//construct mySQL database query
 		sbQuery.append("SELECT * FROM DB WHERE availability=true");
 		sbQuery.append(s.getCity().isEmpty() ? "" : " AND DB.city = "+ s.getCity()); // city cannot be null either way -- handle that in data insertion
-		sbQuery.append(s.getPreferredGymCode()==0 ? "" : " AND DB.gymCode = "+ s.getPreferredGymCode()); // we need to first fetch the code of the gym provided - if provided
+		sbQuery.append(s.getPreferredGymCode()==-1 ? "" : " AND DB.gymCode = "+ s.getPreferredGymCode()); // we need to first fetch the code of the gym provided - if provided
 		sbQuery.append(s.getTrainingType().isEmpty() ? "" : " AND trainingType = "+ s.getTrainingType());
 		sbQuery.append(s.getDate().isEmpty() ? "" : " AND date = "+ s.getDate());
-		sbQuery.append(s.getTrainerId()==null ? "" : " AND coachId = "+ s.getTrainerId());
+		sbQuery.append(s.getTrainerId()==-1 ? "" : " AND coachId = "+ s.getTrainerId());
 		sbQuery.append(s.getAdditionalServices().isEmpty() ? "" : "services = "+ s.getAdditionalServices()); //this is probably an array - need to be careful -- right now a string
 		sbQuery.append(s.getInvoiceNeeded()==true ? "" : " AND invoiceNeeded = TRUE");
 		
