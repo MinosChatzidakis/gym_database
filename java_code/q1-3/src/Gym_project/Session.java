@@ -33,7 +33,7 @@
 	
 	    public void setSession_Code(int Session_Code) {
 			if(Session_Code<=0){
-			throw new IllegalArgumentException("The Session_Code can't be a negative number.");
+			throw new IllegalArgumentException("The Session Code can't be a negative number.");
 			}	
 	        this.Session_Code = Session_Code;
 	    }
@@ -44,7 +44,7 @@
 	
 	    public void setSession_Type(String Session_Type) {
 			if(Session_Type==null || Session_Type.lenght() == 0){
-			throw new IllegalArgumentException("The Session_Type field cant be empty.");
+			throw new IllegalArgumentException("The Session Type field cant be empty.");
 			}
 	        this.Session_Type = Session_Type;
 	    }
@@ -111,6 +111,9 @@
 	    }
 	
 	    public void setDate_And_Time(int date_And_Time) {
+			if(date_And_Time==null || date_And_Time.lenght() == 0){
+			throw new IllegalArgumentException("The Date And Time field cant be empty.");
+			}
 	        this.date_And_Time = date_And_Time;
 	    }
 
