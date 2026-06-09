@@ -8,6 +8,7 @@ public class Payment {
 	private String paymentMethod;
 	private String paymentDate;
 	private String reservationCode;
+	private PaymentStatus paymentStatus;
 	private int transID;
 	
 	
@@ -68,6 +69,9 @@ public class Payment {
 		this.paymentDate = paymentDate;
 	}
 	
+	public PaymentStatus getPaymentStatus() {
+		return paymentStatus;
+	}
 }
 
 
