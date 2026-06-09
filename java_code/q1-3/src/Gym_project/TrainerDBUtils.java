@@ -22,12 +22,9 @@ public class TrainerDBUtils {
 				    currentTrainer.setTrainerID( res.getInt("trainer_id") );
 				    currentTrainer.setGymCode( res.getInt("gym_code") );
 				    
-				    // Add that finished page to your Notepad
 				    fetchedTrainers.add(currentTrainer);
 				}
 
-				res.close();
-				conn.close(); //connection to database closed
 				return fetchedTrainers ;
 		}catch(SQLException e) {
 			e.printStackTrace();
@@ -36,7 +33,7 @@ public class TrainerDBUtils {
 	}
 	
 	
-	public ResultSet getTrainerByGymCode(int gymCode) {
+	public ResultSet getTrainersByGymCode(int gymCode) {
 		String sqlQuery= ("SELECT * FROM trainer WHERE Gym_code = "+ gymCode);
 		ResultSet res= null;
 		try {

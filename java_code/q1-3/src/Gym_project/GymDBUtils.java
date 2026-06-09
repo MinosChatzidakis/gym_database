@@ -39,14 +39,23 @@ public abstract class GymDBUtils {
 		return null;
 	}
 	
-	public static ArrayList<Gym> getGymsByCity(String city) {
+	public static ArrayList<Gym> getGymsByCity(String city) {		
 		String sqlQuery= ("SELECT * FROM gym WHERE city = '" + city + "'");
 		try (Connection con= SQLConnector.getConnection();
 				Statement stm= con.createStatement();){
 			ResultSet res= stm.executeQuery(sqlQuery);
 			ArrayList<Gym> fetchedGyms= new ArrayList<>();
 			while(res.next()) {
+				int currGymCode= res.getInt("gym_code");
+				ArrayList<Services> servicesForGym= ServicesDBUtils.getServicesByGymCode(currGymCode);
+				StringBuilder servicesSB= new StringBuilder();
+				for(Services s : servicesForGym) {
+					servicesSB.append(s.getServiceName());
+				}
 				Gym currentGym = new Gym(
+						res.getString("city"),
+						servicesSB.toString(),
+						res.getString("address"),
 						res.getString("name"),
 						res.getString("email"),
 						res.getString("phone"),
@@ -54,6 +63,7 @@ public abstract class GymDBUtils {
 												);
 				fetchedGyms.add(currentGym);
 			}
+			return fetchedGyms;
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}

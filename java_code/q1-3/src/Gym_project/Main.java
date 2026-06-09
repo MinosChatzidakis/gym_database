@@ -143,7 +143,7 @@ public class Main {
 		
 		HashMap<String, Integer> gymMap = new HashMap<>(); //gym name, gym code
 		ArrayList<Gym> foundGyms = GymDBUtils.getGymsByCity(selectedCity);
-		if(foundGyms.isEmpty() || foundGyms == null) {
+		if(foundGyms == null || foundGyms.isEmpty()) {
 			System.out.println("No gyms were found in " + selectedCity);
 		}else {
 			for(Gym g : foundGyms) {
@@ -173,7 +173,7 @@ public class Main {
 		int selectedTrainerId = 0;
 		if (selectedGymCode > 0) {
 			TrainerDBUtils trainerUtils = new TrainerDBUtils();
-			ResultSet rsTrainers = trainerUtils.getTrainerByGymCode(selectedGymCode);
+			ResultSet rsTrainers = trainerUtils.getTrainersByGymCode(selectedGymCode);
 			
 			HashMap<String, Integer> trainerMap = new HashMap<>();
 			
@@ -208,11 +208,11 @@ public class Main {
 		
 		SessionSearch criteria = new SessionSearch(selectedGymCode, selectedCity, type, date, time, selectedTrainerId, services,invoice);
 		ArrayList<Session> availableSessions = SessionDBUtils.searchSessions(criteria);
-		if(availableSessions.isEmpty() || availableSessions == null) {
+		if(availableSessions == null || availableSessions.isEmpty()) {
 			System.out.println("No sessions that match your criteria found ");
 		}else {
 			System.out.println("\n Available Sessions:");
-			for(Session s : availableSessions) {	
+			for(Session s : availableSessions) {
 				System.out.printf("%-12d | %-15s | %-15s | %-15s | %-20s\n",s.getGymGymCode(), s.getSessionType(), s.getDateAndTime(), s.getDuration(), s.getPrice() );	
 			}
 		}
