@@ -11,8 +11,8 @@ public class Trainer {
 	    private int gymCode;
 	    
 	    
-	    public Trainer(int TrainerID , String name, String email, String phone, int gymCode , String specialty) {
-	        this.TrainerID = TrainerID;
+	    public Trainer(int TrainerID, String name, String email, String phone, int gymCode , String specialty) {
+	    	this.TrainerID = TrainerID;
 	        this.name = name;
 	        this.email = email;
 	        this.phone = phone;
