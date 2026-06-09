@@ -8,7 +8,7 @@ import java.sql.Statement;
 public class TrainerDBUtils {
 
 	public ResultSet getTrainerByGym(int gymCode) {
-        String sqlQuery= ("SELECT * FROM trainer WHERE Gym_code = "+ gymCode);
+        String sqlQuery= ("SELECT * FROM trainer WHERE GYM_Gym_code = '"+ gymCode + "'");
         ResultSet res= null;
         try {
             Connection con= SQLConnector.getConnection();

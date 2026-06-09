@@ -93,7 +93,7 @@ public class Main {
 			switch (choice) {
 				case 1:
 					System.out.println("\n Search Gyms");
-				
+					
 				case 2:
 					System.out.println("\nSearch Trainers");
 					
@@ -161,7 +161,7 @@ public class Main {
 		try {
 			while (rsGym.next()) {
 			    String gymName = rsGym.getString("Name");
-			    int gymCode = rsGym.getInt("Gym_Code");
+			    int gymCode = rsGym.getInt("Gym_code");
 			    
 			    gymMap.put(gymName.toLowerCase(), gymCode);
 			    System.out.println("Found Gym: " + gymName + "");
@@ -239,16 +239,20 @@ public class Main {
 				while(finalRs.next()) {
 					foundSessions = true;
 					int sessionId = finalRs.getInt("Session_Code");
-					String sDate = finalRs.getString("date");
-					String sTime = finalRs.getString("Time");
-					String sType = finalRs.getString("type");
-					String sServices = finalRs.getString("services");
+					//String sDate = finalRs.getString("date");
+					int sTime = finalRs.getInt("Time");
+					String sType = finalRs.getString("Session_Type");
+					//String sServices = finalRs.getString("services");
 					
-					System.out.printf("%-12d | %-15s | %-15s | %-15s | %-20s\n", sessionId, sDate, sTime, sType, sServices);
+					System.out.printf("%-12d | %-12d | %-15s\n", sessionId, sTime, sType);
 					
+				}
+				if (!foundSessions) {
+					System.out.println("⚠️ Δεν βρέθηκε κανένα διαθέσιμο μάθημα με αυτά τα κριτήρια.");
 				}
 			}
 		}catch (SQLException e) {
+			System.out.println("❌ Σφάλμα κατά την εκτύπωση: " + e.getMessage());
 			e.printStackTrace();
 		}
 	}

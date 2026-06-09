@@ -9,24 +9,21 @@ public class SessionDBUtils {
 	public ResultSet searchSessions(SessionSearch s) {
 		StringBuilder sbQuery= new StringBuilder(); //init a new StringBuilder obj
 		//construct mySQL database query
-		sbQuery.append("SELECT * FROM DB WHERE availability=true");
-		sbQuery.append(s.getCity().isEmpty() ? "" : " AND DB.city = "+ s.getCity()); // city cannot be null either way -- handle that in data insertion
-		sbQuery.append(s.getPreferredGymCode()==-1 ? "" : " AND DB.gymCode = "+ s.getPreferredGymCode()); // we need to first fetch the code of the gym provided - if provided
-		sbQuery.append(s.getTrainingType().isEmpty() ? "" : " AND trainingType = "+ s.getTrainingType());
-		sbQuery.append(s.getDate().isEmpty() ? "" : " AND date = "+ s.getDate());
-		sbQuery.append(s.getTrainerId()==-1 ? "" : " AND coachId = "+ s.getTrainerId());
-		sbQuery.append(s.getAdditionalServices().isEmpty() ? "" : "services = "+ s.getAdditionalServices()); //this is probably an array - need to be careful -- right now a string
-		sbQuery.append(s.getInvoiceNeeded()==true ? "" : " AND invoiceNeeded = TRUE");
+		sbQuery.append("SELECT * FROM session WHERE availability='T'");
+		//sbQuery.append(s.getCity().isEmpty() ? "" : " AND city = "+ s.getCity()); // city cannot be null either way -- handle that in data insertion
+		sbQuery.append(s.getPreferredGymCode()==-1 ? "" : " AND GYM_Gym_code = '"+ s.getPreferredGymCode() + "'"); // we need to first fetch the code of the gym provided - if provided
+		sbQuery.append(s.getTrainingType().isEmpty() ? "" : " AND Session_Type = '"+ s.getTrainingType() + "'");
+
+		sbQuery.append(s.getTrainerId()==-1 ? "" : " AND Trainer_Trainer_id = '"+ s.getTrainerId() + "'");
 		
 		
-		sbQuery.append("FROM DB");
 		String sqlQuery= sbQuery.toString();
 		ResultSet res= null;
 		try{
 			Connection conn = SQLConnector.getConnection(); //establish connection via the class we created
 			Statement stm= conn.createStatement();
 			res = stm.executeQuery(sqlQuery); //run the query on the database and store results
-			conn.close(); //connection to database closed
+		//	conn.close(); //connection to database closed
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}	
