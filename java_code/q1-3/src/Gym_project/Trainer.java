@@ -20,6 +20,10 @@ public class Trainer {
 	        this.gymCode = gymCode;
 	    }
 	    
+	    public Trainer() {
+	    	
+	    }
+	    
 	    public int getTrainerID() {
 	        return TrainerID;
 	    }
@@ -33,7 +37,7 @@ public class Trainer {
 	    }
 	    
 	    public void setName(String name) {
-			if(name==null || name.lenght() == 0){
+			if(name==null || name.length() == 0){
 			throw new IllegalArgumentException("The name field cant be empty.");
 			}
 	        this.name = name;
@@ -42,7 +46,7 @@ public class Trainer {
 	        return email; 
 	    }
 	    public void setEmail(String email) {
-			if(email==null || email.lenght() == 0){
+			if(email==null || email.length() == 0){
 			throw new IllegalArgumentException("The email field cant be empty.");
 			}
 	        this.email = email;
@@ -53,7 +57,7 @@ public class Trainer {
 	    }
 	    
 	    public void setPhone(String phone) {
-			if(phone==null || phone.lenght() == 0){
+			if(phone==null || phone.length() == 0){
 			throw new IllegalArgumentException("The phone field cant be empty.");
 			}
 	        this.phone = phone;
@@ -72,7 +76,7 @@ public class Trainer {
 	    }
 	    
 	    public void setSpecialty(String specialty) {
-			if(specialty==null || specialty.lenght() == 0){
+			if(specialty==null || specialty.length() == 0){
 			throw new IllegalArgumentException("The specialty field cant be empty.");
 			}
 	        this.specialty = specialty; 

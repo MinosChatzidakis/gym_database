@@ -38,7 +38,7 @@ public class SessionSearch {
     }
 
     public void setCity(String city) {
-		if(city==null || city.lenght() == 0){
+		if(city==null || city.length() == 0){
 			throw new IllegalArgumentException("The city field cant be empty.");
 		}
         this.city = city;
@@ -57,8 +57,8 @@ public class SessionSearch {
     }
 
     public void setDate(String date) {
-		if(Session_Type==null || Session_Type.lenght() == 0){
-			throw new IllegalArgumentException("The Session_Type field cant be empty.");
+		if(date==null || date.length() == 0){
+			throw new IllegalArgumentException("The date field cannot be empty.");
 		}
         this.date = date;
     }
@@ -69,7 +69,7 @@ public class SessionSearch {
     }
 
     public void setTime(String time) {
-		if(time==null || time.lenght() == 0){
+		if(time==null || time.length() == 0){
 			throw new IllegalArgumentException("The time field cant be empty.");
 		}
         this.time = time;
