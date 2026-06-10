@@ -7,6 +7,34 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class TrainerDBUtils {
+	
+	public void addTrainer(Trainer t) {
+		
+		String sqlQuery = "INSERT INTO trainer (trainer_id, name, specialty, phone, email, gym_Gym_Code) VALUES ("
+	            + t.getTrainerID() + ", '"
+	            + t.getName() + "', '"
+	            + t.getSpecialty() + "', '"
+	            + t.getPhone() + "', '"
+	            + t.getEmail() + "', "
+	            + t.getGymCode() + ")";
+		
+		try(Connection conn = SQLConnector.getConnection(); 
+		         Statement stm = conn.createStatement()) {
+			
+			int rowsAffected = stm.executeUpdate(sqlQuery);
+	        
+			if(rowsAffected>0) {
+				System.out.println("Trainer was successfully added to db.");
+			}else {
+				System.out.println("Something went wrong and the trainer could not be added to db.");
+			}
+		}catch(SQLException e) {
+			System.out.println("Error in adding trainer to db:");
+			e.printStackTrace();
+		}
+	}
+	
+	
 	public ArrayList<Trainer> getAllTrainers(){
 		String sqlQuery= "SELECT name, trainer_ID, gym_Gym_code FROM trainer ORDER BY Specialty";
 		try(Connection conn = SQLConnector.getConnection(); //establish connection via the class we created
@@ -19,11 +47,13 @@ public class TrainerDBUtils {
 				while (res.next()) {
 				    Trainer currentTrainer = new Trainer();
 				    
+				    currentTrainer.setTrainerID( res.getInt("trainer_id") );
 				    currentTrainer.setName( res.getString("name") );
-				    currentTrainer.setTrainerID( res.getInt("trainer_ID") );
-				    currentTrainer.setGymCode( res.getInt("gym_Gym_code") );
+				    currentTrainer.setSpecialty( res.getString("specialty") );
+				    currentTrainer.setPhone( res.getString("phone") );
+				    currentTrainer.setEmail( res.getString("email") );
+				    currentTrainer.setGymCode( res.getInt("gym_Gym_Code") ); // Σωστό όνομα στήλης
 				    
-				    // Add that finished page to your Notepad
 				    fetchedTrainers.add(currentTrainer);
 				}
 
