@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class CustomerDBUtils {
+	
 	public void addCustomer(Customer c) {
 		
 		// Δημιουργία του query με βάση τις 5 στήλες του πίνακα customer
@@ -64,17 +65,32 @@ public class CustomerDBUtils {
 	}
 	
 	
-	public ResultSet getCustomerByGymCode(int gymCode) {
-		// Αναζήτηση με βάση το σωστό όνομα της στήλης (gym_Gym_Code)
+	public ArrayList<Customer> getCustomerByGymCode(int gymCode) {
 		String sqlQuery = "SELECT * FROM customer WHERE gym_Gym_Code = " + gymCode;
-		ResultSet res = null;
-		try {
-			Connection con = SQLConnector.getConnection();
-			Statement stm = con.createStatement();
-			res = stm.executeQuery(sqlQuery);
-			if(res.next()) {
-				return res;
+		
+		// Χρήση try-with-resources για αυτόματο κλείσιμο των con και stm
+		try (Connection con = SQLConnector.getConnection();
+			 Statement stm = con.createStatement()) {
+			
+			ResultSet res = stm.executeQuery(sqlQuery);
+			ArrayList<Customer> fetchedCustomers = new ArrayList<>();
+			
+			// Διάβασμα όλων των πελατών που ανήκουν στο συγκεκριμένο gymCode
+			while(res.next()) {
+				Customer currentCustomer = new Customer(
+				    res.getInt("customer_ID"),
+				    res.getString("name"),
+				    res.getString("email"),
+				    res.getString("phone"),
+				    res.getInt("gym_Gym_Code")
+				);
+				
+				fetchedCustomers.add(currentCustomer);
 			}
+			
+			res.close();
+			return fetchedCustomers; // Επιστροφή της λίστας με τους πελάτες
+			
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
