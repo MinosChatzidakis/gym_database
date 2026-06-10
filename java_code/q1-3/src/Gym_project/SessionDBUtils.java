@@ -10,18 +10,20 @@ public abstract class SessionDBUtils {
 	public static ArrayList<Session> searchSessions(SessionSearch s) {
 		StringBuilder sbQuery= new StringBuilder(); //init complex sql query
 		//construct mySQL database query
-		sbQuery.append("SELECT * FROM session WHERE availability=true");
+
+		sbQuery.append("SELECT * FROM session WHERE availability = 1");
 		//sbQuery.append(s.getCity().isEmpty() ? "" : " AND city = "+ s.getCity()); // city cannot be null either way -- handle that in data insertion
-		sbQuery.append(s.getPreferredGymCode()==-1 ? "" : " AND Gym_gymCode = "+ "'" + s.getPreferredGymCode() +"';"); // we need to first fetch the code of the gym provided - if provided
-		sbQuery.append(s.getTrainingType().isEmpty() ? "" : " AND Session_Type = "+ "'" + s.getTrainingType() +"';");
-		sbQuery.append(s.getDate().isEmpty() ? "" : " AND date = "+ "'" +  s.getDate() + "';");
-		sbQuery.append(s.getTrainerId()==-1 ? "" : " AND trainer_trainer_id = "+ "'" + s.getTrainerId() + "';"); //check trainer id initialization
+		sbQuery.append(s.getPreferredGymCode()==-1 ? "" : " AND gym_Gym_Code = '" + s.getPreferredGymCode() +"'"); // we need to first fetch the code of the gym provided - if provided
+		sbQuery.append(s.getTrainingType().isEmpty() ? "" : " AND session_Type = '" + s.getTrainingType() +"'");
+		sbQuery.append(s.getDate().isEmpty() ? "" : " AND date_And_Time LIKE '%" +  s.getDate() + "%'");
+		sbQuery.append(s.getTrainerId()==-1 ? "" : " AND trainer_Trainer_id = '" + s.getTrainerId() + "'"); //check trainer id initialization
 		//sbQuery.append(s.getAdditionalServices().isEmpty() ? "" : "services = "+ s.getAdditionalServices()); //this is probably an array - need to be careful -- right now a string
-		sbQuery.append(s.getInvoiceNeeded()==true ? "" : " AND invoiceNeeded = TRUE");
+		//sbQuery.append(s.getInvoiceNeeded()==true ? "" : " AND invoiceNeeded = TRUE");
 		
 		
-		sbQuery.append("FROM DB");
 		String sqlQuery= sbQuery.toString();
+
+
 		try(Connection conn = SQLConnector.getConnection(); //establish connection via the class we created
 			Statement stm= conn.createStatement()){			
 			ArrayList<Session> availableSessions = new ArrayList<>();
@@ -37,8 +39,8 @@ public abstract class SessionDBUtils {
 			    		res.getInt("price"),
 			    		res.getBoolean("availability"),
 			    		res.getInt("trainer_trainer_id"),
-			    		res.getInt("gym_gymCode"),
-			    		res.getString("availability")
+			    		res.getInt("gym_Gym_Code"),
+			    		res.getString("date_And_Time")
 			    		);
 			    
 			    availableSessions.add(currentSession);
