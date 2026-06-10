@@ -57,7 +57,7 @@ public class Customer {
 		 this.phone = phone;
 	 }
 
-	 public int setGymCode() {
+	 public int getGymCode() {
 		 return gymCode; 
 	 }
 
