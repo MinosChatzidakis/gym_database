@@ -206,16 +206,83 @@ public class Main {
 		boolean invoice = scanner.nextBoolean();
 		scanner.nextLine();
 		
+		//begin search and display results
 		SessionSearch criteria = new SessionSearch(selectedGymCode, selectedCity, type, date, time, selectedTrainerId, services,invoice);
 		ArrayList<Session> availableSessions = SessionDBUtils.searchSessions(criteria);
+		HashMap<Integer, Session> sessionsMap= new HashMap<>(); //number presented on the screen, selectedSession
+		Session selectedSession= null; // session which the user wants to book
 		if(availableSessions == null || availableSessions.isEmpty()) {
-			System.out.println("No sessions that match your criteria found ");
-		}else {
+			System.out.println("No sessions that match your criteria found. Pleasy try again with different search terms... ");
+		}else{ //sessions were found
 			System.out.println("\n Available Sessions:");
+			int num= 0;
 			for(Session s : availableSessions) {
-				System.out.printf("%-12d | %-15s | %-15s | %-15s | %-20s\n",s.getGymGymCode(), s.getSessionType(), s.getDateAndTime(), s.getDuration(), s.getPrice() );	
+				System.out.printf("%-12d | %-15s | %-15s | %-15s | %-15s | %-20s\n", num, s.getGymCode(), s.getSessionType(), s.getDateAndTime(), s.getDuration(), s.getPrice() );
+				sessionsMap.put(num, s);
+			}
+			System.out.println("Pick a session: ");
+			String sessionChoice= scanner.nextLine();
+			if(sessionsMap.containsKey(sessionChoice)){
+				selectedSession= sessionsMap.get(sessionChoice);
 			}
 		}
+		if(selectedSession != null) {
+			Customer c= new Customer(-1, "", "", "", selectedSession.getGymCode());
+			boolean err= true;
+			//record customer's name and surname
+			while(err) {
+				System.out.println("Enter your full name: ");
+				String name= scanner.nextLine();
+				try {
+					c.setName(name);
+					err= false;
+				}catch(IllegalArgumentException e) {
+					e.printStackTrace();
+				}
+			}
+			err= true;
+			while(err) {
+				//record customer's phone
+				System.out.println("Enter your phone number: ");
+				String phone= scanner.nextLine();
+				try {
+					c.setPhone(phone);
+					err= false;
+				}catch(IllegalArgumentException e) {
+					e.printStackTrace();
+				}				
+			}
+			err= true;
+			while(err) {
+				//record customer's email
+				System.out.println("Enter your email address: ");
+				String email= scanner.nextLine();
+				try {
+					c.setEmail(email);
+					err= false;
+				}catch(IllegalArgumentException e) {
+					e.printStackTrace();				
+			}
+				
+			}
+			
+			String selectedGymName= GymDBUtils.getGymById(selectedSession.getGymCode()).getName();
+			String selectedTrainerName= TrainerDBUtils.getTrainerByID(selectedSession.getTrainerTrainerID()).getName();
+			System.out.println(
+					"Your reservation?\nGym: "+ selectedGymName +"\nTraining type: "+ selectedSession.getSessionType()+"\nDate and time: "+selectedSession.getDateAndTime()+"\nTrainer:"+selectedTrainerName+"\nDuration: "+selectedSession.getDuration()+"mins"+"\nPrice: "+selectedSession.getPrice()+"$"
+					);
+			Character ans= ' ';
+			while (Character.toUpperCase(ans) != 'Y' || Character.toUpperCase(ans) != 'N'){
+				System.out.println("Confirm reservation? (Y/N)");
+				ans= scanner.next().charAt(0);
+			}
+			
+			
+			
+			
+			
+		}
+		
 		
 	}
 

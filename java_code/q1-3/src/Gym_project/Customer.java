@@ -16,6 +16,8 @@ public class Customer {
 		 this.phone = phone;
 		 this.gymCode = gymCode;
 	 }
+	 
+	 
 
 	 public int getCustomerID() {
 		 return customerID;
@@ -40,7 +42,7 @@ public class Customer {
 	 }
 	    
 	 public void setEmail(String email) {
-		 if(email==null || email.length() == 0){
+		 if(email==null || email.length() == 0 || !email.contains("@")){
 			throw new IllegalArgumentException("The email field cant be empty.");
 		}
 		 this.email = email;
@@ -51,8 +53,8 @@ public class Customer {
 	 }
 
 	 public void setPhone(String phone) {
-		 if(phone==null || phone.length() == 0){
-			throw new IllegalArgumentException("The phone field cant be empty.");
+		 if(phone==null || phone.length() == 0 || !(phone.length()==10)){
+			throw new IllegalArgumentException("Wrong input for the phone field.");
 		}
 		 this.phone = phone;
 	 }

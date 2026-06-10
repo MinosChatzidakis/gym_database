@@ -38,7 +38,7 @@ public abstract class SessionDBUtils {
 			    		res.getBoolean("availability"),
 			    		res.getInt("trainer_trainer_id"),
 			    		res.getInt("gym_gymCode"),
-			    		res.getString("availability")
+			    		res.getString("date_and-time")
 			    		);
 			    
 			    availableSessions.add(currentSession);

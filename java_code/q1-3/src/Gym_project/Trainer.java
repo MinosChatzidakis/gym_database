@@ -21,7 +21,7 @@ public class Trainer {
 	    }
 	    
 	    public Trainer() {
-	    	
+	    	//useful for building trainer instance object from scratch
 	    }
 	    
 	    public int getTrainerID() {
