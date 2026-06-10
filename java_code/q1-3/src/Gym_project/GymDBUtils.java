@@ -1,6 +1,7 @@
 //Minos
 package Gym_project;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -64,4 +65,33 @@ public abstract class GymDBUtils {
         }
         return null; // nothing was found => we return null
     }
+	
+	public static ArrayList<Gym> getAllGymsSortedByCity() {
+		ArrayList<Gym> gyms = new ArrayList<>();
+		
+		String sqlQuery = "SELECT * FROM gym ORDER BY city ASC";
+		
+		try (Connection conn = SQLConnector.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sqlQuery);
+			ResultSet res = pstmt.executeQuery()){
+			
+			while (res.next()) {
+				Gym currentGym = new Gym(
+						res.getString("city"),
+						res.getString("services"), 
+						res.getString("address"),
+						res.getString("name"),
+						res.getString("email"),
+						res.getString("phone"),
+						res.getInt("gym_Code")
+					);
+				gyms.add(currentGym);
+			}
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return gyms;
+	}
 }

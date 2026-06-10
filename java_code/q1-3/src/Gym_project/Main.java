@@ -80,14 +80,15 @@ public class Main {
 			switch (choice) {
 				case 1:
 					System.out.println("\n Search Gyms");
-					
+					searchAndDisplayGyms();
+					break;
 				case 2:
 					System.out.println("\nSearch Trainers");
-					
+					break;
 				case 3:
 					System.out.println("\nSearch Available Sessions");
 					SearchAvailableSessions(scanner);
-					
+					break;
 			}
 		}
 	}
@@ -165,7 +166,7 @@ public class Main {
 		System.out.println("Enter Training Type: ");
 		String type = scanner.nextLine();
 		
-		System.out.println("Enter Date e.g. DD-MM-YYYY: ");
+		System.out.println("Enter Date e.g. DD/MM/YYYY: ");
 		String date = scanner.nextLine();
 		
 		System.out.println("Enter Time e.g. HH:MM: ");
@@ -174,17 +175,18 @@ public class Main {
 		int selectedTrainerId = 0;
 		if (selectedGymCode > 0) {
 			TrainerDBUtils trainerUtils = new TrainerDBUtils();
-			ResultSet rsTrainers = trainerUtils.getTrainerByGymCode(selectedGymCode);
-			
+			ArrayList<Trainer> rsTrainers = trainerUtils.getTrainerByGymCode(selectedGymCode);
 			HashMap<String, Integer> trainerMap = new HashMap<>();
 			
-			try {
-				while (rsTrainers.next()) {
-					int tId = rsTrainers.getInt("Trainer_id");
-					String tName = rsTrainers.getString("Name");
-					trainerMap.put(tName.toLowerCase(), tId);
+			if (rsTrainers != null && !rsTrainers.isEmpty()) {
+				
+				
+				for (Trainer t : rsTrainers) {
+					int tId = t.getTrainerID(); 
+					String tName = t.getName();
 					
-					System.out.println("Found Trainer: " +tName);
+					trainerMap.put(tName.toLowerCase(), tId);
+					System.out.println("Available Trainer: " + tName);
 				}
 				
 				System.out.println("Enter Preferred Trainer Name: ");
@@ -193,9 +195,8 @@ public class Main {
 				if(!inputTrainerName.isEmpty() && trainerMap.containsKey(inputTrainerName.toLowerCase())) {
 					selectedTrainerId = trainerMap.get(inputTrainerName.toLowerCase());
 				}
-				
-			}catch (SQLException e) {
-				e.printStackTrace();
+			} else {
+				System.out.println("No trainers found for this gym.");
 			}
 		
 		}
@@ -209,13 +210,34 @@ public class Main {
 		
 		SessionSearch criteria = new SessionSearch(selectedGymCode, selectedCity, type, date, time, selectedTrainerId, services,invoice);
 		ArrayList<Session> availableSessions = SessionDBUtils.searchSessions(criteria);
-		if(availableSessions.isEmpty() || availableSessions == null) {
+		if(availableSessions == null || availableSessions.isEmpty()) {
 			System.out.println("No sessions that match your criteria found ");
 		}else {
 			System.out.println("\n Available Sessions:");
 			for(Session s : availableSessions) {	
 				System.out.printf("%-12d | %-15s | %-15s | %-15s | %-20s\n",s.getGymGymCode(), s.getSessionType(), s.getDateAndTime(), s.getDuration(), s.getPrice() );	
 			}
+		}
+		
+	}
+	
+	private static void searchAndDisplayGyms() {
+		System.out.println("\n Λίστα Γυμναστηρίων");
+		
+		ArrayList<Gym> gyms = GymDBUtils.getAllGymsSortedByCity();
+		
+		if(gyms ==null || gyms.isEmpty()) {
+			System.out.println("Δεν βρέθηκαν γυμναστήρια στην βάση δεδομένων.");
+			
+		}else {
+			System.out.printf("%-15s | %-20s | %-25s | %-15s | %-30s\n", 
+                    "Πόλη", "Όνομα", "Διεύθυνση", "Τηλέφωνο", "Παροχές");
+			
+			for (Gym g : gyms) {
+	            
+	            System.out.printf("%-15s | %-20s | %-25s | %-15s | %-30s\n",
+	                g.getCity(), g.getName(), g.getAddress(), g.getPhone(), g.getServices());
+	        }
 		}
 		
 	}

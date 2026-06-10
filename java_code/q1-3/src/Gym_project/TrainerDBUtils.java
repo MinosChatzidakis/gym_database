@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class TrainerDBUtils {
 	public ArrayList<Trainer> getAllTrainers(){
-		String sqlQuery= "SELECT name, trainer_id, gym_Gym_code FROM trainer ORDER BY Specialty";
+		String sqlQuery= "SELECT name, trainer_ID, gym_Gym_code FROM trainer ORDER BY Specialty";
 		try(Connection conn = SQLConnector.getConnection(); //establish connection via the class we created
 				Statement stm= conn.createStatement()){			
 				ArrayList<Trainer> fetchedTrainers = new ArrayList<>();
@@ -20,7 +20,7 @@ public class TrainerDBUtils {
 				    Trainer currentTrainer = new Trainer();
 				    
 				    currentTrainer.setName( res.getString("name") );
-				    currentTrainer.setTrainerID( res.getInt("trainer_id") );
+				    currentTrainer.setTrainerID( res.getInt("trainer_ID") );
 				    currentTrainer.setGymCode( res.getInt("gym_Gym_code") );
 				    
 				    // Add that finished page to your Notepad
@@ -37,16 +37,26 @@ public class TrainerDBUtils {
 	}
 	
 	
-	public ResultSet getTrainerByGymCode(int gymCode) {
+	public static ArrayList<Trainer> getTrainerByGymCode(int gymCode) {
 		String sqlQuery= ("SELECT * FROM trainer WHERE gym_Gym_code = "+ gymCode);
-		ResultSet res= null;
-		try {
-			Connection con= SQLConnector.getConnection();
-			Statement stm= con.createStatement();
-			res= stm.executeQuery(sqlQuery);
-			if(res.next()) {
-				return res;
+		try (Connection con = SQLConnector.getConnection();
+			 Statement stm = con.createStatement();){
+			
+			ResultSet res = stm.executeQuery(sqlQuery);
+			ArrayList<Trainer> fetchedTrainers = new ArrayList<>();
+			
+			while(res.next()) {
+				Trainer currentTrainer = new Trainer();
+				
+				currentTrainer.setTrainerID(res.getInt("trainer_ID"));
+				currentTrainer.setName(res.getString("name"));
+				currentTrainer.setGymCode(res.getInt("gym_Gym_code"));
+				
+				fetchedTrainers.add(currentTrainer);
 			}
+			
+			return fetchedTrainers;
+			
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
