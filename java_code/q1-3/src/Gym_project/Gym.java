@@ -25,7 +25,7 @@ public class Gym {
     }
 
 	public void setCity(String city) {
-		if(city==null || city.lenght() == 0){
+		if(city==null || city.length() == 0){
 			throw new IllegalArgumentException("The city field cant be empty.");
 		}	
         this.city = city;
@@ -37,7 +37,7 @@ public class Gym {
     }
 
 	public void setServices(String services) {
-		if(services==null || services.lenght() == 0){
+		if(services==null || services.length() == 0){
 			throw new IllegalArgumentException("The services field cant be empty.");
 		}	
         this.services = services;
@@ -48,7 +48,7 @@ public class Gym {
     }
 
 	public void setAddress(String address) {
-		if(address==null || address.lenght() == 0){
+		if(address==null || address.length() == 0){
 			throw new IllegalArgumentException("The address field cant be empty.");
 		}	
         this.address = address;
