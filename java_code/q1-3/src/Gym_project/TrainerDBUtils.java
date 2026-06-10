@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+public abstract class TrainerDBUtils {
 public class TrainerDBUtils {
 	
 	public void addTrainer(Trainer t) {
@@ -38,7 +39,7 @@ public class TrainerDBUtils {
 	public ArrayList<Trainer> getAllTrainers(){
 		String sqlQuery= "SELECT name, trainer_ID, gym_Gym_code FROM trainer ORDER BY Specialty";
 		try(Connection conn = SQLConnector.getConnection(); //establish connection via the class we created
-				Statement stm= conn.createStatement()){			
+				Statement stm= conn.createStatement()){		
 				ArrayList<Trainer> fetchedTrainers = new ArrayList<>();
 
 
@@ -57,8 +58,6 @@ public class TrainerDBUtils {
 				    fetchedTrainers.add(currentTrainer);
 				}
 
-				res.close();
-				conn.close(); //connection to database closed
 				return fetchedTrainers ;
 		}catch(SQLException e) {
 			e.printStackTrace();
@@ -67,6 +66,44 @@ public class TrainerDBUtils {
 	}
 	
 	
+	public static Trainer getTrainerByID(int id){
+		String sql= "SELECT * FROM trainer WHERE trainer_ID= '" + id + "' LIMIT 1;";
+		try(Connection conn = SQLConnector.getConnection(); //establish connection via the class we created
+				Statement stm= conn.createStatement()){		
+				Trainer fetchedTrainer = null;
+
+				ResultSet res = stm.executeQuery(sql);
+
+				while (res.next()) {
+					fetchedTrainer= new Trainer(
+							res.getInt("trainer_ID"), 
+							res.getString("name"), 
+							res.getString("email"), 
+							res.getString("phone"), 
+							res.getInt("gym_Gym_Code"), 
+							res.getString("specialty")
+							);
+				}				    
+				return fetchedTrainer ;
+		}catch(SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	
+	
+	
+	//change this to return an ArrayList
+	public static ResultSet getTrainersByGymCode(int gymCode) {
+		String sqlQuery= ("SELECT * FROM trainer WHERE Gym_code = "+ gymCode);
+		ResultSet res= null;
+		try {
+			Connection con= SQLConnector.getConnection();
+			Statement stm= con.createStatement();
+			res= stm.executeQuery(sqlQuery);
+			if(res.next()) {
+				return res;
 	public static ArrayList<Trainer> getTrainerByGymCode(int gymCode) {
 		String sqlQuery= ("SELECT * FROM trainer WHERE gym_Gym_code = "+ gymCode);
 		try (Connection con = SQLConnector.getConnection();

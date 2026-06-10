@@ -17,6 +17,7 @@ public class Services {
 	}
 	
 	public void setServiceName(String serviceName) {
+		if(serviceName == "") throw new IllegalArgumentException("The service name field can't be empty.");
 		this.serviceName = serviceName;
 	}
 	

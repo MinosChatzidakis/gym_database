@@ -87,11 +87,37 @@ public abstract class GymDBUtils {
 					);
 				gyms.add(currentGym);
 			}
-			
-		}catch (SQLException e) {
+			return fetchedGyms;
+		}catch(SQLException e) {
 			e.printStackTrace();
 		}
 		
 		return gyms;
 	}
+
+
+
+public static Gym getGymById(int id) {
+	String sqlQuery= ("SELECT * FROM gym WHERE gym_code = '" + id + "'" + "LIMIT 1;");
+	try (Connection con= SQLConnector.getConnection();
+			Statement stm= con.createStatement();){
+		ResultSet res= stm.executeQuery(sqlQuery);
+		Gym fetchedGym= null;
+		while(res.next()) {
+			fetchedGym= new Gym(
+					res.getString("city"),
+					ServicesDBUtils.getUnifiedServicesByGymCode(id),
+					res.getString("address"),
+					res.getString("name"),
+					res.getString("email"),
+					res.getString("phone"),
+					res.getInt("Gym_code")
+					);
+		}
+		return fetchedGym;
+	}catch(SQLException e) {
+		e.printStackTrace();
+	}
+	return null; // nothing was found => we return null
+}
 }
