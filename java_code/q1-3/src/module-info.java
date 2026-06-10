@@ -4,6 +4,6 @@
 /**
  * 
  */
-module gym_project {
+module gym_database {
 	requires java.sql;
 }
