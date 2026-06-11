@@ -2,8 +2,6 @@ package Gym_project;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Main {
@@ -25,8 +23,9 @@ public class Main {
 			scanner.nextLine();
 			
 			switch (choice) {
-				case 1: 
-					adminMenu(scanner);
+				case 1:
+					SessionDBUtils.testQuery();
+					//adminMenu(scanner);
 					break;
 					
 				case 2:
@@ -161,7 +160,7 @@ public class Main {
 
 			}
 		}
-		System.out.println("Enter Preferred Gym: ");
+		System.out.println("Enter your preferred gym's name: ");
 		String gymName = scanner.nextLine();
 		
 		int selectedGymCode = -1;
@@ -187,16 +186,16 @@ public class Main {
 			
 			if (rsTrainers != null && !rsTrainers.isEmpty()) {
 				
-				
+				System.out.println("This gym's trainers:");
 				for (Trainer t : rsTrainers) {
 					int tId = t.getTrainerID(); 
 					String tName = t.getName();
 					
 					trainerMap.put(tName.toLowerCase(), tId);
-					System.out.println("Available Trainer: " + tName);
+					System.out.println(tName);
 				}
 				
-				System.out.println("Enter Preferred Trainer Name: ");
+				System.out.println("Enter your preferred trainer's name: ");
 				String inputTrainerName = scanner.nextLine();
 				
 				if(!inputTrainerName.isEmpty() && trainerMap.containsKey(inputTrainerName.toLowerCase())) {
@@ -364,11 +363,11 @@ public class Main {
 		ArrayList<Gym> gyms = GymDBUtils.getAllGymsSortedByCity();
 		
 		if(gyms ==null || gyms.isEmpty()) {
-			System.out.println("Δεν βρέθηκαν γυμναστήρια στην βάση δεδομένων.");
+			System.out.println("No gyms were found");
 			
 		}else {
 			System.out.printf("%-15s | %-20s | %-25s | %-15s | %-30s\n", 
-                    "Πόλη", "Όνομα", "Διεύθυνση", "Τηλέφωνο", "Παροχές");
+                    "City", "Name", "Address", "Phone", "Services");
 			
 			for (Gym g : gyms) {
 	            
