@@ -29,24 +29,15 @@ public abstract class ServicesDBUtils {
 
 
 public static String getUnifiedServicesByGymCode(int gymCode){
-	String sql= "SELECT Service_Name FROM services WHERE GYM_Gym_code=" + "'" + gymCode + "'";
+	String sql= "SELECT * FROM services WHERE gym_Gym_Code=" + "'" + gymCode + "';";
 	try (Connection con= SQLConnector.getConnection();
 			Statement stm= con.createStatement();){
 		ResultSet res= stm.executeQuery(sql);
-		ArrayList<Services> fetchedServices= new ArrayList<>();
+		StringBuilder fetchedServices= new StringBuilder("");
 		while(res.next()) {
-			Services currentService= new Services(
-					res.getString("Service_name"),
-					res.getInt("GYM_Gym_code")
-											);
-			fetchedServices.add(currentService);
+			fetchedServices.append(", ").append(res.getString("service_Name"));
 		}
-		
-		StringBuilder sb= new StringBuilder();
-		for(Services s : fetchedServices) {
-			sb.append(s.getServiceName());
-		}
-		return sb.toString();
+		return fetchedServices.toString();
 	}catch(SQLException e) {
 		e.printStackTrace();
 	}
