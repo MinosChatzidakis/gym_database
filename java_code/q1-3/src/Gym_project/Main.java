@@ -1,5 +1,6 @@
 package Gym_project;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -53,6 +54,7 @@ public class Main {
 			System.out.println("8. Update Reservations/Payments");
 			System.out.println("9. Check Unpaid Reservations");
 			System.out.println("10. Manage Cancelled Reservations");
+			System.out.println("1010. pending payments niggers");
 			System.out.println("0. Back to Main Menu");
 			
 			int choice2 = scanner.nextInt();
@@ -61,6 +63,9 @@ public class Main {
 			switch (choice2) {
 				case 1:
 					insertDataMenu(scanner);
+					break;
+				case 1010:
+					manuallyRecordPayment();
 					break;
 				case 2:
 					System.out.println("\n Search Gyms");
@@ -229,6 +234,7 @@ public class Main {
 		//begin search and display results
 		SessionSearch criteria = new SessionSearch(selectedGymCode, selectedCity, type, date, time, selectedTrainerId, services,invoice);
 		ArrayList<Session> availableSessions = SessionDBUtils.searchSessions(criteria);
+		
 		HashMap<Integer, Session> sessionsMap= new HashMap<>(); //number presented on the screen, selectedSession
 		Session selectedSession= null; // session which the user wants to book
 		if(availableSessions == null || availableSessions.isEmpty()) {
@@ -373,9 +379,6 @@ public class Main {
 			
 		}
 		
-	
-		
-		
 	}
 	
 	private static void searchAndDisplayGyms() {
@@ -440,4 +443,39 @@ public class Main {
 		}
 	}
 
+	//user has accepted the session and the reservation has been created => proceed with the payment
+	private static void handlePayment(Reservation selectedReservation, Session selectedSession, PaymentMethods selectedPaymentMethod, PaymentStatus paymentStatus) {
+		Payment payment= new Payment(
+					selectedSession.getPrice(),
+					selectedPaymentMethod,
+					paymentStatus == PaymentStatus.CONFIRMED ? LocalDateTime.now() : null,
+					selectedReservation.getReservationCode(),
+					paymentStatus
+				);
+		//payment happens at the same time with the reservation
+		if(paymentStatus == PaymentStatus.CONFIRMED) {
+			selectedReservation.setReservationStatus(ReservationStatus.COMPLETE);
+			ReservationDBUtils.updateReservationStatus(selectedReservation.getReservationCode(), ReservationStatus.COMPLETE); //update reservation status in the database
+		}
+		//in any other case the gym employee manually records the payment once it happens
+	}
+	
+	
+	
+	
+	// handle a payment that has happened after the reservation
+	private static void manuallyRecordPayment() {
+		ArrayList<PendingPayment> pendingPayments= PaymentDBUtils.getPendingPayments();
+		System.out.println("Reservations that have not yet been paid for: ");
+		for(PendingPayment p : pendingPayments) {
+			System.out.println("payment id: " + p.getPaymentId());
+			System.out.println("payment amount: " + p.getAmount());
+			System.out.println("payment method: " + p.getPaymentMethod());
+			System.out.println("payment status: " + p.getPaymentStatus());
+			System.out.println("customer name: " + p.getCustomerFullName());
+			System.out.println("reservation date of : " + p.getDateOfReservation());
+			System.out.println("session date: " + p.getDateOfSession());
+		}
+	}
+	
 }

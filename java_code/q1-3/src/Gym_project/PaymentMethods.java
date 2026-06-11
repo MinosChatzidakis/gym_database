@@ -2,5 +2,6 @@ package Gym_project;
 
 public enum PaymentMethods {
 	CASH,
-	CARD,
+	CREDIT_CARD,
+	BANK_TRANSFER
 }
