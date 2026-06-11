@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,11 +70,11 @@ public abstract class SessionDBUtils {
 	                res.getString("description"),
 	                res.getInt("max_participants"),
 	                res.getInt("duration"),
-	                res.getInt("price"),
+	                res.getFloat("price"),
 	                res.getInt("availability"),
 	                res.getInt("trainer_trainer_id"),
 	                res.getInt("gym_Gym_Code"),
-	                res.getString("date_And_Time")
+	                res.getObject("date_And_Time", LocalDateTime.class)
 	            );
 	            availableSessions.add(currentSession);
 	        }

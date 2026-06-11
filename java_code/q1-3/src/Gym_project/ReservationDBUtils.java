@@ -60,7 +60,7 @@ public class ReservationDBUtils {
                 }				
 				Reservation currentReservation = new Reservation(
 						res.getInt("reservation_Code"),
-						res.getString("date_And_Time"),
+						res.getObject("date_And_Time", LocalDateTime.class),
 						res.getBoolean("invoice_Needed"),
 						status,
 						res.getInt("session_Session_Code"),
