@@ -7,7 +7,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public abstract class TrainerDBUtils {
-public class TrainerDBUtils {
 	
 	public void addTrainer(Trainer t) {
 		
@@ -104,6 +103,11 @@ public class TrainerDBUtils {
 			res= stm.executeQuery(sqlQuery);
 			if(res.next()) {
 				return res;
+			}}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		return null;
+	}
 	public static ArrayList<Trainer> getTrainerByGymCode(int gymCode) {
 		String sqlQuery= ("SELECT * FROM trainer WHERE gym_Gym_code = "+ gymCode);
 		try (Connection con = SQLConnector.getConnection();
