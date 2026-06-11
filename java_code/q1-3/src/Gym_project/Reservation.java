@@ -20,9 +20,6 @@ public class Reservation {
 		this.customerID = customerID;
 	}
 	
-	public Reservation(){
-		
-	}
 	
 	public int getReservationCode() { 
 		return reservationCode;

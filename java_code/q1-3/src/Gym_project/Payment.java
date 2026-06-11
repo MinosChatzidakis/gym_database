@@ -74,6 +74,10 @@ public class Payment {
 	public PaymentStatus getPaymentStatus() {
 		return paymentStatus;
 	}
+	
+	public void setPaymentStatus(PaymentStatus paymentStatus) {
+		this.paymentStatus = paymentStatus;
+	}
 }
 
 

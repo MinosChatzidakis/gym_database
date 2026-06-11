@@ -83,11 +83,11 @@
 	        this.price = price;
 	    }
 	    
-	    public boolean getAvailability() {
+	    public int getAvailability() {
 	        return availability;
 	    }
 	    
-	    public void setAvailability(boolean availability) {
+	    public void setAvailability(int availability) {
 	        this.availability = availability;
 	    }
 	    
