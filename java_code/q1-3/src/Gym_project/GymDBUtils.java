@@ -87,12 +87,13 @@ public abstract class GymDBUtils {
 					);
 				gyms.add(currentGym);
 			}
-			return fetchedGyms;
+			
+		return gyms;	
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
 		
-		return gyms;
+		return null;
 	}
 
 

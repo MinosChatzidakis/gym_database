@@ -1,13 +1,13 @@
 //Minos
 package Gym_project;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
 public abstract class TrainerDBUtils {
-public class TrainerDBUtils {
 	
 	public void addTrainer(Trainer t) {
 		
@@ -36,29 +36,29 @@ public class TrainerDBUtils {
 	}
 	
 	
-	public ArrayList<Trainer> getAllTrainers(){
-		String sqlQuery= "SELECT name, trainer_ID, gym_Gym_code FROM trainer ORDER BY Specialty";
+	public static ArrayList<Trainer> getAllTrainers(){
+		String sqlQuery= "SELECT * FROM trainer ORDER BY specialty ASC";
+		
+		ArrayList<Trainer> fetchedTrainers = new ArrayList<>();
+		
 		try(Connection conn = SQLConnector.getConnection(); //establish connection via the class we created
-				Statement stm= conn.createStatement()){		
-				ArrayList<Trainer> fetchedTrainers = new ArrayList<>();
-
-
-				ResultSet res = stm.executeQuery(sqlQuery);
-
+				PreparedStatement stm= conn.prepareStatement(sqlQuery);
+				ResultSet res = stm.executeQuery()){	
+			
 				while (res.next()) {
 				    Trainer currentTrainer = new Trainer();
 				    
-				    currentTrainer.setTrainerID( res.getInt("trainer_id") );
+				    currentTrainer.setTrainerID( res.getInt("trainer_ID") );
 				    currentTrainer.setName( res.getString("name") );
 				    currentTrainer.setSpecialty( res.getString("specialty") );
 				    currentTrainer.setPhone( res.getString("phone") );
 				    currentTrainer.setEmail( res.getString("email") );
-				    currentTrainer.setGymCode( res.getInt("gym_Gym_Code") ); // Σωστό όνομα στήλης
+				    currentTrainer.setGymCode( res.getInt("gym_Gym_Code") ); 
 				    
 				    fetchedTrainers.add(currentTrainer);
 				}
 
-				return fetchedTrainers ;
+				return fetchedTrainers;
 		}catch(SQLException e) {
 			e.printStackTrace();
 			return null;
@@ -104,6 +104,11 @@ public class TrainerDBUtils {
 			res= stm.executeQuery(sqlQuery);
 			if(res.next()) {
 				return res;
+			}}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		return null;
+	}
 	public static ArrayList<Trainer> getTrainerByGymCode(int gymCode) {
 		String sqlQuery= ("SELECT * FROM trainer WHERE gym_Gym_code = "+ gymCode);
 		try (Connection con = SQLConnector.getConnection();

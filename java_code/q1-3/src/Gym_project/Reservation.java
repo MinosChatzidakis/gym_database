@@ -2,14 +2,14 @@ package Gym_project;
 
 public class Reservation {
 	
-	private String reservationCode;
+	private int reservationCode;
 	private String dateAndTime;
 	private boolean invoiceNeeded;
-	private String reservationStatus;
+	private ReservationStatus reservationStatus;
 	private int sessionCode;
 	private int customerID;
 	
-	public Reservation(String reservationCode, String dateAndTime, boolean invoiceNeeded, String reservationStatus, int sessionCode, int customerID) {
+	public Reservation(int reservationCode, String dateAndTime, boolean invoiceNeeded, ReservationStatus reservationStatus, int sessionCode, int customerID) {
 		this.reservationCode = reservationCode;
 		this.dateAndTime = dateAndTime;
 		this.invoiceNeeded = invoiceNeeded;
@@ -18,15 +18,12 @@ public class Reservation {
 		this.customerID = customerID;
 	}
 	
-	public Reservation(){
-		
-	}
 	
-	public String getReservationCode() { 
+	public int getReservationCode() { 
 		return reservationCode;
 	}
 
-	public void setReservationCode(String reservationCode) {
+	public void setReservationCode(int reservationCode) {
 		this.reservationCode = reservationCode;
 	}
 	
@@ -46,11 +43,11 @@ public class Reservation {
 		this.invoiceNeeded = invoiceNeeded;
 	}
 	
-	public String getReservationStatus() {
+	public ReservationStatus getReservationStatus() {
 		return reservationStatus;
 	}
 	
-	public void setReservationStatus(String reservationStatus) {
+	public void setReservationStatus(ReservationStatus reservationStatus) {
 		this.reservationStatus = reservationStatus;
 	}
 	
