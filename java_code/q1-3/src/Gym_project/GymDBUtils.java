@@ -40,23 +40,102 @@ public abstract class GymDBUtils {
 	}
 	
 	public static ArrayList<Gym> getGymsByCity(String city) {
-		String sqlQuery= ("SELECT * FROM gym WHERE city = '" + city + "'");
-		try (Connection con= SQLConnector.getConnection();
-				Statement stm= con.createStatement();){
-			ResultSet res= stm.executeQuery(sqlQuery);
-			ArrayList<Gym> fetchedGyms= new ArrayList<>();
-			while(res.next()) {
-				Gym currentGym = new Gym(
-						res.getString("name"),
-						res.getString("email"),
-						res.getString("phone"),
-						res.getInt("gym_code")
-												);
-				fetchedGyms.add(currentGym);
-			}
-		}catch(SQLException e) {
-			e.printStackTrace();
-		}
-		return null; // nothing was found => we return null
+        
+        
+        
+        String sqlQuery="SELECT g.*, GROUP_CONCAT(s.service_Name SEPARATOR ', ') AS unified_services FROM gym g LEFT JOIN services s ON g.gym_Code = s.gym_Gym_Code WHERE city = '" + city + "' GROUP BY g.gym_Code;";
+        
+        
+        
+        try (Connection con= SQLConnector.getConnection();
+                Statement stm= con.createStatement();){
+            ResultSet res= stm.executeQuery(sqlQuery);
+            ArrayList<Gym> fetchedGyms= new ArrayList<>();
+            while(res.next()) {
+                Gym currentGym = new Gym(
+                        res.getString("city"),
+                        res.getString("unified_services"),
+                        res.getString("address"),
+                        res.getString("name"),
+                        res.getString("email"),
+                        res.getString("phone"),
+                        res.getInt("gym_code")
+                                                );
+                fetchedGyms.add(currentGym);
+            }
+            
+            return fetchedGyms;
+        }catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // nothing was found => we return null
+    }
+	
+	public static ArrayList<Gym> getAllGymsSortedByCity() { //returns all gyms ordered by city and attaches their provided services
+	    ArrayList<Gym> gyms = new ArrayList<>();
+	    
+	    // grab the gym info and concatenate all related services into a string
+	    String sqlQuery = 
+	        "SELECT g.*, GROUP_CONCAT(s.service_Name SEPARATOR ', ') AS unified_services " +
+	        "FROM gym g " +
+	        "LEFT JOIN services s ON g.gym_Code = s.gym_Gym_Code " + // left join so we keep all gyms even if they offer no services
+	        "GROUP BY g.gym_Code " + // allow no duplicates
+	        "ORDER BY g.city ASC";
+	    
+	    try (Connection conn = SQLConnector.getConnection();
+	         Statement stmt = conn.createStatement();)
+	         {
+	    		ResultSet res = stmt.executeQuery(sqlQuery);
+	        while (res.next()) {
+	            String currentServices = res.getString("unified_services");
+	            
+	            if (currentServices == null) { 
+	                currentServices = "None"; // a gym might offer no services
+	            }
+
+	            Gym currentGym = new Gym(
+	                res.getString("city"),
+	                currentServices,
+	                res.getString("address"),
+	                res.getString("name"),
+	                res.getString("email"),
+	                res.getString("phone"),
+	                res.getInt("gym_Code")
+	            );
+	            gyms.add(currentGym);
+	        }
+	        return gyms;
+	        
+	    } catch(SQLException e) {
+	        e.printStackTrace();
+	    }
+	    
+	    return null;
 	}
+
+
+
+public static Gym getGymById(int id) {
+	String sqlQuery= ("SELECT * FROM gym WHERE gym_code = '" + id + "'" + "LIMIT 1;");
+	try (Connection con= SQLConnector.getConnection();
+			Statement stm= con.createStatement();){
+		ResultSet res= stm.executeQuery(sqlQuery);
+		Gym fetchedGym= null;
+		while(res.next()) {
+			fetchedGym= new Gym(
+					res.getString("city"),
+					ServicesDBUtils.getUnifiedServicesByGymCode(id),
+					res.getString("address"),
+					res.getString("name"),
+					res.getString("email"),
+					res.getString("phone"),
+					res.getInt("Gym_code")
+					);
+		}
+		return fetchedGym;
+	}catch(SQLException e) {
+		e.printStackTrace();
+	}
+	return null; // nothing was found => we return null
+}
 }

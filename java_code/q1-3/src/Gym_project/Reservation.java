@@ -18,6 +18,10 @@ public class Reservation {
 		this.customerID = customerID;
 	}
 	
+	public Reservation(){
+		
+	}
+	
 	public String getReservationCode() { 
 		return reservationCode;
 	}
