@@ -10,7 +10,6 @@ public class CustomerDBUtils {
 	
 	public void addCustomer(Customer c) {
 		
-		// Δημιουργία του query με βάση τις 5 στήλες του πίνακα customer
 			String sqlQuery = "INSERT INTO customer (customer_ID, name, email, phone, gym_Gym_Code) VALUES ("
 		            + c.getCustomerID() + ", '"
 		            + c.getName() + "', '"
@@ -36,7 +35,6 @@ public class CustomerDBUtils {
 	
 	
 	public ArrayList<Customer> getAllCustomers(){
-		// Επιλέγουμε όλα τα πεδία του πελάτη από τη βάση δεδομένων
 		String sqlQuery = "SELECT customer_ID, name, email, phone, gym_Gym_Code FROM customer ORDER BY name";
 	
 		try(Connection conn = SQLConnector.getConnection(); 
@@ -68,14 +66,14 @@ public class CustomerDBUtils {
 	public ArrayList<Customer> getCustomerByGymCode(int gymCode) {
 		String sqlQuery = "SELECT * FROM customer WHERE gym_Gym_Code = " + gymCode;
 		
-		// Χρήση try-with-resources για αυτόματο κλείσιμο των con και stm
+
 		try (Connection con = SQLConnector.getConnection();
 			 Statement stm = con.createStatement()) {
 			
 			ResultSet res = stm.executeQuery(sqlQuery);
 			ArrayList<Customer> fetchedCustomers = new ArrayList<>();
 			
-			// Διάβασμα όλων των πελατών που ανήκουν στο συγκεκριμένο gymCode
+
 			while(res.next()) {
 				Customer currentCustomer = new Customer(
 				    res.getInt("customer_ID"),
@@ -89,12 +87,40 @@ public class CustomerDBUtils {
 			}
 			
 			res.close();
-			return fetchedCustomers; // Επιστροφή της λίστας με τους πελάτες
+			return fetchedCustomers;
 			
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public static int addCustomerAndGetId(Customer c) {
+		
+		String sqlQuery = "INSERT INTO customer (name, email, phone, gym_Gym_Code) VALUES ('" + c.getName() + "', '" + c.getEmail() + "', '" + c.getPhone() + "', " + c.getGymCode() + ")";
+		
+		try(Connection conn = SQLConnector.getConnection();
+				Statement stm = conn.createStatement()) {
+			
+			int rowsAffected = stm.executeUpdate(sqlQuery, Statement.RETURN_GENERATED_KEYS);
+			
+			if(rowsAffected > 0) {
+				try(ResultSet generatedKeys = stm.getGeneratedKeys()){
+					if(generatedKeys.next()) {
+						int generatedId = generatedKeys.getInt(1);
+						System.out.println("Customer was succesfully added with ID: " + generatedId);
+						return generatedId;
+					}
+				}
+			}else {
+				System.out.println("The customer could not be added to the DataBase");
+			}
+			
+		}catch(SQLException e){
+			e.printStackTrace();
+			
+		}
+		return -1;
 	}
 	
 }

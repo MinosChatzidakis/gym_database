@@ -7,13 +7,13 @@
 	    private int maxParticipants;
 	    private int duration;
 	    private int price;
-	    private boolean availability;
+	    private int availability;
 	    private int trainerID;
 	    private int gymCode;
 		private String dateAndTime;
 		private int amountOfParticipants;
 	
-	    public Session(int sessionCode, String sessionType, String description, int maxParticipants , int duration , int price , boolean availability , int trainerID , int gymCode , String dateAndTime) {
+	    public Session(int sessionCode, String sessionType, String description, int maxParticipants , int duration , int price , int availability , int trainerID , int gymCode , String dateAndTime) {
 	        this.sessionCode = sessionCode;
 	        this.sessionType = sessionType;
 	        this.description = description;
@@ -83,11 +83,11 @@
 	        this.price = price;
 	    }
 	    
-	    public boolean getAvailability() {
+	    public int getAvailability() {
 	        return availability;
 	    }
 	    
-	    public void setAvailability(boolean availability) {
+	    public void setAvailability(int availability) {
 	        this.availability = availability;
 	    }
 	    
