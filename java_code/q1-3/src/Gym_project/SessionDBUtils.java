@@ -35,24 +35,24 @@ public abstract class SessionDBUtils {
 	        	return new ArrayList<>(); // ------------- the crash is here
 	        }
 	    }
-	    System.out.println("Starting sb building");
+	    //System.out.println("Starting sb building");
 	    StringBuilder sbQuery = new StringBuilder();
 	    sbQuery.append("SELECT * FROM session WHERE availability = 1");
 	    if (s.getPreferredGymCode() != -1) {
 	        sbQuery.append(" AND gym_Gym_Code = ").append(s.getPreferredGymCode());
-	        System.out.println("Appended: " + s.getPreferredGymCode());
+	        //System.out.println("Appended: " + s.getPreferredGymCode());
 	    }
 	    if (!s.getTrainingType().isEmpty()) {
 	        sbQuery.append(" AND session_Type = '").append(s.getTrainingType()).append("'");
-	        System.out.println("Appended: " + s.getTrainingType());
+	       // System.out.println("Appended: " + s.getTrainingType());
 	    }
 	    if (!s.getDate().isEmpty()) {
 	        sbQuery.append(" AND date_And_Time LIKE '%").append(s.getDate()).append("%'");
-	        System.out.println("Appended: " + s.getDate());
+	        //System.out.println("Appended: " + s.getDate());
 	    }
 	    if (s.getTrainerId() != -1) {
 	        sbQuery.append(" AND trainer_Trainer_ID = ").append(s.getTrainerId());
-	        System.out.println("Appended: " + s.getTrainerId());
+	        //System.out.println("Appended: " + s.getTrainerId());
 	    }
 	    sbQuery.append(";");
 	    ArrayList<Session> availableSessions = new ArrayList<>();
@@ -61,7 +61,7 @@ public abstract class SessionDBUtils {
 	         Statement stm = conn.createStatement();
 	    		ResultSet res = stm.executeQuery(sbQuery.toString())) { // Try-with-resources auto-closes everything
 	        
-	    	System.out.println("final query: "+ sbQuery.toString());
+	    	//System.out.println("final query: "+ sbQuery.toString());
 	        while (res.next()) {
 	            Session currentSession = new Session(
 	                res.getInt("session_code"),
@@ -70,7 +70,7 @@ public abstract class SessionDBUtils {
 	                res.getInt("max_participants"),
 	                res.getInt("duration"),
 	                res.getInt("price"),
-	                res.getBoolean("availability"),
+	                res.getInt("availability"),
 	                res.getInt("trainer_trainer_id"),
 	                res.getInt("gym_Gym_Code"),
 	                res.getString("date_And_Time")
@@ -101,7 +101,32 @@ public abstract class SessionDBUtils {
 			e.printStackTrace();
 		}
 	}
+	
+	public static void checkAndUpdateAvailability(Session session) {
+		String countQuery = "SELECT COUNT(*) FROM reservation WHERE session_Session_Code = " + session.getSessionCode() 
+        + " AND reservation_Status != 'CANCELLED';";
+		
+		try (Connection conn = SQLConnector.getConnection();
+		         Statement stm = conn.createStatement()) {
+		        
+		        try (ResultSet res = stm.executeQuery(countQuery)) {
+		            if (res.next()) {
+		                int realParticipantsCount = res.getInt(1);
+		                
+		                session.setAmountOfParticipants(realParticipantsCount);
+		                if (session.getAmountOfParticipants() >= session.getMaxParticipants()) {
+		                    session.setAvailability(0);
+		                    String updateQuery = "UPDATE session SET availability = 0 WHERE session_code = " + session.getSessionCode() + ";";
+		                    stm.executeUpdate(updateQuery);
+		                }
+		            }
+		        }
+	
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
 	}
+}
 
 
 

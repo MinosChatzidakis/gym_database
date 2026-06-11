@@ -25,11 +25,14 @@ public class Main {
 			switch (choice) {
 				case 1:
 					SessionDBUtils.testQuery();
-					//adminMenu(scanner);
+					adminMenu(scanner);
 					break;
 					
 				case 2:
 					customerMenu(scanner);
+					break;
+				case 0:
+					isRunning = false;
 					break;
 					
 			}
@@ -64,6 +67,15 @@ public class Main {
 					searchAndDisplayGyms();
 					break;
 				case 3:
+					System.out.println("\nSearch Trainers");
+					searchAndDisplayTrainers();
+					break;
+				case 4:
+					System.out.println("\nView Reserved Sessions");
+					viewActiveReservations(); 
+				    break;
+				case 0:
+					return;
 			}
 		}
 	}
@@ -136,7 +148,7 @@ public class Main {
                 
 			case 0:
                 System.out.println("Returning to Main Menu...");
-                break;
+                return;
                 
             default: 
             	System.out.println("Invalid option. Returning to Main Menu.");
@@ -223,9 +235,16 @@ public class Main {
 			System.out.println("No sessions that match your criteria found. Pleasy try again with different search terms... ");
 		}else{ //sessions were found
 			System.out.println("\n Available Sessions:");
+			System.out.printf("%-12s | %-15s | %-15s | %-20s | %-20s | %-20s | %-25s\n", 
+                    "Number", "Gym Code", "Sessions Type", "Date & Time", "Duration(minutes)", "Price(€)", "Gym Services");
 			int num= 0;
 			for(Session s : availableSessions) {
-				System.out.printf("%-12d. | %-15s | %-15s | %-15s | %-15s | %-20s\n", num, s.getGymCode(), s.getSessionType(), s.getDateAndTime(), s.getDuration(), s.getPrice() );
+				
+				String gymServices = ServicesDBUtils.getUnifiedServicesByGymCode(s.getGymCode());
+				if (gymServices == null || gymServices.isEmpty()) {
+					gymServices = "-";
+				}
+				System.out.printf("%-12d | %-15s | %-15s | %-20s | %-20s | %-20s | %-25s\n", num, s.getGymCode(), s.getSessionType(), s.getDateAndTime(), s.getDuration(), s.getPrice(), gymServices);
 				sessionsMap.put(num, s);
 				num++;
 			}
@@ -339,6 +358,8 @@ public class Main {
 					int generatedReservationCode = ReservationDBUtils.addReservationAndGetCode(r);
 					
 					if (generatedReservationCode > 0) {
+						
+						SessionDBUtils.checkAndUpdateAvailability(selectedSession);
 						r.setReservationCode(generatedReservationCode);
 						//handlePayment(r, s, paymentStatus); 
 						
@@ -392,6 +413,30 @@ public class Main {
 			for (Trainer t : trainers) {
 				System.out.printf("%-10d | %-25s | %-20s | %-20d\n", t.getTrainerID(), t.getName(), t.getSpecialty(), t.getGymCode());
 			}
+		}
+	}
+	
+	private static void viewActiveReservations() {
+		
+		ArrayList<Reservation> activeReservation = ReservationDBUtils.getActiveReservations();
+		
+		if (activeReservation == null || activeReservation.isEmpty()) {
+			System.out.println("No active reservations found in the system.");
+		}else {
+			System.out.printf("%-18s | %-18s | %-15s | %-12s | %-12s | %-12s\n", 
+                    "Reservation Code", "Date & Time", "Invoice Needed", "Status", "Session Code", "Customer ID");
+		
+			for (Reservation res : activeReservation) {
+				System.out.printf("%-18d | %-18s | %-15s | %-12s | %-12d | %-12d\n", 
+						res.getReservationCode(),
+						res.getDateAndTime(),
+						(res.getInvoiceNeeded() ? "YES" : "NO"),
+						res.getReservationStatus().name(),
+						res.getSessionCode(),
+						res.getcustomerID());
+			}
+		
+		
 		}
 	}
 

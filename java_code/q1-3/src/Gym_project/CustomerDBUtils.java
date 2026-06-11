@@ -97,18 +97,18 @@ public class CustomerDBUtils {
 	
 	public static int addCustomerAndGetId(Customer c) {
 		
-		String sqlQuery = "INSERT INTO customer (name, email, phone, gym_Gym_Code) VALUES ('" + c.getName() + "', '" + c.getEmail() + "', '" + c.getPhone() + "', '" + c.getGymCode() + ")";
+		String sqlQuery = "INSERT INTO customer (name, email, phone, gym_Gym_Code) VALUES ('" + c.getName() + "', '" + c.getEmail() + "', '" + c.getPhone() + "', " + c.getGymCode() + ")";
 		
 		try(Connection conn = SQLConnector.getConnection();
 				Statement stm = conn.createStatement()) {
 			
-			int rowsAffected = stm.executeUpdate(sqlQuery);
+			int rowsAffected = stm.executeUpdate(sqlQuery, Statement.RETURN_GENERATED_KEYS);
 			
 			if(rowsAffected > 0) {
 				try(ResultSet generatedKeys = stm.getGeneratedKeys()){
 					if(generatedKeys.next()) {
 						int generatedId = generatedKeys.getInt(1);
-						System.out.println("Customer was succesfully added with ID: ");
+						System.out.println("Customer was succesfully added with ID: " + generatedId);
 						return generatedId;
 					}
 				}
