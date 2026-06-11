@@ -6,22 +6,33 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class ReservationDBUtils {
-	public void addReservation(Reservation r) {
-		String sqlQuery= "INSERT INTO reservation () VALUES ()";
+	public static int addReservationAndGetCode(Reservation r) {
+		
+		int invoiceVal = r.getInvoiceNeeded() ? 1 : 0;
+		String sqlQuery= "INSERT INTO reservation (date_And_Time, invoice_Needed, reservation_Status, session_Session_Code, customer_Customer_ID) VALUES ("
+				+ r.getDateAndTime() + "', "
+				+ invoiceVal + ", '"
+				+ r.getReservationStatus().name() + "', "
+				+ r.getSessionCode() + ", "
+				+ r.getcustomerID() + ")";
 		
 		try{
 			Connection conn = SQLConnector.getConnection(); //establish connection via the class we created
 			Statement stm= conn.createStatement();
-			int rowsAffected= stm.executeUpdate(sqlQuery); //run the query on the database and store amount of rows affected by it
+			int rowsAffected= stm.executeUpdate(sqlQuery, Statement.RETURN_GENERATED_KEYS); //run the query on the database and store amount of rows affected by it
 			if(rowsAffected>0) {
-				System.out.println("Reservation was successfully added to db.");
-			}else {
-				System.out.println("Something went wrong and the reservation could not be added to db.");
-			}
+				//System.out.println("Reservation was successfully added to db.");
+				try (ResultSet generatedKeys = stm.getGeneratedKeys()){
+					if(generatedKeys.next()) {
+						return generatedKeys.getInt(1);
+					}	
+				}
+			}	
 		}catch(SQLException e) {
 			System.out.println("Error in adding reservation to db:");
 			e.printStackTrace();
 		}
+		return -1;
 	}
 	
 	public ResultSet getActiveReservations() {

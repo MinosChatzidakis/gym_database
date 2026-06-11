@@ -308,22 +308,42 @@ public class Main {
 				
 				ReservationStatus reservationStatus;
 				PaymentStatus paymentStatus;
+				String paymentMethod = "";
 				
 				if (payChoice == 1) {
 					reservationStatus = ReservationStatus.COMPLETE;
 					paymentStatus = PaymentStatus.CONFIRMED;
+					paymentMethod = "Credit Card";
 				}else {
 					reservationStatus = ReservationStatus.PENDING;
 					paymentStatus = PaymentStatus.PENDING;
+					System.out.println("\nHow do you intend to pay at the gym?");
+				    System.out.println("1. Card (at the desk)");
+				    System.out.println("2. Cash");
+				    
+				    int methodChoice = scanner.nextInt();
+				    scanner.nextLine();
+				    
+				    if(methodChoice == 1) {
+				    	paymentMethod = "Credit Card";
+				    }else {
+				    	paymentMethod = "Cash";
+				    }
 				}
 				
 				int generatedCustomerId = CustomerDBUtils.addCustomerAndGetId(c);
 				
 				if(generatedCustomerId > 0) {
 					
-					//Reservation r = new Reservation(null, selectedSession.getDateAndTime(), invoice, reservationStatus, selectedSession.getSessionCode(), generatedCustomerId);
+					Reservation r = new Reservation(-1 , selectedSession.getDateAndTime(), invoice, reservationStatus, selectedSession.getSessionCode(), generatedCustomerId);
 					
-					//int generatedReservationCode = ReservationDBUtil
+					int generatedReservationCode = ReservationDBUtils.addReservationAndGetCode(r);
+					
+					if (generatedReservationCode > 0) {
+						r.setReservationCode(generatedReservationCode);
+						//handlePayment(r, s, paymentStatus); 
+						
+					}
 				}
 			}
 			
