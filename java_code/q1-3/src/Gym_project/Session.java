@@ -1,19 +1,21 @@
 	package Gym_project;
-	
-	public class Session {
+
+import java.time.LocalDateTime;
+
+public class Session {
 		private int sessionCode;
 	    private String sessionType;
 	    private String description;
 	    private int maxParticipants;
 	    private int duration;
 	    private float price;
-	    private boolean availability;
+	    private int availability;
 	    private int trainerID;
 	    private int gymCode;
-		private String dateAndTime;
+		private LocalDateTime dateAndTime;
 		private int amountOfParticipants;
 	
-	    public Session(int sessionCode, String sessionType, String description, int maxParticipants , int duration , float price , boolean availability , int trainerID , int gymCode , String dateAndTime) {
+	    public Session(int sessionCode, String sessionType, String description, int maxParticipants , int duration , float price , int availability , int trainerID , int gymCode , LocalDateTime dateAndTime) {
 	        this.sessionCode = sessionCode;
 	        this.sessionType = sessionType;
 	        this.description = description;
@@ -107,12 +109,12 @@
 	        this.gymCode = gymGymCode;
 	    }
 
-		public String getDateAndTime() {
+		public LocalDateTime getDateAndTime() {
 	        return dateAndTime;
 	    }
 	
-	    public void setDateAndTime(String dateAndTime) {
-			if(dateAndTime==null || dateAndTime.length() == 0){
+	    public void setDateAndTime(LocalDateTime dateAndTime) {
+			if(dateAndTime==null){
 			throw new IllegalArgumentException("The Date And duration field cant be empty.");
 			}
 	        this.dateAndTime = dateAndTime;
