@@ -6,62 +6,51 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-public abstract class ServicesDBUtils {
+public class ServicesDBUtils { // Αφαιρέθηκε το abstract
+
+	// Επιστρέφει μια λίστα με αντικείμενα Services (χρήσιμο για γενική διαχείριση)
 	public static ArrayList<Services> getServicesByGymCode(int gymCode){
-		String sql= "SELECT Service_Name FROM services WHERE GYM_Gym_code=" + "'" + gymCode + "'";
-		try (Connection con= SQLConnector.getConnection();
-				Statement stm= con.createStatement();){
-			ResultSet res= stm.executeQuery(sql);
-			ArrayList<Services> fetchedServices= new ArrayList<>();
+		String sql = "SELECT service_Name FROM services WHERE gym_Gym_code = " + gymCode;
+		try (Connection con = SQLConnector.getConnection();
+			 Statement stm = con.createStatement();){
+			ResultSet res = stm.executeQuery(sql);
+			ArrayList<Services> fetchedServices = new ArrayList<>();
 			while(res.next()) {
-				Services currentService= new Services(
-						res.getString("Service_name"),
-						res.getInt("GYM_Gym_code")
-												);
+				Services currentService = new Services(
+						res.getString("service_Name"),
+						gymCode
+				);
 				fetchedServices.add(currentService);
 			}
 			return fetchedServices;
-		}catch(SQLException e) {
+		} catch(SQLException e) {
+			System.out.println("Error fetching services list:");
 			e.printStackTrace();
 		}
-		return null; // nothing was found => we return null
+		return null;
 	}
 
-
-public static String getUnifiedServicesByGymCode(int gymCode){
-<<<<<<< HEAD
-	String sql= "SELECT * FROM services WHERE gym_Gym_Code=" + "'" + gymCode + "';";
-	try (Connection con= SQLConnector.getConnection();
-			Statement stm= con.createStatement();){
-		ResultSet res= stm.executeQuery(sql);
-		StringBuilder fetchedServices= new StringBuilder("");
-		while(res.next()) {
-			fetchedServices.append(", ").append(res.getString("service_Name"));
+	// FIXED: Καθαρίστηκε από το Git Conflict. 
+	// Επιστρέφει String μορφής "PILATES, YOGA" που χρειάζεται η SessionDBUtils
+	public static String getUnifiedServicesByGymCode(int gymCode){
+		String sql = "SELECT service_Name FROM services WHERE gym_Gym_code = " + gymCode;
+		try (Connection con = SQLConnector.getConnection();
+			 Statement stm = con.createStatement();){
+			ResultSet res = stm.executeQuery(sql);
+			StringBuilder fetchedServices = new StringBuilder();
+			
+			while(res.next()) {
+				// Αν δεν είναι το πρώτο service, βάζουμε κόμμα για διαχωρισμό
+				if (fetchedServices.length() > 0) {
+					fetchedServices.append(", ");
+				}
+				fetchedServices.append(res.getString("service_Name"));
+			}
+			return fetchedServices.toString();
+		} catch(SQLException e) {
+			System.out.println("Error fetching unified services string:");
+			e.printStackTrace();
 		}
-		return fetchedServices.toString();
-=======
-	String sql= "SELECT Service_Name FROM services WHERE GYM_Gym_code=" + "'" + gymCode + "'";
-	try (Connection con= SQLConnector.getConnection();
-			Statement stm= con.createStatement();){
-		ResultSet res= stm.executeQuery(sql);
-		ArrayList<Services> fetchedServices= new ArrayList<>();
-		while(res.next()) {
-			Services currentService= new Services(
-					res.getString("Service_name"),
-					res.getInt("GYM_Gym_code")
-											);
-			fetchedServices.add(currentService);
-		}
-		
-		StringBuilder sb= new StringBuilder();
-		for(Services s : fetchedServices) {
-			sb.append(s.getServiceName());
-		}
-		return sb.toString();
->>>>>>> 2e717d2 (Pull Request)
-	}catch(SQLException e) {
-		e.printStackTrace();
+		return ""; 
 	}
-	return ""; // nothing was found => we return null
-}
 }

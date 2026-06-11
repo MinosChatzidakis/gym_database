@@ -7,7 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class SessionDBUtils {
+public  class SessionDBUtils {
 	public static ArrayList<Session> searchSessions(SessionSearch s) {
 	    String gymServices = ServicesDBUtils.getUnifiedServicesByGymCode(s.getPreferredGymCode()); // get the services this specific gym offers
 	    String requestedServices = s.getAdditionalServices(); // get the services the customer is requesting

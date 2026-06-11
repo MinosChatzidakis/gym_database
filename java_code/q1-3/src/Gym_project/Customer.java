@@ -8,7 +8,6 @@ public class Customer {
 	 private String phone;
 	 private int gymCode;
 
-
 	 public Customer(int customerID ,String name, String email, String phone, int gymCode) {
 		 this.customerID = customerID;
 		 this.name = name;

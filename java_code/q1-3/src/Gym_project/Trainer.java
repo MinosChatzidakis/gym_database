@@ -5,15 +5,17 @@ public class Trainer {
 	    
 	    private int trainerID;
 	    private String name;
+	    private String surname;
 	    private String specialty;
 	    private String phone;
 	    private String email;
 	    private int gymCode;
 	    
 	    
-	    public Trainer(int trainerID, String name, String email, String phone, int gymCode , String specialty) {
+	    public Trainer(int trainerID, String name, String surname ,String email, String phone, int gymCode , String specialty) {
 	    	this.trainerID = trainerID;
 	        this.name = name;
+	        this.surname = surname;
 	        this.email = email;
 	        this.phone = phone;
 			this.specialty = specialty;
@@ -42,6 +44,19 @@ public class Trainer {
 			}
 	        this.name = name;
 	    }
+	    
+	    public String getSurname() {
+	        return surname;
+	    }
+	    
+	    public void setSurname(String surname) {
+			if(surname==null || surname.length() == 0){
+			throw new IllegalArgumentException("The surname field cant be empty.");
+			}
+	        this.surname = surname;
+	    }
+	    
+	    
 	    public String getEmail() { 
 	        return email; 
 	    }

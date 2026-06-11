@@ -11,7 +11,6 @@ public class Main {
 		Scanner scanner = new Scanner(System.in);
 		boolean isRunning = true;
 		
-		
 		while (isRunning) {
 			System.out.println("\nMenu: ");
 			System.out.println("1. Admin");
@@ -19,37 +18,46 @@ public class Main {
 			System.out.println("0. Exit System");
 			System.out.println("Select an option (0-2): ");
 			
-			int  choice = scanner.nextInt();
+			int choice = scanner.nextInt();
 			scanner.nextLine();
 			
 			switch (choice) {
 				case 1:
-					SessionDBUtils.testQuery();
-					//adminMenu(scanner);
+					//SessionDBUtils.testQuery();
+					adminMenu(scanner);
 					break;
 					
 				case 2:
 					customerMenu(scanner);
 					break;
 					
+				case 0: 
+			        System.out.println("Exiting system. Goodbye!");
+			        isRunning = false; 
+			        break;
+			        
+			    default: 
+			        System.out.println("Invalid choice. Please select 0, 1, or 2.");
+					
 			}
 		}
 	}
-	
 	
 	private static void adminMenu(Scanner scanner) {
 		boolean adminRunning = true;
 		while(adminRunning) {
 			System.out.println("1. Insert new Data");
-			System.out.println("2. Search Gyms");
-			System.out.println("3. Search Trainers");
-			System.out.println("4. View Reserved Sessions");
-			System.out.println("5. View Pending Reservations");
-			System.out.println("6. Search Available Sessions");
-			System.out.println("7. Excecute New Reservation");
-			System.out.println("8. Update Reservations/Payments");
-			System.out.println("9. Check Unpaid Reservations");
-			System.out.println("10. Manage Cancelled Reservations");
+			System.out.println("2. Update Data");
+			System.out.println("3. Delete Data");
+			System.out.println("4. Search Gyms");
+			System.out.println("5. Search Trainers");
+			System.out.println("6. View Reserved Sessions");
+			System.out.println("7. View Pending Reservations");
+			System.out.println("8. Search Available Sessions");
+			System.out.println("9. Excecute New Reservation");
+			System.out.println("10. Update Reservations/Payments");
+			System.out.println("11. Check Unpaid Reservations");
+			System.out.println("12. Manage Cancelled Reservations");
 			System.out.println("0. Back to Main Menu");
 			
 			int choice2 = scanner.nextInt();
@@ -59,6 +67,15 @@ public class Main {
 				case 1:
 					insertDataMenu(scanner);
 					break;
+				case 2:
+					updateDataMenu(scanner);
+					break;
+				case 3:
+					deleteDataMenu(scanner);
+					break;
+				case 0:
+					return;
+					
 			}
 		}
 	}
@@ -78,7 +95,7 @@ public class Main {
 			
 			switch (choice) {
 				case 1:
-					System.out.println("\n Search Gyms");
+					System.out.println("\nSearch Gyms");
 					searchAndDisplayGyms();
 					break;
 				case 2:
@@ -111,10 +128,12 @@ public class Main {
 		switch(choice3) {
 			case 1:
 				System.out.println("\nAdd New Gym");
-				
+				addGym(scanner);
+				break;
 			case 2:
 				System.out.println("\nAdd New Trainer");
-				
+				addTrainer(scanner);
+				break;
 			case 3:
 				System.out.println("\n[-- Add New Session --]");
 			case 4:
@@ -126,6 +145,96 @@ public class Main {
 			case 6:
                 System.out.println("\n[-- Add New Payment --]");
                 
+			case 0:
+                System.out.println("Returning to Main Menu...");
+                break;
+                
+            default: 
+            	System.out.println("Invalid option. Returning to Main Menu.");
+		}
+	}
+	
+	private static void updateDataMenu(Scanner scanner) {
+		System.out.println("\nUpdate Data");
+		System.out.println("1. Gym");
+		System.out.println("2. Trainers");
+		System.out.println("3. Sessions");
+		System.out.println("4. Customers");
+		System.out.println("5. Reservations");
+		System.out.println("6. Reservation Payments");
+		System.out.println("0. Back to Main Menu");
+		
+		System.out.println("Select an option (0-6):");
+		
+		int choice3 = scanner.nextInt();
+		scanner.nextLine();
+		
+		switch(choice3) {
+			case 1:
+				System.out.println("\nUpdate Gym");
+				updateGym(scanner); 
+				break;
+			case 2:
+				System.out.println("\nUpdate Trainer");
+				updateTrainer(scanner);
+				break;
+			case 3:
+				System.out.println("\n[-- Update Session --]");
+				break;
+			case 4:
+                System.out.println("\n[-- Update Customer --]");
+                break;
+			case 5:
+                System.out.println("\n[-- Update Reservation --]");
+                break;
+			case 6:
+                System.out.println("\n[-- Update Payment --]");
+                break;
+			case 0:
+                System.out.println("Returning to Main Menu...");
+                break;
+                
+            default: 
+            	System.out.println("Invalid option. Returning to Main Menu.");
+		}
+	}
+	
+	private static void deleteDataMenu(Scanner scanner) {
+		System.out.println("\nDelete Data");
+		System.out.println("1. Gym");
+		System.out.println("2. Trainers");
+		System.out.println("3. Sessions");
+		System.out.println("4. Customers");
+		System.out.println("5. Reservations");
+		System.out.println("6. Reservation Payments");
+		System.out.println("0. Back to Main Menu");
+		
+		System.out.println("Select an option (0-6):");
+		
+		int choice3 = scanner.nextInt();
+		scanner.nextLine();
+		
+		switch(choice3) {
+			case 1:
+				System.out.println("\nDelete Gym");
+				deleteGym(scanner); 
+				break;
+			case 2:
+				System.out.println("\nDelete Trainer");
+				deleteTrainer(scanner);
+				break;
+			case 3:
+				System.out.println("\n[-- Delete Session --]");
+				break;
+			case 4:
+                System.out.println("\n[-- Delete Customer --]");
+                break;
+			case 5:
+                System.out.println("\n[-- Delete Reservation --]");
+                break;
+			case 6:
+                System.out.println("\n[-- Delete Payment --]");
+                break;
 			case 0:
                 System.out.println("Returning to Main Menu...");
                 break;
@@ -279,8 +388,6 @@ public class Main {
 			
 			
 			
-			
-			
 		}
 		
 		
@@ -289,22 +396,294 @@ public class Main {
 	private static void searchAndDisplayGyms() {
 		System.out.println("\n Λίστα Γυμναστηρίων");
 		
-		ArrayList<Gym> gyms = GymDBUtils.getAllGymsSortedByCity();
+			ArrayList<Gym> gyms = GymDBUtils.getAllGymsSortedByCity();
 		
-		if(gyms ==null || gyms.isEmpty()) {
-			System.out.println("No gyms were found");
+			if(gyms ==null || gyms.isEmpty()) {
+				System.out.println("No gyms were found");
 			
-		}else {
-			System.out.printf("%-15s | %-20s | %-25s | %-15s | %-30s\n", 
+			}else {
+					System.out.printf("%-15s | %-20s | %-25s | %-15s | %-30s\n", 
                     "City", "Name", "Address", "Phone", "Services");
 			
-			for (Gym g : gyms) {
+				for (Gym g : gyms) {
 	            
-	            System.out.printf("%-15s | %-20s | %-25s | %-15s | %-30s\n",
+	            	System.out.printf("%-15s | %-20s | %-25s | %-15s | %-30s\n",
 	                g.getCity(), g.getName(), g.getAddress(), g.getPhone(), g.getServices());
-	        }
-		}
+				}
+			}
 		
+		
+
 	}
 
+	public static void addGym(Scanner scanner) {
+		System.out.println("--- Insert New Gym ---");
+    
+    	System.out.print("Enter Name: ");
+    	String name = scanner.nextLine();
+    	
+    	System.out.print("Enter Address: ");
+    	String address = scanner.nextLine();
+    
+    	System.out.print("Enter City: ");
+    	String city = scanner.nextLine();
+    
+    	System.out.print("Enter Phone: ");
+    	String phone = scanner.nextLine();
+    	
+    	System.out.print("Enter Email: ");
+    	String email = scanner.nextLine();
+    
+    	// Περνάμε 0 ως ID, καθώς θα παραχθεί αυτόματα από τη MySQL
+    	Gym newGym = new Gym(city, "None", address, name, email, phone, 0);
+    
+    	// Κλήση της GymDBUtils
+    	GymDBUtils.addGym(newGym);
+	}
+
+
+	public static void updateGym(Scanner scanner) {
+		System.out.println("--- Update Gym Data ---");
+    
+		System.out.print("Enter Gym Code to modify (gym_code): ");
+		int gymCode = scanner.nextInt();
+		scanner.nextLine(); // Καθαρισμός του buffer
+    
+		// Έλεγχος αν το γυμναστήριο υπάρχει όντως στη βάση πριν ζητήσουμε τα νέα στοιχεία
+		Gym existingGym = GymDBUtils.getGymById(gymCode);
+		if (existingGym == null) {
+			System.out.println("No gym was found with this code.");
+			return;
+		}
+    
+		boolean subRunning = true;
+		while (subRunning) {
+			System.out.println("\n--- Current Gym Data ---");
+			System.out.println("Name: " + existingGym.getName());
+			System.out.println("Address: " + existingGym.getAddress());
+			System.out.println("City: " + existingGym.getCity());
+			System.out.println("Phone: " + existingGym.getPhone());
+        	System.out.println("Email: " + existingGym.getEmail());
+        	System.out.println("-------------------------------------");
+        
+        	System.out.println("Which field do you want to modify?");
+        	System.out.println("1. Name");
+        	System.out.println("2. Address");
+        	System.out.println("3. City");
+        	System.out.println("4. Phone");
+        	System.out.println("5. Email");
+        	System.out.println("0. Save Changes & Exit");
+        	System.out.print("Choice (0-5): ");
+        
+        	int subChoice = scanner.nextInt();
+        	scanner.nextLine(); // Καθαρισμός του buffer
+        
+        	switch (subChoice) {
+            	case 1:
+                	System.out.print("Enter New Name: ");
+                	existingGym.setName(scanner.nextLine());
+                	break;
+            	case 2:
+                	System.out.print("Enter New Address: ");
+                	existingGym.setAddress(scanner.nextLine());
+                	break;
+            	case 3:
+                	System.out.print("Enter New City: ");
+                	existingGym.setCity(scanner.nextLine());
+                	break;
+            	case 4:
+                	System.out.print("Enter New Phone: ");
+                	existingGym.setPhone(scanner.nextLine());
+                	break;
+            	case 5:
+                	System.out.print("Enter New Email: ");
+                	existingGym.setEmail(scanner.nextLine());
+                	break;
+            	case 0:
+                	System.out.println("Saving changes to the database...");
+                	subRunning = false; // Σπάει το while loop
+                	break;
+            	default:
+                	System.out.println("Invalid choice. Please try again.");
+        	}
+    	}
+    
+    	// Κλήση της GymDBUtils ΜΙΑ ΦΟΡΑ στο τέλος, αφού ο χρήστης πάτησε 0 και βγήκε
+    	GymDBUtils.updateGym(existingGym);
+	}
+
+ 
+	public static void deleteGym(Scanner scanner) {
+		System.out.println("--- Delete Gym ---");
+    
+		System.out.print("Enter Gym Code to delete (gym_code): ");
+		int gymCode = scanner.nextInt();
+		scanner.nextLine(); // Καθαρισμός του buffer
+    
+		// Έλεγχος αν το γυμναστήριο υπάρχει στη βάση
+		Gym existingGym = GymDBUtils.getGymById(gymCode);
+		if (existingGym == null) {
+			System.out.println("No gym was found with this code.");
+			return;
+		}
+    
+    	// Επιβεβαίωση διαγραφής
+    	System.out.println("You are about to delete the gym: " + existingGym.getName() + " in " + existingGym.getCity());
+    	System.out.print("Are you sure? This action cannot be undone! (Y/N): ");
+    	String confirm = scanner.nextLine().trim().toUpperCase();
+    
+    	if (confirm.equals("Y")) {
+    		GymDBUtils.deleteGym(gymCode);// Κλήση της GymDBUtils για τη διαγραφή
+    	} else {
+    		System.out.println("Deletion cancelled.");
+    	}
+	}
+
+	public static void addTrainer(Scanner scanner) {
+	    System.out.println("--- Insert New Trainer ---");
+	    
+	    System.out.print("Enter First Name: ");
+	    String name = scanner.nextLine();
+	    
+	    System.out.print("Enter Surname: ");
+	    String surname = scanner.nextLine(); // Collected the surname
+	    
+	    System.out.print("Enter Specialty: ");
+	    String specialty = scanner.nextLine();
+	    
+	    System.out.print("Enter Phone: ");
+	    String phone = scanner.nextLine();
+	    
+	    System.out.print("Enter Email: ");
+	    String email = scanner.nextLine();
+	    
+	    System.out.print("Enter Gym Code where this trainer works: ");
+	    int gymCode = scanner.nextInt();
+	    scanner.nextLine(); // Clear scanner buffer
+
+	    // Check if the target gym exists to protect database integrity
+	    if (GymDBUtils.getGymById(gymCode) == null) {
+	        System.out.println("Error: No gym exists with code " + gymCode + ". Trainer insertion aborted.");
+	        return;
+	    }
+	    
+	    // Creating the Trainer object with the surname included
+	    Trainer newTrainer = new Trainer(0, name, surname, email, phone, gymCode, specialty);
+	    
+	    // Dispatch to Database utilities
+	    TrainerDBUtils.addTrainer(newTrainer);
+	}
+
+	public static void updateTrainer(Scanner scanner) {
+    System.out.println("--- Update Trainer Data ---");
+    
+    System.out.print("Enter Trainer ID to modify: ");
+    int trainerId = scanner.nextInt();
+    scanner.nextLine(); // Καθαρισμός του buffer
+    
+    // Αναζήτηση του προπονητή στη βάση δεδομένων
+    Trainer existingTrainer = TrainerDBUtils.getTrainerByID(trainerId);
+    if (existingTrainer == null) {
+        System.out.println("No trainer was found with this ID.");
+        return;
+    }
+    
+    boolean subRunning = true;
+    while (subRunning) {
+        System.out.println("\n--- Current Trainer Data ---");
+        System.out.println("1. First Name: " + existingTrainer.getName());
+        System.out.println("2. Surname: " + existingTrainer.getSurname());
+        System.out.println("3. Specialty: " + existingTrainer.getSpecialty());
+        System.out.println("4. Phone: " + existingTrainer.getPhone());
+        System.out.println("5. Email: " + existingTrainer.getEmail());
+        System.out.println("6. Gym Code: " + existingTrainer.getGymCode());
+        System.out.println("-------------------------------------");
+        
+        System.out.println("Which field do you want to modify?");
+        System.out.println("1. First Name");
+        System.out.println("2. Surname");
+        System.out.println("3. Specialty");
+        System.out.println("4. Phone");
+        System.out.println("5. Email");
+        System.out.println("6. Gym Code");
+        System.out.println("0. Save Changes & Exit");
+        System.out.print("Choice (0-6): ");
+        
+        int subChoice = scanner.nextInt();
+        scanner.nextLine(); // Καθαρισμός του buffer
+        
+        switch (subChoice) {
+            case 1:
+                System.out.print("Enter New First Name: ");
+                existingTrainer.setName(scanner.nextLine());
+                break;
+            case 2:
+                System.out.print("Enter New Surname: ");
+                existingTrainer.setSurname(scanner.nextLine());
+                break;
+            case 3:
+                System.out.print("Enter New Specialty: ");
+                existingTrainer.setSpecialty(scanner.nextLine());
+                break;
+            case 4:
+                System.out.print("Enter New Phone: ");
+                existingTrainer.setPhone(scanner.nextLine());
+                break;
+            case 5:
+                System.out.print("Enter New Email: ");
+                existingTrainer.setEmail(scanner.nextLine());
+                break;
+            case 6:
+                System.out.print("Enter New Gym Code: ");
+                int newGymCode = scanner.nextInt();
+                scanner.nextLine(); // Καθαρισμός του buffer
+                
+                // Έλεγχος ακεραιότητας: Υπάρχει το νέο γυμναστήριο;
+                if (GymDBUtils.getGymById(newGymCode) == null) {
+                    System.out.println("Error: Target gym does not exist. Gym Code not changed.");
+                } else {
+                    existingTrainer.setGymCode(newGymCode);
+                }
+                break;
+            case 0:
+                System.out.println("Saving changes to the database...");
+                subRunning = false;
+                break;
+            default:
+                System.out.println("Invalid choice. Please try again.");
+        	}
+    	}
+    
+    	// Κλήση της TrainerDBUtils για την εκτέλεση του UPDATE
+    	TrainerDBUtils.updateTrainer(existingTrainer);
+	}
+	
+	public static void deleteTrainer(Scanner scanner) {
+	    System.out.println("--- Delete Trainer ---");
+	    
+	    System.out.print("Enter Trainer ID to delete: ");
+	    int trainerId = scanner.nextInt();
+	    scanner.nextLine(); // Καθαρισμός του buffer
+	    
+	    // ΔΙΟΡΘΩΘΗΚΕ: Έλεγχος αν ο προπονητής υπάρχει στη βάση με τη σωστή μέθοδο
+	    Trainer existingTrainer = TrainerDBUtils.getTrainerByID(trainerId);
+	    if (existingTrainer == null) {
+	        System.out.println("No trainer was found with this ID.");
+	        return;
+	    }
+	    
+	    // ΔΙΟΡΘΩΘΗΚΕ: Επιβεβαίωση διαγραφής με τα σωστά στοιχεία του προπονητή
+	    System.out.println("You are about to delete the trainer: " + existingTrainer.getName() + " " + existingTrainer.getSurname() + " (" + existingTrainer.getSpecialty() + ")");
+	    System.out.print("Are you sure? This action cannot be undone! (Y/N): ");
+	    String confirm = scanner.nextLine().trim().toUpperCase();
+	    
+	    if (confirm.equals("Y")) {
+	        // Κλήση της TrainerDBUtils για τη διαγραφή
+	        TrainerDBUtils.deleteTrainer(trainerId);
+	    } else {
+	        System.out.println("Deletion cancelled.");
+	    }
+	}
+	
 }
+
