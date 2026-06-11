@@ -1,6 +1,12 @@
 //Minos
 package Gym_project;
+
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -40,6 +46,7 @@ public abstract class GymDBUtils {
 	}
 	
 	public static ArrayList<Gym> getGymsByCity(String city) {
+<<<<<<< HEAD
         
         
         
@@ -47,6 +54,9 @@ public abstract class GymDBUtils {
         
         
         
+=======
+        String sqlQuery= ("SELECT * FROM gym WHERE city = '" + city + "'");
+>>>>>>> 2e717d2 (Pull Request)
         try (Connection con= SQLConnector.getConnection();
                 Statement stm= con.createStatement();){
             ResultSet res= stm.executeQuery(sqlQuery);
@@ -54,7 +64,11 @@ public abstract class GymDBUtils {
             while(res.next()) {
                 Gym currentGym = new Gym(
                         res.getString("city"),
+<<<<<<< HEAD
                         res.getString("unified_services"),
+=======
+                        res.getString("services"),
+>>>>>>> 2e717d2 (Pull Request)
                         res.getString("address"),
                         res.getString("name"),
                         res.getString("email"),
@@ -71,6 +85,7 @@ public abstract class GymDBUtils {
         return null; // nothing was found => we return null
     }
 	
+<<<<<<< HEAD
 	public static ArrayList<Gym> getAllGymsSortedByCity() { //returns all gyms ordered by city and attaches their provided services
 	    ArrayList<Gym> gyms = new ArrayList<>();
 	    
@@ -111,6 +126,59 @@ public abstract class GymDBUtils {
 	    }
 	    
 	    return null;
+=======
+	public static ArrayList<Gym> getAllGymsSortedByCity() {
+		ArrayList<Gym> gyms = new ArrayList<>();
+		
+		String sqlQuery = "SELECT * FROM gym ORDER BY city ASC";
+		
+		try (Connection conn = SQLConnector.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sqlQuery);
+			ResultSet res = pstmt.executeQuery()){
+			
+			while (res.next()) {
+				Gym currentGym = new Gym(
+						res.getString("city"),
+						res.getString("services"), 
+						res.getString("address"),
+						res.getString("name"),
+						res.getString("email"),
+						res.getString("phone"),
+						res.getInt("gym_Code")
+					);
+				gyms.add(currentGym);
+			}
+			return gyms;
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
+	public static Gym getGymById(int id) {
+		String sqlQuery= ("SELECT * FROM gym WHERE gym_code = '" + id + "'" + "LIMIT 1;");
+		try (Connection con= SQLConnector.getConnection();
+				Statement stm= con.createStatement();){
+			ResultSet res= stm.executeQuery(sqlQuery);
+			Gym fetchedGym= null;
+			while(res.next()) {
+				fetchedGym= new Gym(
+						res.getString("city"),
+						ServicesDBUtils.getUnifiedServicesByGymCode(id),
+						res.getString("address"),
+						res.getString("name"),
+						res.getString("email"),
+						res.getString("phone"),
+						res.getInt("Gym_code")
+						);
+			}
+			return fetchedGym;
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return null; // nothing was found => we return null
+>>>>>>> 2e717d2 (Pull Request)
 	}
 
 

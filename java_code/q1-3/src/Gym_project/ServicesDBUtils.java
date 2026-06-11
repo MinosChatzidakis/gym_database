@@ -29,6 +29,7 @@ public abstract class ServicesDBUtils {
 
 
 public static String getUnifiedServicesByGymCode(int gymCode){
+<<<<<<< HEAD
 	String sql= "SELECT * FROM services WHERE gym_Gym_Code=" + "'" + gymCode + "';";
 	try (Connection con= SQLConnector.getConnection();
 			Statement stm= con.createStatement();){
@@ -38,6 +39,26 @@ public static String getUnifiedServicesByGymCode(int gymCode){
 			fetchedServices.append(", ").append(res.getString("service_Name"));
 		}
 		return fetchedServices.toString();
+=======
+	String sql= "SELECT Service_Name FROM services WHERE GYM_Gym_code=" + "'" + gymCode + "'";
+	try (Connection con= SQLConnector.getConnection();
+			Statement stm= con.createStatement();){
+		ResultSet res= stm.executeQuery(sql);
+		ArrayList<Services> fetchedServices= new ArrayList<>();
+		while(res.next()) {
+			Services currentService= new Services(
+					res.getString("Service_name"),
+					res.getInt("GYM_Gym_code")
+											);
+			fetchedServices.add(currentService);
+		}
+		
+		StringBuilder sb= new StringBuilder();
+		for(Services s : fetchedServices) {
+			sb.append(s.getServiceName());
+		}
+		return sb.toString();
+>>>>>>> 2e717d2 (Pull Request)
 	}catch(SQLException e) {
 		e.printStackTrace();
 	}
