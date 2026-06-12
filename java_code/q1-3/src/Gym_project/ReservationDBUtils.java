@@ -93,5 +93,26 @@ public class ReservationDBUtils {
 			e.printStackTrace();
 		}
 	}
+	
+	public static boolean cancelReservationInDB(int resCode) {
+		String updateResSql = "UPDATE reservation SET reservation_Status = 'CANCELLED' WHERE reservation_Code = " + resCode + ";";
+		
+		String updateSessionSql = "UPDATE session "
+								+ "SET availability = 1 "
+								+ "WHERE session_Code = (SELECT session_Session_Code FROM reservation WHERE reservation_Code = " + resCode + ")";
+		
+		try (Connection conn = SQLConnector.getConnection();
+				Statement stm = conn.createStatement()){
+			
+			int rowsAffected = stm.executeUpdate(updateResSql);
+			if (rowsAffected > 0) {
+				stm.executeUpdate(updateSessionSql);
+				return true;
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 }
 
