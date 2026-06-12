@@ -8,33 +8,31 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class ReservationDBUtils {
-	public static int addReservationAndGetCode(Reservation r) {
-		
-		int invoiceVal = r.getInvoiceNeeded() ? 1 : 0;
-		String sqlQuery= "INSERT INTO reservation (date_And_Time, invoice_Needed, reservation_Status, session_Session_Code, customer_Customer_ID) VALUES ('"
-				+ r.getDateAndTime() + "', "
-				+ invoiceVal + ", '"
-				+ r.getReservationStatus().name() + "', "
-				+ r.getSessionCode() + ", "
-				+ r.getcustomerID() + ")";
-		
-		try{
-			Connection conn = SQLConnector.getConnection(); //establish connection via the class we created
-			Statement stm= conn.createStatement();
-			int rowsAffected= stm.executeUpdate(sqlQuery, Statement.RETURN_GENERATED_KEYS); //run the query on the database and store amount of rows affected by it
-			if(rowsAffected>0) {
-				//System.out.println("Reservation was successfully added to db.");
-				try (ResultSet generatedKeys = stm.getGeneratedKeys()){
-					if(generatedKeys.next()) {
-						return generatedKeys.getInt(1);
-					}	
-				}
-			}	
-		}catch(SQLException e) {
-			System.out.println("Error in adding reservation to db:");
-			e.printStackTrace();
-		}
-		return -1;
+	public static int addReservationAndGetCode(Reservation r) throws SQLException {
+	    
+	    int invoiceVal = r.getInvoiceNeeded() ? 1 : 0;
+	    String sqlQuery = "INSERT INTO reservation (date_And_Time, invoice_Needed, reservation_Status, session_Session_Code, customer_Customer_ID) VALUES ('"
+	            + java.sql.Timestamp.valueOf(r.getDateAndTime()) + "', " // Converted to SQL date format safely
+	            + invoiceVal + ", '"
+	            + r.getReservationStatus().name() + "', "
+	            + r.getSessionCode() + ", "
+	            + r.getcustomerID() + ")";
+	    try (Connection conn = SQLConnector.getConnection();
+	         Statement stmt = conn.createStatement()) {
+	        
+	        // Execute and request generated keys
+	        stmt.executeUpdate(sqlQuery, Statement.RETURN_GENERATED_KEYS);
+	        
+	       
+	        try (ResultSet rs = stmt.getGeneratedKeys()) {
+	            if (rs.next()) {
+	                return rs.getInt(1);  // retrieve the key
+	            } else {
+	                // Throw an error if the DB fails to generate a key
+	                throw new SQLException("Reservation inserted, but no reservation code was generated.");
+	            }
+	        }
+	    }
 	}
 	
 	public static ArrayList<Reservation> getActiveReservations() {
@@ -76,8 +74,7 @@ public class ReservationDBUtils {
 		}
 		return null;
 	}
-	
-	
+
 	public static void updateReservationStatus(int id, ReservationStatus status) {
 		String sql= "UPDATE reservation SET reservation_Status = '"+status+"' WHERE reservation_Code = " +id+";";
 		try(Connection conn = SQLConnector.getConnection(); //establish connection via the class we created
@@ -85,7 +82,7 @@ public class ReservationDBUtils {
 			int rowsAffected= stm.executeUpdate(sql);
 			 
 			if(rowsAffected>0) {
-				System.out.println("");
+				System.out.println("Reservation was added to db successfully");
 			}else {
 				System.out.println("Something went wrong and the reservation could not be added to db.");
 			}
@@ -93,5 +90,65 @@ public class ReservationDBUtils {
 			e.printStackTrace();
 		}
 	}
+	
+	public static void cancelMultipleReservations(String reservationIds) throws SQLException {
+	    //if no IDs were passed => return
+		if (reservationIds == null || reservationIds.length() == 0) {
+	        System.out.println("No IDs provided.");
+	        return;
+	    }
+	    String sqlQuery = "UPDATE reservation SET reservation_Status = 'CANCELLED' WHERE reservation_Code IN (" + reservationIds + ")";
+
+	    try (Connection conn = SQLConnector.getConnection();
+	         Statement stmt = conn.createStatement()) {
+	        
+	        int rowsAffected = stmt.executeUpdate(sqlQuery);
+	        if(rowsAffected>0) {
+	        	System.out.println("Updated " + rowsAffected + " reservations successfully.");	        	
+	        }else System.out.println("No rows matches the criteria");
+	    }
+	}
+	
+	public static ArrayList<Reservation> getUnpaidReservations(){
+		String sql= "SELECT r.* FROM reservation r JOIN payment p ON p.reservation_Reservation_Code=r.reservation_Code JOIN session s ON s.session_Code=r.session_Session_Code WHERE p.payment_Status= 'PENDING' AND s.date_And_Time BETWEEN NOW() AND NOW() + INTERVAL 24 HOUR;";
+		ArrayList<Reservation> unpaidReservations= new ArrayList<>();
+		try(Connection conn= SQLConnector.getConnection();
+			Statement stm= conn.createStatement();){
+			
+			ResultSet res= stm.executeQuery(sql);
+			while(res.next()) {
+				Reservation currentReservation= new Reservation(
+						res.getInt("reservation_Code"),
+						res.getObject("date_And_Time", LocalDateTime.class),
+						res.getBoolean("invoice_Needed"),
+						ReservationStatus.valueOf(res.getString("reservation_Status").toUpperCase()),
+						res.getInt("session_Session_Code"),
+						res.getInt("customer_Customer_ID)")
+						);
+				unpaidReservations.add(currentReservation);
+			}
+			return unpaidReservations;
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return null;		
+	}
+	
+	public static ArrayList<Reservation> getCancelledReservations(){
+		String sql= "SELECT * FROM reservation WHERE reservation_Status = 'CANCELLED';";
+		ArrayList<Reservation> cancelledReservations= new ArrayList<>();
+		try (Connection conn= SQLConnector.getConnection();
+				Statement stm= conn.createStatement()){
+			ResultSet res= stm.executeQuery(sql);
+			while(res.next()) {
+				Reservation currRes= new Reservation(
+						//continue here
+						);
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 }
 

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class SessionDBUtils {
+	//search for sessions that match the search criteria	
 	public static ArrayList<Session> searchSessions(SessionSearch s) {
 	    String gymServices = ServicesDBUtils.getUnifiedServicesByGymCode(s.getPreferredGymCode()); // get the services this specific gym offers
 	    String requestedServices = s.getAdditionalServices(); // get the services the customer is requesting
@@ -86,23 +87,7 @@ public abstract class SessionDBUtils {
 	        return null; 
 	    }
 	}
-	
-	
-	public static void testQuery() {
-		String sqlQuery= "SELECT * FROM session WHERE availability = 1 AND gym_Gym_Code = 7516 AND session_Type = 'PILATES' AND date_And_Time LIKE '%16/06/2026%' AND trainer_Trainer_ID = 2;";
-		try {
-			Connection conn= SQLConnector.getConnection();
-			Statement stm= conn.createStatement();
-			ResultSet res= stm.executeQuery(sqlQuery);
-			while(res.next()) {
-				System.out.println(res.getInt("session_Code"));
-			}
-			System.out.println("Done");
-		}catch(SQLException e) {
-			e.printStackTrace();
-		}
-	}
-	
+
 	public static void checkAndUpdateAvailability(Session session) {
 		String countQuery = "SELECT COUNT(*) FROM reservation WHERE session_Session_Code = " + session.getSessionCode() 
         + " AND reservation_Status != 'CANCELLED';";
@@ -127,7 +112,23 @@ public abstract class SessionDBUtils {
 			e.printStackTrace();
 		}
 	}
+	
+	//remove a participant and check availability	
+	public static void freeUpSpaceInMultipleSessions(String sessionIds) throws SQLException{
+		//if no IDs were passed => return
+		if (sessionIds == null || sessionIds.length() == 0) {
+	        System.out.println("No IDs provided.");
+	        return;
+	    }
+		//remove one participant from each session and then check if it's still available
+		String sqlQuery = "UPDATE sessionn SET amount_Of_Participants= amount_Of_Participants -1, availability = CASE WHEN amount_Of<Participants < max_Participants THEN 1 WHEN amount_Of<Participants = max_Participants THEN 0 END WHERE session_Code IN (" + sessionIds + ");";
+	    try (Connection conn = SQLConnector.getConnection();
+	         Statement stmt = conn.createStatement()) {
+	        	
+	        int rowsAffected = stmt.executeUpdate(sqlQuery);
+	        if(rowsAffected>0) {
+	        	System.out.println("Updated " + rowsAffected + " sessions successfully.");	        	
+	        }else System.out.println("No rows matches the criteria");
+		    }
+	}
 }
-
-
-

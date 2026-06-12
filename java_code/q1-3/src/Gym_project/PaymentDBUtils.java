@@ -53,4 +53,37 @@ public abstract class PaymentDBUtils {
 		}
 		return null; // no pending payments were found
 	}
+	
+	// add payment to database
+	public static int addPayment(Payment p) throws SQLException {
+	    String dateValueForSQL;//handle the possibility of a null date
+	    if (p.getPaymentDate() == null) {
+	        dateValueForSQL = "NULL"; // SQL keyword for no data
+	    } else {
+	        dateValueForSQL = "'" + java.sql.Timestamp.valueOf(p.getPaymentDate()) + "'"; //actual date
+	    }
+	    
+	    String sqlQuery = "INSERT INTO payment (amount, payment_Method, payment_Date, payment_Status, reservation_Reservation_Code, pts_Transactions_Trans_ID) VALUES (" 
+	            + p.getAmount() + ", '" 
+	            + p.getPaymentMethod().name() + "', " 
+	            + dateValueForSQL + ", '" 
+	            + p.getPaymentStatus().name() + "', " 
+	            + p.getReservationCode() + ", " 
+	            + p.getTransID() + ")";
+
+	    try (Connection conn = SQLConnector.getConnection();
+	         Statement stmt = conn.createStatement()) {
+	        
+	        stmt.executeUpdate(sqlQuery, Statement.RETURN_GENERATED_KEYS);
+	        
+	        try (ResultSet rs = stmt.getGeneratedKeys()) {
+	            if (rs.next()) {
+	                return rs.getInt(1);
+	            } else {
+	                throw new SQLException("Payment inserted, but no ID was generated."); // no id recorded = throw error
+	            }
+	        } 
+	    } 
+	}
+	
 }
