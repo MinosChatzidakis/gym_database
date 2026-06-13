@@ -3,7 +3,6 @@ package Gym_project;
 import java.time.LocalDateTime ;
 
 public class Payment {
-
 	
 	private int paymentID;
 	private float amount;
@@ -25,7 +24,6 @@ public class Payment {
 		//this.paymentStatus = PaymentStatus.PENDING; -- consider this approach
 		this.paymentStatus = paymentStatus;
 	}
-	
 	
 	public int getPaymentID() {
 		return paymentID;
@@ -55,6 +53,10 @@ public class Payment {
 		return reservationCode;
 	}
 	
+	public void setReservationCode(int reservationCode) {
+		this.reservationCode = reservationCode;
+	}
+	
 	public int getTransID() {
 		return transID;
 	}
@@ -81,3 +83,7 @@ public class Payment {
 }
 
 
+	public void setPaymentStatus(String paymentStatus) {
+		this.paymentStatus = paymentStatus;
+	}
+}

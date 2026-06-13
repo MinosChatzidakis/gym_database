@@ -4,13 +4,14 @@ public class Customer {
 	
 	 private int customerID;
 	 private String name;
+	 private String surname;
 	 private String email;
 	 private String phone;
 	 private int gymCode;
 
-
-	 public Customer(int customerID ,String name, String email, String phone, int gymCode) {
+	 public Customer(int customerID , String surname , String name, String email, String phone, int gymCode) {
 		 this.customerID = customerID;
+		 this.surname = surname;
 		 this.name = name;
 		 this.email = email;
 		 this.phone = phone;
@@ -37,6 +38,18 @@ public class Customer {
 		}
 		 this.name = name;
 	 }
+	 
+	 public String getSurname() {
+		 return surname;
+	 }
+
+	 public void setSurname(String surname) {
+		 if(surname==null || surname.length() == 0){
+			throw new IllegalArgumentException("The surname field cant be empty.");
+		}
+		 this.surname = surname;
+	 }
+	 
 	 public String getEmail() { 
 		 return email; 
 	 }
