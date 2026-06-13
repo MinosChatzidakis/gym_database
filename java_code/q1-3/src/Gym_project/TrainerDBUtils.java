@@ -58,26 +58,6 @@ public class TrainerDBUtils {
 	    }
 	}
 	
-	public static void deleteTrainer(int id) {
-	    // ΔΙΟΡΘΩΘΗΚΕ: Στοχεύουμε πλέον σωστά τον πίνακα και το ID του προπονητή
-	    String sqlQuery = "DELETE FROM trainer WHERE trainer_id = " + id;
-	        
-	    try (Connection conn = SQLConnector.getConnection(); 
-	         Statement stm = conn.createStatement()) {
-	        
-	        int rowsAffected = stm.executeUpdate(sqlQuery);
-	        if (rowsAffected > 0) {
-	            System.out.println("The trainer was permanently deleted from the database.");
-	        } else {
-	            System.out.println("No trainer found with this ID to delete.");
-	        }
-	    } catch (SQLException e) {
-	        System.out.println("Error deleting trainer from database:");
-	        System.out.println("Note: If this trainer has active training sessions assigned, deletion might be restricted.");
-	        e.printStackTrace();
-	    }
-	}
-	
 	public static ArrayList<Trainer> getAllTrainers(){
 		String sqlQuery = "SELECT * FROM trainer ORDER BY specialty ASC";
 		try(Connection conn = SQLConnector.getConnection(); 

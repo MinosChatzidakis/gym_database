@@ -1,29 +1,25 @@
 package Gym_project;
 
 public class Payment {
-
 	
 	private int paymentID;
 	private int amount;
 	private String paymentMethod;
 	private String paymentDate;
-	private String reservationCode;
-	private PaymentStatus paymentStatus;
+	private int reservationCode; 
+	private String paymentStatus; 
 	private int transID;
 	
 	
-	
-	public Payment(int paymentID , int amount, String paymentMethod, String paymentDate, String reservationCode, int transID) {
-		
+	public Payment(int paymentID, int amount, String paymentMethod, String paymentDate, int reservationCode, int transID, String paymentStatus) {
 		this.paymentID = paymentID;
 		this.amount = amount;
 		this.paymentMethod = paymentMethod;
 		this.paymentDate = paymentDate;
 		this.reservationCode = reservationCode;
 		this.transID = transID;
-		this.paymentStatus = PaymentStatus.PENDING;
+		this.paymentStatus = paymentStatus;
 	}
-	
 	
 	public int getPaymentID() {
 		return paymentID;
@@ -49,8 +45,21 @@ public class Payment {
 		this.paymentMethod = paymentMethod;
 	}
 	
-	public String getReservationCode() {
+	public String getPaymentDate() {
+		return paymentDate;
+	}
+	
+	public void setPaymentDate(String paymentDate) {
+		this.paymentDate = paymentDate;
+	}
+
+	// ΠΡΟΣΘΗΚΗ: Getter & Setter για το Reservation Code ως int
+	public int getReservationCode() {
 		return reservationCode;
+	}
+	
+	public void setReservationCode(int reservationCode) {
+		this.reservationCode = reservationCode;
 	}
 	
 	public int getTransID() {
@@ -61,17 +70,12 @@ public class Payment {
 		this.transID = transID;
 	}
 	
-	public String getPaymentDate() {
-		return paymentDate;
-	}
-	
-	public void setPaymentDate(String paymentDate) {
-		this.paymentDate = paymentDate;
-	}
-	
-	public PaymentStatus getPaymentStatus() {
+	// ΠΡΟΣΘΗΚΗ: Getter & Setter για το Payment Status ως String
+	public String getPaymentStatus() {
 		return paymentStatus;
 	}
+
+	public void setPaymentStatus(String paymentStatus) {
+		this.paymentStatus = paymentStatus;
+	}
 }
-
-

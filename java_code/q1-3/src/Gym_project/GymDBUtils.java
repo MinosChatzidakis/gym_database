@@ -55,25 +55,6 @@ public class GymDBUtils {
 	    }
 	}
 	
-	public static void deleteGym(int id) {
-	    String sqlQuery = "DELETE FROM gym WHERE gym_code = " + id;
-	        
-	    try (Connection conn = SQLConnector.getConnection(); 
-	         Statement stm = conn.createStatement()) {
-	        
-	        int rowsAffected = stm.executeUpdate(sqlQuery);
-	        if (rowsAffected > 0) {
-	            System.out.println("The gym was permanently deleted from the database.");
-	        } else {
-	            System.out.println("No gym found with this code to delete.");
-	        }
-	    } catch (SQLException e) {
-	        System.out.println("Error deleting gym from database:");
-	        System.out.println("Note: If the gym has active trainers or customers assigned to it, deletion is restricted.");
-	        e.printStackTrace();
-	    }
-	}
-	
 	
 	public static ArrayList<Gym> getAllGyms() {
 		String sqlQuery = "SELECT * FROM gym ORDER BY city;";
