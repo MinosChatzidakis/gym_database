@@ -69,4 +69,11 @@ public class Reservation {
 		this.customerID = customerID;
 	}
 
+	public boolean isPast() {
+	    if (this.dateAndTime == null) {
+	        return false; 
+	    }
+
+	    return this.dateAndTime.isBefore(LocalDateTime.now());
+	}
 }

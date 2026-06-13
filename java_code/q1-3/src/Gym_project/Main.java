@@ -1,5 +1,6 @@
 package Gym_project;
 
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -79,7 +80,14 @@ public class Main {
 					
 					break;
 				case 1010:
+					handleUnpaidReservations();
+					//manuallyRecordPayment();
+					break;
+				case 1020:
 					manuallyRecordPayment();
+					break;
+				case 1030:
+					handleCancelledReservations();
 					break;
 				case 2:
 					System.out.println("\n Search Gyms");
@@ -451,21 +459,18 @@ public class Main {
 				if(generatedCustomerId > 0) {
 					
 					Reservation r = new Reservation(-1 , selectedSession.getDateAndTime(), invoice, reservationStatus, selectedSession.getSessionCode(), generatedCustomerId);
-					
-					int generatedReservationCode = ReservationDBUtils.addReservationAndGetCode(r);
-					
-					if (generatedReservationCode > 0) {
-						
+					try {
+						int generatedReservationCode = ReservationDBUtils.addReservationAndGetCode(r);
 						SessionDBUtils.checkAndUpdateAvailability(selectedSession);
 						r.setReservationCode(generatedReservationCode);
-						handlePayment(r, selectedSession, paymentMethod, paymentStatus); 
+						handleNewPayment(r, selectedSession, paymentMethod, paymentStatus); // create and store new payment 
 						
+					}catch(SQLException e) {
+						System.out.println("Error in recording reservation. Please try again later.");
+						return;
 					}
 				}
 			}
-			
-			
-			
 		}
 		
 	}
@@ -1292,16 +1297,23 @@ public class Main {
 	}
 
 	//user has accepted the session and the reservation has been created => proceed with the payment
-	private static void handlePayment(Reservation selectedReservation, Session selectedSession, PaymentMethods selectedPaymentMethod, PaymentStatus paymentStatus) {
-		Payment payment= new Payment(
+	private static void handleNewPayment(Reservation selectedReservation, Session selectedSession, PaymentMethods selectedPaymentMethod, PaymentStatus paymentStatus) {
+		Payment newPayment= new Payment(
 					selectedSession.getPrice(),
 					selectedPaymentMethod,
 					paymentStatus == PaymentStatus.CONFIRMED ? LocalDateTime.now() : null,
 					selectedReservation.getReservationCode(),
 					paymentStatus
 				);
-		//payment happens at the same time with the reservation
-		if(paymentStatus == PaymentStatus.CONFIRMED) {
+		try { // try adding payment to db
+			int newPaymentId= PaymentDBUtils.addPayment(newPayment); // add new payment to the database
+			newPayment.setPaymentID(newPaymentId); // update local payment instance with the id returned from the database
+		}catch(SQLException e) {
+			System.out.println("Something went worng in recording your payment. Please try again later");
+			return;
+		}
+		
+		if(paymentStatus == PaymentStatus.CONFIRMED) { // payment happens at the same time with the reservation
 			selectedReservation.setReservationStatus(ReservationStatus.COMPLETE);
 			ReservationDBUtils.updateReservationStatus(selectedReservation.getReservationCode(), ReservationStatus.COMPLETE); //update reservation status in the database
 		}
@@ -1440,5 +1452,59 @@ public class Main {
 	            }
 		}
 	}
+	
+	// cancel reservations that have not been paid on time
+	private static void handleUnpaidReservations() {
+		ArrayList<Reservation> unpaidReservations= ReservationDBUtils.getUnpaidReservations(); // get overdue reservations
+		System.out.println("Tomorrow's sessions that have not yet been paid for:\n---------------------------------------------------------------------\n");
+		if(unpaidReservations.isEmpty()) { // no incomplete reservations
+			System.out.println("No reservations found");
+		}
+		
+		StringBuilder resIdsString= new StringBuilder(); //reservation IDs for which a change must be made
+		StringBuilder sesIdsString= new StringBuilder(); //session IDs for which a change must be made
+		
+		for (Reservation ur : unpaidReservations){ // display all overdue reservations 
+			System.out.printf("%-15s | %-20s | %-25s | %-15s | %-30s\n",
+	                "ID: "+ur.getReservationCode(), "Reserv. Date: "+ur.getDateAndTime(), "Invoice needed: "+ur.getInvoiceNeeded(), "Status: "+ur.getReservationStatus().toString(), "Session Id:"+ur.getSessionCode(), "Customer ID: " + ur.getcustomerID());
+			resIdsString.append(ur.getReservationCode()).append(", "); //gather all IDs that need changing in their status
+			
+		}
+		resIdsString.delete(resIdsString.length()-2, resIdsString.length()); //remove trailing comma
+		resIdsString.delete(sesIdsString.length()-2, sesIdsString.length()); //remove trailing comma
+		try {
+			ReservationDBUtils.cancelMultipleReservations(resIdsString.toString()); // change reservation status to cancelled
+			SessionDBUtils.freeUpSpaceInMultipleSessions(sesIdsString.toString()); //  free space in session
+		}catch(SQLException e) {
+			System.out.println("An error occured while canceling unpaid reservations. Please try again later.");
+			return;
+		}
+		
+	}
+	
+	private static void handleCancelledReservations() {
+		ArrayList<Reservation> cancelledReservations= ReservationDBUtils.getCancelledReservations(); // get all cancelled reservations
+		//HashMap<Integer, Reservation> pastReservationsMap= new HashMap<>();
+		StringBuilder idSb= new StringBuilder();
+		Integer num=0;
+		for(Reservation r:cancelledReservations) {
+			System.out.printf("%-15s | %-20s | %-25s | %-15s | %-30s | %-15s | %-15s\n",
+	                ++num+"ID: "+r.getReservationCode(), "Reserv. Date: "+r.getDateAndTime(), "Invoice needed: "+r.getInvoiceNeeded(), "Status: "+r.getReservationStatus().toString(), "Session Id:"+r.getSessionCode(), "Customer ID: " + r.getcustomerID() + "Is passed: " + (r.isPast()?"YES":"NO"));
+			if(r.isPast()) { //if the reservation is cancelled and in the past, 
+				idSb.append(r.getReservationCode()).append(", ");
+			}
+		}
+		char letter;
+		do{ 
+			System.out.println("Delete past reservations? (Y/N)");
+			String choice= scanner.next();
+			letter= Character.toUpperCase(choice.charAt(0));
+		}while((letter!= 'Y' && letter != 'N') );
+		if(letter == 'Y') {
+			idSb.delete(idSb.length()-2, idSb.length()); //remove trailing comma
+			ReservationDBUtils.deleteReservationsById(idSb.toString());	
+		}
+	}
+
 	
 }
