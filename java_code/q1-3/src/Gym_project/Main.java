@@ -1021,13 +1021,14 @@ public class Main {
 	    String invoiceInput = scanner.nextLine().trim().toLowerCase();
 	    boolean invoice = invoiceInput.equals("y") || invoiceInput.equals("yes") || invoiceInput.equals("true");
 	    
-	    // Πιο φυσική ερώτηση για το Status (Now = Confirmed, Later = Pending)
+	    // Πιο φυσική ερώτηση για το Status (Now = COMPLETE, Later = PENDING)
 	    System.out.print("Will the customer pay now or later? (Type 'NOW' or 'LATER'): ");
 	    String paymentChoice = scanner.nextLine().trim().toUpperCase();
 	    
 	    String status;
 	    if (paymentChoice.equals("NOW")) {
-	        status = "CONFIRMED";
+	        status = "COMPLETE"; // ΔΙΟΡΘΩΘΗΚΕ: Έγινε COMPLETE για να ταιριάζει με το Enum σου!
+	        System.out.println("\n[!] Reminder: Don't forget to go to 'Add New Payment' immediately to record the transaction.");
 	    } else {
 	        status = "PENDING";
 	    }
@@ -1128,59 +1129,123 @@ public class Main {
 	}
 	
 	public static void addPayment() {
-	    System.out.println("\nCreate New Payment\n");
+	    System.out.println("\n--- Create New Payment ---\n");
 	    
 	    System.out.print("Please enter the Reservation Code for this payment: ");
 	    int reservationCode = scanner.nextInt();
-	    scanner.nextLine(); // Καθαρισμός buffer
+	    scanner.nextLine();
 	    
-	    // Έλεγχος αν η κράτηση υπάρχει
 	    Reservation existingRes = ReservationDBUtils.getReservationByID(reservationCode);
 	    if (existingRes == null) {
-	        System.out.println("Error: Reservation with Code " + reservationCode + " does not exist. Payment aborted.");
+	        System.out.println("Error: Reservation not found. Payment aborted.");
 	        return;
 	    }
 	    
-	    // --- ΝΕΑ ΛΟΓΙΚΗ: Αυτόματη άντληση του ποσού από το Session ---
-	    // Βρίσκουμε το Session που συνδέεται με αυτή την κράτηση
 	    Session bookedSession = SessionDBUtils.getSessionByID(existingRes.getSessionCode());
 	    if (bookedSession == null) {
-	        System.out.println("Error: The associated Session for this reservation could not be found. Payment aborted.");
+	        System.out.println("Error: The associated Session could not be found. Payment aborted.");
 	        return;
 	    }
-	    
-	    // Τραβάμε την τιμή αυτόματα και την τυπώνουμε
 	    int amount = bookedSession.getPrice();
-	    System.out.println("Amount to pay (retrieved from Session): $" + amount);
+	    System.out.println("Amount to pay (Auto-retrieved from Session): $" + amount);
 	    
-	    System.out.print("Enter Payment Method (e.g., CASH, CARD, BANK_TRANSFER): ");
-	    String paymentMethod = scanner.nextLine().toUpperCase();
+	    String paymentMethodStr = "";
+	    String paymentStatusStr = "";
 	    
-	    System.out.print("Enter Payment Status (e.g., COMPLETED, PENDING): ");
-	    String paymentStatus = scanner.nextLine().toUpperCase();
+	    String currentResStatus = existingRes.getReservationStatus().toUpperCase();
 	    
-	    // Για το transID, αν είναι PENDING μπορεί να μην έχει transaction id ακόμα, οπότε βάζουμε 0.
+	    // ΕΛΕΓΧΟΣ ΛΟΓΙΚΗΣ: Ταυτόχρονη Πληρωμή (COMPLETE) vs Ετεροχρονισμένη (PENDING)
+	    if (currentResStatus.equals("COMPLETE") || currentResStatus.equals("CONFIRMED")) {
+	        System.out.println("\n[Simultaneous Online Payment Detected]");
+	        System.out.println("Rule: For immediate payments, only CREDIT_CARD or BANK_TRANSFER are accepted.");
+	        
+	        boolean valid = false;
+	        while (!valid) {
+	            System.out.print("Enter Payment Method (CREDIT_CARD, BANK_TRANSFER): ");
+	            paymentMethodStr = scanner.nextLine().trim().toUpperCase();
+	            if (paymentMethodStr.equals("CREDIT_CARD") || paymentMethodStr.equals("BANK_TRANSFER")) {
+	                valid = true;
+	            } else {
+	                System.out.println("Invalid input. Cash is not accepted for online simultaneous payments.");
+	            }
+	        }
+	        
+	        // Η πληρωμή είναι αυτόματα CONFIRMED αφού γίνεται ταυτόχρονα
+	        paymentStatusStr = "CONFIRMED";
+	        System.out.println("Payment Status automatically set to: CONFIRMED");
+	        
+	    } else {
+	        System.out.println("\n[Deferred Payment / Pending Reservation Detected]");
+	        System.out.println("Rule: For pending reservations, all payment methods (including CASH) are accepted.");
+	        
+	        boolean valid = false;
+	        while (!valid) {
+	            System.out.print("Enter Payment Method (CASH, CREDIT_CARD, BANK_TRANSFER): ");
+	            paymentMethodStr = scanner.nextLine().trim().toUpperCase();
+	            if (paymentMethodStr.equals("CASH") || paymentMethodStr.equals("CREDIT_CARD") || paymentMethodStr.equals("BANK_TRANSFER")) {
+	                valid = true;
+	            } else {
+	                System.out.println("Invalid input. Please enter CASH, CREDIT_CARD, or BANK_TRANSFER.");
+	            }
+	        }
+	        
+	        System.out.print("Enter Payment Status (CONFIRMED, PENDING): ");
+	        paymentStatusStr = scanner.nextLine().trim().toUpperCase();
+	    }
+	    
 	    System.out.print("Enter Points Transaction ID (or 0 if none): ");
 	    int transID = scanner.nextInt();
-	    scanner.nextLine(); // Καθαρισμός buffer
+	    scanner.nextLine(); 
 	    
-	    // Αυτόματη καταγραφή ημερομηνίας/ώρας πληρωμής
 	    java.time.LocalDateTime now = java.time.LocalDateTime.now();
 	    java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 	    String paymentDate = now.format(formatter);
 	    System.out.println("Payment timestamp automatically recorded as: " + paymentDate);
 	    
-	    // Δημιουργία αντικειμένου Payment (0 για το AUTO_INCREMENT paymentID)
-	    Payment newPayment = new Payment(0, amount, paymentMethod, paymentDate, reservationCode, transID, paymentStatus);
-	    
-	    // Κλήση της βάσης
+	    // Δημιουργία Payment
+	    Payment newPayment = new Payment(0, amount, paymentMethodStr, paymentDate, reservationCode, transID, paymentStatusStr);
 	    PaymentDBUtils.addPayment(newPayment);
 	    
-	    if (paymentStatus.equals("COMPLETED")) {
-	        existingRes.setReservationStatus("CONFIRMED");
+	    // Αν η κράτηση ήταν PENDING και τώρα η πληρωμή έγινε CONFIRMED, αναβαθμίζουμε την κράτηση
+	    if (currentResStatus.equals("PENDING") && paymentStatusStr.equals("CONFIRMED")) {
+	        existingRes.setReservationStatus("COMPLETE"); 
 	        ReservationDBUtils.updateReservation(existingRes);
-	        System.out.println("Associated Reservation status automatically updated to CONFIRMED.");
+	        System.out.println("Associated Reservation status automatically updated to COMPLETE.");
 	    }
+	}
+	
+	public static void updatePayment() {
+	    System.out.println("\n--- Update Payment Data ---\n");
+	    
+	    System.out.print("Enter Payment ID to modify: ");
+	    int paymentId = scanner.nextInt();
+	    scanner.nextLine();
+	    
+	    Payment existingPayment = PaymentDBUtils.getPaymentByID(paymentId);
+	    if (existingPayment == null) {
+	        System.out.println("Error: Payment ID not found.");
+	        return;
+	    }
+	    
+	    System.out.println("\nCurrent Status: " + existingPayment.getPaymentStatus());
+	    System.out.print("Enter New Payment Status (CONFIRMED, PENDING) or press Enter to keep current: ");
+	    String newStatus = scanner.nextLine().trim().toUpperCase();
+	    
+	    if (!newStatus.isEmpty()) {
+	        existingPayment.setPaymentStatus(newStatus);
+	        
+	        // BUSINESS LOGIC: Αν άλλαξε σε CONFIRMED, πρέπει να ενημερώσουμε την κράτηση
+	        if (newStatus.equals(PaymentStatus.CONFIRMED.toString())) {
+	            Reservation existingRes = ReservationDBUtils.getReservationByID(existingPayment.getReservationCode());
+	            if (existingRes != null && existingRes.getReservationStatus().equalsIgnoreCase(ReservationStatus.PENDING.toString())) {
+	                existingRes.setReservationStatus(ReservationStatus.COMPLETE.toString());
+	                ReservationDBUtils.updateReservation(existingRes);
+	                System.out.println("Auto-Update: Associated Reservation changed to COMPLETE.");
+	            }
+	        }
+	    }
+	    
+	    PaymentDBUtils.updatePayment(existingPayment);
 	}
 	
 }
