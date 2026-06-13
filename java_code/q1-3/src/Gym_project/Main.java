@@ -89,6 +89,7 @@ public class Main {
 					SearchAvailableSessions();
 					break;
 				case 8:
+					System.out.println("\nUpdate Reservations/Payments");
 					updateReservationsOrPayments();
 				case 0:
 					return;
@@ -103,6 +104,7 @@ public class Main {
 			System.out.println("1. Search Gyms");
 			System.out.println("2. Search Trainers");
 			System.out.println("3. Search Available Sessions");
+			System.out.println("4. Cancel Reservation");
 			System.out.println("0. Logout / Back to Main Menu");
 			
 			int choice = scanner.nextInt();
@@ -121,6 +123,10 @@ public class Main {
 					System.out.println("\nSearch Available Sessions");
 					SearchAvailableSessions();
 					break;
+					
+				case 4:
+					System.out.println("\nCancel Reservations");
+					manageCustomerCancellation();
 				case 0: 
 					return;
 					
@@ -614,4 +620,37 @@ public class Main {
 		}
 	}
 	
+	private static void manageCustomerCancellation() {
+		System.out.println("Enter your phone Number: ");
+		String inputPhone = scanner.nextLine();
+		
+		ArrayList<Reservation> myReservations = ReservationDBUtils.displayReservationsByCustomerPhone(inputPhone);
+		
+		if(myReservations == null || myReservations.isEmpty()) {
+			System.out.println("No reservations found for: " + inputPhone);
+		}else {
+			
+			System.out.printf("%-18s | %-22s | %-12s \n", "Reservation Code","Reservation Date/Time", "Status");
+			
+			for (Reservation r : myReservations) {
+				System.out.printf("%-18s | %-22s | %-12s \n",
+						r.getReservationCode(),
+						r.getDateAndTime(),
+						r.getReservationStatus());
+			}
+		}
+		
+		System.out.println("Enter the Reservation Code you wish to Cancel: ");
+		int resCode = scanner.nextInt();
+		scanner.nextLine();
+		
+		boolean success = ReservationDBUtils.cancelReservationInDB(resCode);
+		
+		if (success) {
+			System.out.println("The reservation with Code: " + resCode + " was cancelled.");
+		}else {
+			System.out.println("Something went wrong. The reservation wasn't cancelled.");
+		}
+		
+	}
 }
