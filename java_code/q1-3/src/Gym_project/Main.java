@@ -33,10 +33,6 @@ public class Main {
 				case 2:
 					customerMenu();
 					break;
-				case 0:
-					isRunning = false;
-					break;
-					
 				case 0: 
 			        System.out.println("Exiting system. Goodbye!");
 			        isRunning = false; 
@@ -75,10 +71,6 @@ public class Main {
 				case 2:
 					updateDataMenu();
 					break;
-				case 0:
-					return;
-					
-					break;
 				case 1010:
 					handleUnpaidReservations();
 					//manuallyRecordPayment();
@@ -89,27 +81,27 @@ public class Main {
 				case 1030:
 					handleCancelledReservations();
 					break;
-				case 2:
+				case 3:
 					System.out.println("\n Search Gyms");
 					searchAndDisplayGyms();
 					break;
-				case 3:
+				case 4:
 					System.out.println("\nSearch Trainers");
 					searchAndDisplayTrainers();
 					break;
-				case 4:
+				case 5:
 					System.out.println("\nView Reserved Sessions");
 					viewActiveReservations(); 
 				    break;
-				case 5:
+				case 6:
 					System.out.println("\nView Pending Reservations");
 					manuallyRecordPayment(); 
 				    break;
-				case 6:
+				case 7:
 					System.out.println("\nSearch Available Sessions");
 					SearchAvailableSessions();
 					break;
-				case 8:
+				case 9:
 					System.out.println("\nUpdate Reservations/Payments");
 					updateReservationsOrPayments();
 				case 0:
@@ -844,16 +836,25 @@ public class Main {
 	    int duration = scanner.nextInt();
 	    
 	    System.out.print("Enter Price ($): ");
-	    int price = scanner.nextInt();
-	    scanner.nextLine(); // Καθαρισμός buffer
+	    float price = scanner.nextInt();
+	    scanner.nextLine(); 
 	    
 	    System.out.print("Enter Date and Time (e.g., DD/MM/YYYY HH:MM): ");
 	    String dateTime = scanner.nextLine();
 	    
+	    java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+	    java.time.LocalDateTime sessionDateTime;
+	    
+	    try {
+	        sessionDateTime = java.time.LocalDateTime.parse(dateTime, formatter);
+	    } catch (java.time.format.DateTimeParseException e) {
+	        System.out.println("❌ Error: Invalid date/time format. Session creation aborted.");
+	        return; 
+	    }
 	    System.out.print("Enter Gym Code for this session: ");
 	    int gymCode = scanner.nextInt();
 	    
-	    // Έλεγχος αν το γυμναστήριο υπάρχει
+	   
 	    if (GymDBUtils.getGymById(gymCode) == null) {
 	        System.out.println("Error: Gym with code " + gymCode + " does not exist. Session creation aborted.");
 	        return;
@@ -861,19 +862,18 @@ public class Main {
 	    
 	    System.out.print("Enter Trainer ID for this session: ");
 	    int trainerId = scanner.nextInt();
-	    scanner.nextLine(); // Καθαρισμός buffer
+	    scanner.nextLine(); 
 	    
-	    // Έλεγχος αν ο προπονητής υπάρχει
+	   
 	    if (TrainerDBUtils.getTrainerByID(trainerId) == null) {
 	        System.out.println("Error: Trainer with ID " + trainerId + " does not exist. Session creation aborted.");
 	        return;
 	    }
 	    
-	    // Δημιουργία αντικειμένου Session. 
-	    // 0 για το ID (AUTO_INCREMENT), true για τη διαθεσιμότητα (availability), 0 αρχικοί συμμετέχοντες
-	    Session newSession = new Session(0, type, description, maxPart, duration, price, true, trainerId, gymCode, dateTime, 0);
+	   
+	    Session newSession = new Session(0, type, description, maxPart, duration, price, 1, trainerId, gymCode, sessionDateTime, 0);
 	    
-	    // Κλήση της SessionDBUtils
+	    
 	    SessionDBUtils.addSession(newSession);
 	}
 	
@@ -882,9 +882,9 @@ public class Main {
 	    
 	    System.out.print("Enter Session Code to modify : ");
 	    int sessionCode = scanner.nextInt();
-	    scanner.nextLine(); // Καθαρισμός του buffer
+	    scanner.nextLine(); 
 	    
-	    //Αναζήτηση του Session 
+	    
 	    Session existingSession = SessionDBUtils.getSessionByID(sessionCode);
 	    if (existingSession == null) {
 	        System.out.println("No session was found with this Code.");
@@ -902,12 +902,12 @@ public class Main {
 	        System.out.println("6. Date & Time: " + existingSession.getDateAndTime());
 	        System.out.println("7. Gym Code: " + existingSession.getGymCode());
 	        System.out.println("8. Trainer ID: " + existingSession.getTrainerTrainerID());
-	        System.out.println("9. Availability: " + (existingSession.getAvailability() ? "Yes" : "No"));
+	        System.out.println("9. Availability: " + existingSession.getAvailability());
 	        System.out.println("0. Save Changes & Exit");
 	        System.out.print("Choice (0-9): ");
 	        
 	        int subChoice = scanner.nextInt();
-	        scanner.nextLine(); // Καθαρισμός του buffer
+	        scanner.nextLine(); 
 	        
 	        switch (subChoice) {
 	            case 1:
@@ -935,7 +935,17 @@ public class Main {
 	                break;
 	            case 6:
 	                System.out.print("Enter New Date & Time (e.g., DD/MM/YYYY HH:MM): ");
-	                existingSession.setDateAndTime(scanner.nextLine());
+	                String dateTimeInput = scanner.nextLine();
+	                
+	                java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+	                
+	                try {
+	                	java.time.LocalDateTime newDateTime = java.time.LocalDateTime.parse(dateTimeInput, formatter);
+	                
+	                	existingSession.setDateAndTime(newDateTime);
+	                }catch(java.time.format.DateTimeParseException e){
+	                	System.out.println("Error: Wrong date/time format!");
+	                }
 	                break;
 	            case 7:
 	                System.out.print("Enter New Gym Code: ");
@@ -960,9 +970,11 @@ public class Main {
 	                }
 	                break;
 	            case 9:
-	                System.out.print("Is it available? (true/false): ");
-	                existingSession.setAvailability(scanner.nextBoolean());
+	                System.out.print("Is it available? (true = 1/false = 0): ");
+	                int newAvailability = scanner.nextInt();
 	                scanner.nextLine();
+	                existingSession.setAvailability(newAvailability);
+	                
 	                break;
 	            case 0:
 	                System.out.println("Saving changes to the database...");
@@ -973,7 +985,7 @@ public class Main {
 	        }
 	    }
 	    
-	    // Κλήση της SessionDBUtils για την εκτέλεση του UPDATE
+
 	    SessionDBUtils.updateSession(existingSession);
 	}
 	
@@ -982,18 +994,18 @@ public class Main {
 	    
 	    System.out.print("Please enter the Customer ID making the reservation: ");
 	    int customerId = scanner.nextInt();
-	    scanner.nextLine(); // Καθαρισμός buffer
+	    scanner.nextLine(); 
 	    
-	    // Έλεγχος αν ο πελάτης υπάρχει
+
 	    if (CustomerDBUtils.getCustomerByID(customerId) == null) {
 	        System.out.println("Error: Customer with ID " + customerId + " does not exist. Reservation aborted.");
 	        return;
 	    }
 	    
-	    // 1. Φτιάχνουμε ένα "κενό" SessionSearch
+
 	    SessionSearch allSessionsCriteria = new SessionSearch(-1, "", "", "", "", -1, "", false);
 	    
-	    // 2. Φέρνουμε τον κατάλογο
+
 	    ArrayList<Session> availableSessions = SessionDBUtils.searchSessions(allSessionsCriteria);
 	    
 	    if (availableSessions == null || availableSessions.isEmpty()) {
@@ -1001,7 +1013,7 @@ public class Main {
 	        return;
 	    }
 	    
-	    //Eκτύπωση του καταλόγου 
+
 	    System.out.println("\nAvailable Sessions Catalog:\n");
 	    System.out.printf("%-10s %-20s %-25s %-15s %-10s\n", "Code", "Type", "Date & Time", "Gym Code", "Price");
 	    
@@ -1011,44 +1023,47 @@ public class Main {
 	    }
 	    System.out.println("\n");
 	    
-	    // Ο χρήστης διαλέγει από το μενού
+
 	    System.out.print("Please select a Session Code from the list above: ");
 	    int sessionCode = scanner.nextInt();
-	    scanner.nextLine(); // Καθαρισμός buffer
+	    scanner.nextLine();
 	    
 	    if (SessionDBUtils.getSessionByID(sessionCode) == null) {
 	        System.out.println("Error: Invalid Session Code. Reservation aborted.");
 	        return;
 	    }
 	    
-	    // Αυτόματη καταγραφή της τωρινής ώρας για την κράτηση
+
 	    java.time.LocalDateTime now = java.time.LocalDateTime.now();
-	    java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-	    String bookingDate = now.format(formatter);
-	    System.out.println("Booking timestamp automatically recorded as: " + bookingDate);
+	    System.out.println("Booking timestamp automatically recorded as: " + now);
 	    
-	    // Ασφαλής ερώτηση για το Invoice
+
 	    System.out.print("Will the customer need an invoice? (Y/N): ");
 	    String invoiceInput = scanner.nextLine().trim().toLowerCase();
 	    boolean invoice = invoiceInput.equals("y") || invoiceInput.equals("yes") || invoiceInput.equals("true");
 	    
-	    // Πιο φυσική ερώτηση για το Status (Now = COMPLETE, Later = PENDING)
+
 	    System.out.print("Will the customer pay now or later? (Type 'NOW' or 'LATER'): ");
 	    String paymentChoice = scanner.nextLine().trim().toUpperCase();
 	    
-	    String status;
+	    ReservationStatus status;
 	    if (paymentChoice.equals("NOW")) {
-	        status = "COMPLETE"; // ΔΙΟΡΘΩΘΗΚΕ: Έγινε COMPLETE για να ταιριάζει με το Enum σου!
+	        status = ReservationStatus.COMPLETE;
 	        System.out.println("\n[!] Reminder: Don't forget to go to 'Add New Payment' immediately to record the transaction.");
 	    } else {
-	        status = "PENDING";
+	        status = ReservationStatus.PENDING;
 	    }
 	    
-	    // Δημιουργία του αντικειμένου Reservation
-	    Reservation newReservation = new Reservation(0, bookingDate, invoice, status, sessionCode, customerId);
+
+	    Reservation newReservation = new Reservation(0, now, invoice, status, sessionCode, customerId);
 	    
-	    // Κλήση της βάσης
-	    ReservationDBUtils.addReservation(newReservation);
+	    try {
+	        int generatedCode = ReservationDBUtils.addReservationAndGetCode(newReservation);
+	        System.out.println("Reservation created successfully in database with Code: " + generatedCode);
+	    } catch (SQLException e) {
+	        System.out.println("Error: Could not save the reservation to the database.");
+	        e.printStackTrace();
+	    }
 	}
 	
 	public static void updateReservation() {
@@ -1056,9 +1071,9 @@ public class Main {
 	    
 	    System.out.print("Please enter the Reservation Code to modify: ");
 	    int reservationCode = scanner.nextInt();
-	    scanner.nextLine(); // Καθαρισμός του buffer
+	    scanner.nextLine(); 
 	    
-	    // Αναζήτηση της κράτησης (Reservation)
+
 	    Reservation existingReservation = ReservationDBUtils.getReservationByID(reservationCode);
 	    if (existingReservation == null) {
 	        System.out.println("No Reservation was found with this Code.");
@@ -1077,12 +1092,21 @@ public class Main {
 	        System.out.print("\nChoice (0-5): ");
 	        
 	        int subChoice = scanner.nextInt();
-	        scanner.nextLine(); // Καθαρισμός του buffer
+	        scanner.nextLine();
 	        
 	        switch (subChoice) {
 	            case 1:
 	                System.out.print("Enter New Date & Time (e.g., DD/MM/YYYY HH:MM): ");
-	                existingReservation.setDateAndTime(scanner.nextLine());
+	                String dateTimeInput = scanner.nextLine();
+	                
+	                java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+	                
+	                try {
+	                	java.time.LocalDateTime newDateTime = java.time.LocalDateTime.parse(dateTimeInput, formatter);
+	                	existingReservation.setDateAndTime(newDateTime);
+	                }catch(java.time.format.DateTimeParseException e){
+	                	System.out.println("Error: Wrong date/time format!");
+	                }
 	                break;
 	            case 2:
 	                System.out.print("Will the customer need an invoice? (Type 'Y' or 'N'): ");
@@ -1092,24 +1116,32 @@ public class Main {
 	                break;
 	            case 3:
 	                System.out.print("Enter New Status (e.g., PENDING, CONFIRMED, CANCELLED): ");
-	                existingReservation.setReservationStatus(scanner.nextLine().toUpperCase());
+	                String statusInput = scanner.nextLine().trim().toUpperCase();
+	                try {
+	                    ReservationStatus newStatus = ReservationStatus.valueOf(statusInput);
+	                    existingReservation.setReservationStatus(newStatus);
+	                    System.out.println("Reservation status provisionally updated to " + newStatus);
+	                } catch (IllegalArgumentException e) {
+	                    System.out.println("Error: Invalid status! Please enter exactly PENDING, COMPLETE, or CANCELLED.");
+	                }
+
+	                
 	                break;
 	            case 4:
 	                System.out.print("Enter New Session Code: ");
 	                int newSessionCode = scanner.nextInt();
 	                scanner.nextLine();
 	                
-	                // Φέρνουμε το νέο Session από τη βάση δεδομένων
+
 	                Session targetSession = SessionDBUtils.getSessionByID(newSessionCode);
 	                
-	                // 'Ελεγχος Διαθεσιμότητας
+
 	                if (targetSession == null) {
 	                    System.out.println("Error: Target Session does not exist. Session Code not changed.");
-	                } else if (!targetSession.getAvailability()) {
-	                    // Αν το Session βρέθηκε, αλλά η διαθεσιμότητά του (availability) είναι false
+	                } else if (targetSession.getAvailability() == 0) {
+
 	                    System.out.println("Error: The requested Session (Code: " + newSessionCode + ") is currently unavailable or full. Session Code not changed.");
 	                } else {
-	                    // Αν περάσει και τους δύο ελέγχους, τότε γίνεται η αλλαγή
 	                    existingReservation.setSessionCode(newSessionCode);
 	                    System.out.println("Success: Session Code provisionally updated to " + newSessionCode + ".");
 	                }
@@ -1492,7 +1524,6 @@ public class Main {
 		}
 		
 	}
-}
 	// cancel reservations that have not been paid on time
 	private static void handleUnpaidReservations() {
 		ArrayList<Reservation> unpaidReservations= ReservationDBUtils.getUnpaidReservations(); // get overdue reservations
@@ -1514,7 +1545,7 @@ public class Main {
 		resIdsString.delete(sesIdsString.length()-2, sesIdsString.length()); //remove trailing comma
 		try {
 			ReservationDBUtils.cancelMultipleReservations(resIdsString.toString()); // change reservation status to cancelled
-			SessionDBUtils.freeUpSpaceInMultipleSessions(sesIdsString.toString()); //  free space in session
+			SessionDBUtils.freeUpSpaceInMultipleSessions(sesIdsString.toString()); 
 		}catch(SQLException e) {
 			System.out.println("An error occured while canceling unpaid reservations. Please try again later.");
 			return;
