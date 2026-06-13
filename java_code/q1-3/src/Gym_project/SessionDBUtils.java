@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -153,8 +154,8 @@ public class SessionDBUtils {
 	                res.getString("description"),
 	                res.getInt("max_participants"),
 	                res.getInt("duration"),
-	                res.getInt("price"),
-	                res.getBoolean("availability"),
+	                res.getFloat("price"),
+	                res.getInt("availability"),
 	                res.getInt("trainer_trainer_id"),
 	                res.getInt("gym_Gym_Code"),
 	                res.getString("date_And_Time"),
@@ -183,4 +184,32 @@ public class SessionDBUtils {
 			e.printStackTrace();
 		}
 	}
+	
+	public static void checkAndUpdateAvailability(Session session) {
+		String countQuery = "SELECT COUNT(*) FROM reservation WHERE session_Session_Code = " + session.getSessionCode() 
+        + " AND reservation_Status != 'CANCELLED';";
+		
+		try (Connection conn = SQLConnector.getConnection();
+		         Statement stm = conn.createStatement()) {
+		        
+		        try (ResultSet res = stm.executeQuery(countQuery)) {
+		            if (res.next()) {
+		                int realParticipantsCount = res.getInt(1);
+		                
+		                session.setAmountOfParticipants(realParticipantsCount);
+		                if (session.getAmountOfParticipants() >= session.getMaxParticipants()) {
+		                    session.setAvailability(0);
+		                    String updateQuery = "UPDATE session SET availability = 0 WHERE session_code = " + session.getSessionCode() + ";";
+		                    stm.executeUpdate(updateQuery);
+		                }
+		            }
+		        }
+	
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}
 }
+
+
+

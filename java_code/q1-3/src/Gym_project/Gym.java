@@ -85,11 +85,12 @@ public class Gym {
         this.phone = phone;
     }
 
-    public int getGymCode() { 
-        return gymCode; 
-    }
 
-	public void setGymCode(int gymCode) {
-        this.gymCode = gymCode;
-    }
+	 public int getGymCode() {
+		 return gymCode; 
+	 }
+
+	 public void setGymCode(int gymCode) {
+		 this.gymCode = gymCode; 
+	 }
 }
