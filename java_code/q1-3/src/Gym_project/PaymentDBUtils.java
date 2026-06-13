@@ -5,6 +5,37 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+
+public class PaymentDBUtils { 
+	
+	public static void addPayment(Payment p) {
+	    
+	    String sqlQuery = "INSERT INTO payment (amount, payment_Method, payment_Date, payment_Status, reservation_Reservation_Code, pts_Transactions_Trans_ID) VALUES ("
+	            + p.getAmount() + ", '"
+	            + p.getPaymentMethod() + "', '"
+	            + p.getPaymentDate() + "', '"
+	            + p.getPaymentStatus() + "', "
+	            + p.getReservationCode() + ", "
+	            + p.getTransID() + ")";
+	            
+	    try (Connection conn = SQLConnector.getConnection(); 
+	         Statement stm = conn.createStatement()) {
+	        
+	        int rowsAffected = stm.executeUpdate(sqlQuery);
+	        if (rowsAffected > 0) {
+	            System.out.println("Payment was successfully added to the database.");
+	        } else {
+	            System.out.println("Something went wrong and the payment could not be added.");
+	        }
+	    } catch (SQLException e) {
+	        System.out.println("Error in adding payment to db:");
+	        e.printStackTrace();
+	    }
+	}
+
+	public static ArrayList<PendingPayment> getPendingPayments() {
 import java.util.ArrayList;
 
 public abstract class PaymentDBUtils {

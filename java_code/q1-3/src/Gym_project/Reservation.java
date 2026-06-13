@@ -57,7 +57,11 @@ public class Reservation {
 		return sessionCode;
 	}
 	
-	public int getcustomerID() {
+	public void setSessionCode(int sessionCode) {
+		this.sessionCode = sessionCode;
+	}
+	
+	public int getCustomerID() {
 		return customerID;
 	}
 	

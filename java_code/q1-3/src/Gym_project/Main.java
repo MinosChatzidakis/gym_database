@@ -13,7 +13,6 @@ public class Main {
 		
 		boolean isRunning = true;
 		
-		
 		while (isRunning) {
 			System.out.println("\nMenu: ");
 			System.out.println("1. Admin");
@@ -21,12 +20,12 @@ public class Main {
 			System.out.println("0. Exit System");
 			System.out.println("Select an option (0-2): ");
 			
-			int  choice = scanner.nextInt();
+			int choice = scanner.nextInt();
 			scanner.nextLine();
 			
 			switch (choice) {
 				case 1:
-					SessionDBUtils.testQuery();
+					//SessionDBUtils.testQuery();
 					adminMenu();
 					break;
 					
@@ -37,25 +36,32 @@ public class Main {
 					isRunning = false;
 					break;
 					
+				case 0: 
+			        System.out.println("Exiting system. Goodbye!");
+			        isRunning = false; 
+			        break;
+			        
+			    default: 
+			        System.out.println("Invalid choice. Please select 0, 1, or 2.");
+					
 			}
 		}
 	}
 	
-	
 	private static void adminMenu() {
 		boolean adminRunning = true;
 		while(adminRunning) {
-			System.out.println("1. Insert new Data");//aggelos
-			System.out.println("2. Search Gyms");//done
-			System.out.println("3. Search Trainers");//done
-			System.out.println("4. View Reserved Sessions");//done
-			System.out.println("5. View Pending Reservations");//done
-			System.out.println("6. Search Available Sessions");//done
-			System.out.println("7. Excecute New Reservation");//possible delete
-			System.out.println("8. Update Reservations/Payments");
-			System.out.println("9. Check Unpaid Reservations");
-			System.out.println("10. Manage Cancelled Reservations");
-			System.out.println("1010. pending payments niggers");
+			System.out.println("1. Insert new Data");
+			System.out.println("2. Update Data");
+			System.out.println("3. Search Gyms");
+			System.out.println("4. Search Trainers");
+			System.out.println("5. View Reserved Sessions");
+			System.out.println("6. View Pending Reservations");
+			System.out.println("7. Search Available Sessions");
+			System.out.println("8. Excecute New Reservation");
+			System.out.println("9. Update Reservations/Payments");
+			System.out.println("10. Check Unpaid Reservations");
+			System.out.println("11. Manage Cancelled Reservations");
 			System.out.println("0. Back to Main Menu");
 			
 			int choice2 = scanner.nextInt();
@@ -64,6 +70,13 @@ public class Main {
 			switch (choice2) {
 				case 1:
 					insertDataMenu();
+					break;
+				case 2:
+					updateDataMenu();
+					break;
+				case 0:
+					return;
+					
 					break;
 				case 1010:
 					manuallyRecordPayment();
@@ -110,7 +123,7 @@ public class Main {
 			
 			switch (choice) {
 				case 1:
-					System.out.println("\n Search Gyms");
+					System.out.println("\nSearch Gyms");
 					searchAndDisplayGyms();
 					break;
 				case 2:
@@ -147,21 +160,76 @@ public class Main {
 		switch(choice3) {
 			case 1:
 				System.out.println("\nAdd New Gym");
-				
+				addGym();
+				break;
 			case 2:
 				System.out.println("\nAdd New Trainer");
-				
+				addTrainer();
+				break;
 			case 3:
-				System.out.println("\n[-- Add New Session --]");
+				System.out.println("\nAdd New Session");
+				addSession();
+				break;
 			case 4:
-                System.out.println("\n[-- Add New Customer --]");
-                
+                System.out.println("\nAdd New Customer ");
+                addCustomer();
+                break;
 			case 5:
-                System.out.println("\n[-- Add New Reservation --]");
-                
+                System.out.println("\nAdd New Reservation");
+                addReservation();
+                break;
 			case 6:
-                System.out.println("\n[-- Add New Payment --]");
+                System.out.println("\nAdd New Payment ");
+                addPayment();
+                break;
+			case 0:
+                System.out.println("Returning to Main Menu...");
+                break;
                 
+            default: 
+            	System.out.println("Invalid option. Returning to Main Menu.");
+		}
+	}
+	
+	private static void updateDataMenu() {
+		System.out.println("\nUpdate Data");
+		System.out.println("1. Gym");
+		System.out.println("2. Trainers");
+		System.out.println("3. Sessions");
+		System.out.println("4. Customers");
+		System.out.println("5. Reservations");
+		System.out.println("6. Reservation Payments");
+		System.out.println("0. Back to Main Menu");
+		
+		System.out.println("Select an option (0-6):");
+		
+		int choice3 = scanner.nextInt();
+		scanner.nextLine();
+		
+		switch(choice3) {
+			case 1:
+				System.out.println("\nUpdate Gym");
+				updateGym(); 
+				break;
+			case 2:
+				System.out.println("\nUpdate Trainer");
+				updateTrainer();
+				break;
+			case 3:
+				System.out.println("\nUpdate Session ");
+				updateSession();
+				break;
+			case 4:
+                System.out.println("\nUpdate Customer");
+                updateCustomer();
+                break;
+			case 5:
+                System.out.println("\nUpdate Reservation ");
+                updateReservation();
+                break;
+			case 6:
+                System.out.println("\nUpdate Payment ");
+                break;
 			case 0:
                 System.out.println("Returning to Main Menu...");
                 return;
@@ -276,19 +344,21 @@ public class Main {
 			}
 		}
 		if(selectedSession != null) {
-			Customer c= new Customer(-1, "", "", "", selectedSession.getGymCode());
+			Customer c = new Customer(-1, "", "", "", "", selectedSession.getGymCode());
 			boolean err= true;
-			
+			// Καταγραφή του ονόματος και του επωνύμου του πελάτη
 			while(err) {
-				//record customer's name
-				System.out.println("Enter your full name: ");
-				String name= scanner.nextLine();
-				try {
-					c.setName(name);
-					err= false;
-				}catch(IllegalArgumentException e) {
-					e.printStackTrace();
-				}
+			    System.out.print("Enter your First Name: ");
+			    String firstName = scanner.nextLine();
+			    System.out.print("Enter your Surname: ");
+			    String lastName = scanner.nextLine();
+			    try {
+			        c.setName(firstName);
+			        c.setSurname(lastName); 
+			        err = false;
+			    } catch(IllegalArgumentException e) {
+			        e.printStackTrace();
+			    }
 			}
 			err= true;
 			while(err) {
@@ -396,8 +466,6 @@ public class Main {
 			
 			
 			
-			
-			
 		}
 		
 	}
@@ -405,24 +473,718 @@ public class Main {
 	private static void searchAndDisplayGyms() {
 		System.out.println("\n Λίστα Γυμναστηρίων");
 		
-		ArrayList<Gym> gyms = GymDBUtils.getAllGymsSortedByCity();
+			ArrayList<Gym> gyms = GymDBUtils.getAllGymsSortedByCity();
 		
-		if(gyms ==null || gyms.isEmpty()) {
-			System.out.println("No gyms were found");
+			if(gyms ==null || gyms.isEmpty()) {
+				System.out.println("No gyms were found");
 			
-		}else {
-			System.out.printf("%-15s | %-20s | %-25s | %-15s | %-30s\n", 
+			}else {
+					System.out.printf("%-15s | %-20s | %-25s | %-15s | %-30s\n", 
                     "City", "Name", "Address", "Phone", "Services");
 			
-			for (Gym g : gyms) {
+				for (Gym g : gyms) {
 	            
-	            System.out.printf("%-15s | %-20s | %-25s | %-15s | %-30s\n",
+	            	System.out.printf("%-15s | %-20s | %-25s | %-15s | %-30s\n",
 	                g.getCity(), g.getName(), g.getAddress(), g.getPhone(), g.getServices());
-	        }
-		}
+				}
+			}
 		
+		
+
+	}
+
+	public static void addGym() {
+		System.out.println("Insert New Gym :\n");
+    
+    	System.out.print("Enter Name: ");
+    	String name = scanner.nextLine();
+    	
+    	System.out.print("Enter Address: ");
+    	String address = scanner.nextLine();
+    
+    	System.out.print("Enter City: ");
+    	String city = scanner.nextLine();
+    
+    	System.out.print("Enter Phone: ");
+    	String phone = scanner.nextLine();
+    	
+    	System.out.print("Enter Email: ");
+    	String email = scanner.nextLine();
+    
+    	// Περνάμε 0 ως ID, καθώς θα παραχθεί αυτόματα από τη MySQL
+    	Gym newGym = new Gym(city, "None", address, name, email, phone, 0);
+    
+    	// Κλήση της GymDBUtils
+    	GymDBUtils.addGym(newGym);
+	}
+
+
+	public static void updateGym() {
+		System.out.println("Update Gym Data : \n");
+    
+		System.out.print("Enter the Gym's Code that you want to modify : ");
+		int gymCode = scanner.nextInt();
+		scanner.nextLine(); // Καθαρισμός του buffer
+    
+		// Έλεγχος αν το γυμναστήριο υπάρχει όντως στη βάση πριν ζητήσουμε τα νέα στοιχεία
+		Gym existingGym = GymDBUtils.getGymById(gymCode);
+		if (existingGym == null) {
+			System.out.println("No gym was found with this code.");
+			return;
+		}
+    
+		boolean subRunning = true;
+		while (subRunning) {
+			System.out.println("\nCurrent Gym Data : \n");
+			System.out.println("Name: " + existingGym.getName());
+			System.out.println("Address: " + existingGym.getAddress());
+			System.out.println("City: " + existingGym.getCity());
+			System.out.println("Phone: " + existingGym.getPhone());
+        	System.out.println("Email: " + existingGym.getEmail());
+        	System.out.println("\n");
+        	System.out.println("Which field do you want to modify?");
+        	System.out.println("1. Name");
+        	System.out.println("2. Address");
+        	System.out.println("3. City");
+        	System.out.println("4. Phone");
+        	System.out.println("5. Email");
+        	System.out.println("0. Save Changes & Exit");
+        	System.out.print("Choice (0-5): ");
+        
+        	int subChoice = scanner.nextInt();
+        	scanner.nextLine(); // Καθαρισμός του buffer
+        
+        	switch (subChoice) {
+            	case 1:
+                	System.out.print("Enter New Name: ");
+                	existingGym.setName(scanner.nextLine());
+                	break;
+            	case 2:
+                	System.out.print("Enter New Address: ");
+                	existingGym.setAddress(scanner.nextLine());
+                	break;
+            	case 3:
+                	System.out.print("Enter New City: ");
+                	existingGym.setCity(scanner.nextLine());
+                	break;
+            	case 4:
+                	System.out.print("Enter New Phone: ");
+                	existingGym.setPhone(scanner.nextLine());
+                	break;
+            	case 5:
+                	System.out.print("Enter New Email: ");
+                	existingGym.setEmail(scanner.nextLine());
+                	break;
+            	case 0:
+                	System.out.println("Saving changes to the database...");
+                	subRunning = false; // Σπάει το while loop
+                	break;
+            	default:
+                	System.out.println("Invalid choice. Please try again.");
+        	}
+    	}
+    
+    	// Κλήση της GymDBUtils ΜΙΑ ΦΟΡΑ στο τέλος, αφού ο χρήστης πάτησε 0 και βγήκε
+    	GymDBUtils.updateGym(existingGym);
+	}
+
+	public static void addTrainer() {
+	    System.out.println("Insert New Trainer :\n ");
+	    
+	    System.out.print("Enter First Name: ");
+	    String name = scanner.nextLine();
+	    
+	    System.out.print("Enter Surname: ");
+	    String surname = scanner.nextLine(); 
+	    
+	    System.out.print("Enter Specialty: ");
+	    String specialty = scanner.nextLine();
+	    
+	    System.out.print("Enter Phone: ");
+	    String phone = scanner.nextLine();
+	    
+	    System.out.print("Enter Email: ");
+	    String email = scanner.nextLine();
+	    
+	    System.out.print("Enter Gym Code where this trainer works: ");
+	    int gymCode = scanner.nextInt();
+	    scanner.nextLine(); 
+
+	   
+	    if (GymDBUtils.getGymById(gymCode) == null) {
+	        System.out.println("Error: No gym exists with code " + gymCode + ". Trainer insertion aborted.");
+	        return;
+	    }
+	    
+	   
+	    Trainer newTrainer = new Trainer(0, name, surname, email, phone, gymCode, specialty);
+	    
+	    
+	    TrainerDBUtils.addTrainer(newTrainer);
+	}
+
+	public static void updateTrainer() {
+    System.out.println("Update Trainer Data : \n");
+    
+    System.out.print("Enter Trainer ID to modify : ");
+    int trainerId = scanner.nextInt();
+    scanner.nextLine(); // Καθαρισμός του buffer
+    
+    // Αναζήτηση του προπονητή στη βάση δεδομένων
+    Trainer existingTrainer = TrainerDBUtils.getTrainerByID(trainerId);
+    if (existingTrainer == null) {
+        System.out.println("No trainer was found with this ID.");
+        return;
+    }
+    
+    boolean subRunning = true;
+    while (subRunning) {
+        System.out.println("\n Current Trainer Data : \n");
+        System.out.println("1. First Name: " + existingTrainer.getName());
+        System.out.println("2. Surname: " + existingTrainer.getSurname());
+        System.out.println("3. Specialty: " + existingTrainer.getSpecialty());
+        System.out.println("4. Phone: " + existingTrainer.getPhone());
+        System.out.println("5. Email: " + existingTrainer.getEmail());
+        System.out.println("6. Gym Code: " + existingTrainer.getGymCode());
+        System.out.println("\n");
+        
+        System.out.println("Which field do you want to modify?");
+        System.out.println("1. First Name");
+        System.out.println("2. Surname");
+        System.out.println("3. Specialty");
+        System.out.println("4. Phone");
+        System.out.println("5. Email");
+        System.out.println("6. Gym Code");
+        System.out.println("0. Save Changes & Exit");
+        System.out.print("Choice (0-6): ");
+        
+        int subChoice = scanner.nextInt();
+        scanner.nextLine(); // Καθαρισμός του buffer
+        
+        switch (subChoice) {
+            case 1:
+                System.out.print("Enter New First Name: ");
+                existingTrainer.setName(scanner.nextLine());
+                break;
+            case 2:
+                System.out.print("Enter New Surname: ");
+                existingTrainer.setSurname(scanner.nextLine());
+                break;
+            case 3:
+                System.out.print("Enter New Specialty: ");
+                existingTrainer.setSpecialty(scanner.nextLine());
+                break;
+            case 4:
+                System.out.print("Enter New Phone: ");
+                existingTrainer.setPhone(scanner.nextLine());
+                break;
+            case 5:
+                System.out.print("Enter New Email: ");
+                existingTrainer.setEmail(scanner.nextLine());
+                break;
+            case 6:
+                System.out.print("Enter New Gym Code: ");
+                int newGymCode = scanner.nextInt();
+                scanner.nextLine(); // Καθαρισμός του buffer
+                
+                // Έλεγχος ακεραιότητας: Υπάρχει το νέο γυμναστήριο;
+                if (GymDBUtils.getGymById(newGymCode) == null) {
+                    System.out.println("Error: Target gym does not exist. Gym Code not changed.");
+                } else {
+                    existingTrainer.setGymCode(newGymCode);
+                }
+                break;
+            case 0:
+                System.out.println("Saving changes to the database...");
+                subRunning = false;
+                break;
+            default:
+                System.out.println("Invalid choice. Please try again.");
+        	}
+    	}
+    
+    	// Κλήση της TrainerDBUtils για την εκτέλεση του UPDATE
+    	TrainerDBUtils.updateTrainer(existingTrainer);
 	}
 	
+	
+	public static void addCustomer() {
+	    System.out.println("Insert New Customer : \n");
+	    
+	    System.out.print("Enter First Name: ");
+	    String name = scanner.nextLine();
+	    
+	    System.out.print("Enter Surname: ");
+	    String surname = scanner.nextLine(); 
+	    
+	    System.out.print("Enter Phone: ");
+	    String phone = scanner.nextLine();
+	    
+	    System.out.print("Enter Email: ");
+	    String email = scanner.nextLine();
+	    
+	    System.out.print("Enter Gym Code where this Customer is registered: ");
+	    int gymCode = scanner.nextInt();
+	    scanner.nextLine(); // Καθαρισμός του buffer 
+
+	    // Έλεγχος αν το γυμναστήριο υπάρχει όντως στη βάση
+	    if (GymDBUtils.getGymById(gymCode) == null) {
+	        System.out.println("Error: No gym exists with code " + gymCode + ". Customer insertion aborted.");
+	        return;
+	    }
+	    
+	    // Δημιουργία του αντικειμένου Customer (0 για το AUTO_INCREMENT id)
+	    Customer newCustomer = new Customer(0, name, surname, email, phone, gymCode);
+	    
+	    // Κλήση της CustomerDBUtils
+	    CustomerDBUtils.addCustomer(newCustomer);
+	}
+	
+	public static void updateCustomer() {
+	    System.out.println("Update Customer Data : \n");
+	    
+	    System.out.print("Enter Customer ID to modify : ");
+	    int customerId = scanner.nextInt();
+	    scanner.nextLine(); // Καθαρισμός του buffer
+	    
+	    //Αναζήτηση πελάτη 
+	    Customer existingCustomer = CustomerDBUtils.getCustomerByID(customerId);
+	    if (existingCustomer == null) {
+	        System.out.println("No customer was found with this ID.");
+	        return;
+	    }
+	    
+	    boolean subRunning = true;
+	    while (subRunning) {
+	        System.out.println("\nCurrent Customer Data : \n");
+	        System.out.println("1. First Name: " + existingCustomer.getName());
+	        System.out.println("2. Surname: " + existingCustomer.getSurname());
+	        System.out.println("3. Phone: " + existingCustomer.getPhone());
+	        System.out.println("4. Email: " + existingCustomer.getEmail());
+	        System.out.println("5. Gym Code: " + existingCustomer.getGymCode());
+	        System.out.println("\n");
+	        
+	        System.out.println("Which field do you want to modify?");
+	        System.out.println("1. First Name");
+	        System.out.println("2. Surname");
+	        System.out.println("3. Phone");
+	        System.out.println("4. Email");
+	        System.out.println("5. Gym Code");
+	        System.out.println("0. Save Changes & Exit");
+	        System.out.print("Choice (0-5): ");
+	        
+	        int subChoice = scanner.nextInt();
+	        scanner.nextLine(); // Καθαρισμός του buffer
+	        
+	        switch (subChoice) {
+	            case 1:
+	                System.out.print("Enter New First Name: ");
+	                existingCustomer.setName(scanner.nextLine());
+	                break;
+	            case 2:
+	                System.out.print("Enter New Surname: ");
+	                existingCustomer.setSurname(scanner.nextLine());
+	                break;
+	            case 3:
+	                System.out.print("Enter New Phone: ");
+	                existingCustomer.setPhone(scanner.nextLine());
+	                break;
+	            case 4:
+	                System.out.print("Enter New Email: ");
+	                existingCustomer.setEmail(scanner.nextLine());
+	                break;
+	            case 5:
+	                System.out.print("Enter New Gym Code: ");
+	                int newGymCode = scanner.nextInt();
+	                scanner.nextLine(); // Καθαρισμός του buffer
+	                
+	                // Έλεγχος ακεραιότητας: Υπάρχει το γυμναστήριο;
+	                if (GymDBUtils.getGymById(newGymCode) == null) {
+	                    System.out.println("Error: Target gym does not exist. Gym Code not changed.");
+	                } else {
+	                    existingCustomer.setGymCode(newGymCode);
+	                }
+	                break;
+	            case 0:
+	                System.out.println("Saving changes to the database...");
+	                subRunning = false;
+	                break;
+	            default:
+	                System.out.println("Invalid choice. Please try again.");
+	        }
+	    }
+	    
+	    CustomerDBUtils.updateCustomer(existingCustomer);
+	}
+	
+	public static void addSession() {
+	    System.out.println("Insert New Session : \n");
+	    
+	    System.out.print("Enter Session Type (e.g., Yoga, CrossFit): ");
+	    String type = scanner.nextLine();
+	    
+	    System.out.print("Enter Description: ");
+	    String description = scanner.nextLine();
+	    
+	    System.out.print("Enter Max Participants: ");
+	    int maxPart = scanner.nextInt();
+	    
+	    System.out.print("Enter Duration (in minutes): ");
+	    int duration = scanner.nextInt();
+	    
+	    System.out.print("Enter Price ($): ");
+	    int price = scanner.nextInt();
+	    scanner.nextLine(); // Καθαρισμός buffer
+	    
+	    System.out.print("Enter Date and Time (e.g., DD/MM/YYYY HH:MM): ");
+	    String dateTime = scanner.nextLine();
+	    
+	    System.out.print("Enter Gym Code for this session: ");
+	    int gymCode = scanner.nextInt();
+	    
+	    // Έλεγχος αν το γυμναστήριο υπάρχει
+	    if (GymDBUtils.getGymById(gymCode) == null) {
+	        System.out.println("Error: Gym with code " + gymCode + " does not exist. Session creation aborted.");
+	        return;
+	    }
+	    
+	    System.out.print("Enter Trainer ID for this session: ");
+	    int trainerId = scanner.nextInt();
+	    scanner.nextLine(); // Καθαρισμός buffer
+	    
+	    // Έλεγχος αν ο προπονητής υπάρχει
+	    if (TrainerDBUtils.getTrainerByID(trainerId) == null) {
+	        System.out.println("Error: Trainer with ID " + trainerId + " does not exist. Session creation aborted.");
+	        return;
+	    }
+	    
+	    // Δημιουργία αντικειμένου Session. 
+	    // 0 για το ID (AUTO_INCREMENT), true για τη διαθεσιμότητα (availability), 0 αρχικοί συμμετέχοντες
+	    Session newSession = new Session(0, type, description, maxPart, duration, price, true, trainerId, gymCode, dateTime, 0);
+	    
+	    // Κλήση της SessionDBUtils
+	    SessionDBUtils.addSession(newSession);
+	}
+	
+	public static void updateSession() {
+	    System.out.println("Update Session Data : \n");
+	    
+	    System.out.print("Enter Session Code to modify : ");
+	    int sessionCode = scanner.nextInt();
+	    scanner.nextLine(); // Καθαρισμός του buffer
+	    
+	    //Αναζήτηση του Session 
+	    Session existingSession = SessionDBUtils.getSessionByID(sessionCode);
+	    if (existingSession == null) {
+	        System.out.println("No session was found with this Code.");
+	        return;
+	    }
+	    
+	    boolean subRunning = true;
+	    while (subRunning) {
+	        System.out.println("\nCurrent Session Data : \n");
+	        System.out.println("1. Session Type: " + existingSession.getSessionType());
+	        System.out.println("2. Description: " + existingSession.getDescription());
+	        System.out.println("3. Max Participants: " + existingSession.getMaxParticipants());
+	        System.out.println("4. Duration: " + existingSession.getDuration() + " mins");
+	        System.out.println("5. Price: $" + existingSession.getPrice());
+	        System.out.println("6. Date & Time: " + existingSession.getDateAndTime());
+	        System.out.println("7. Gym Code: " + existingSession.getGymCode());
+	        System.out.println("8. Trainer ID: " + existingSession.getTrainerTrainerID());
+	        System.out.println("9. Availability: " + (existingSession.getAvailability() ? "Yes" : "No"));
+	        System.out.println("0. Save Changes & Exit");
+	        System.out.print("Choice (0-9): ");
+	        
+	        int subChoice = scanner.nextInt();
+	        scanner.nextLine(); // Καθαρισμός του buffer
+	        
+	        switch (subChoice) {
+	            case 1:
+	                System.out.print("Enter New Session Type: ");
+	                existingSession.setSessionType(scanner.nextLine());
+	                break;
+	            case 2:
+	                System.out.print("Enter New Description: ");
+	                existingSession.setDescription(scanner.nextLine());
+	                break;
+	            case 3:
+	                System.out.print("Enter New Max Participants: ");
+	                existingSession.setMaxParticipants(scanner.nextInt());
+	                scanner.nextLine();
+	                break;
+	            case 4:
+	                System.out.print("Enter New Duration (mins): ");
+	                existingSession.setDuration(scanner.nextInt());
+	                scanner.nextLine();
+	                break;
+	            case 5:
+	                System.out.print("Enter New Price ($): ");
+	                existingSession.setPrice(scanner.nextInt());
+	                scanner.nextLine();
+	                break;
+	            case 6:
+	                System.out.print("Enter New Date & Time (e.g., DD/MM/YYYY HH:MM): ");
+	                existingSession.setDateAndTime(scanner.nextLine());
+	                break;
+	            case 7:
+	                System.out.print("Enter New Gym Code: ");
+	                int newGymCode = scanner.nextInt();
+	                scanner.nextLine();
+	                
+	                if (GymDBUtils.getGymById(newGymCode) == null) {
+	                    System.out.println("Error: Target gym does not exist. Gym Code not changed.");
+	                } else {
+	                    existingSession.setGymCode(newGymCode);
+	                }
+	                break;
+	            case 8:
+	                System.out.print("Enter New Trainer ID: ");
+	                int newTrainerId = scanner.nextInt();
+	                scanner.nextLine();
+	                
+	                if (TrainerDBUtils.getTrainerByID(newTrainerId) == null) {
+	                    System.out.println("Error: Target trainer does not exist. Trainer ID not changed.");
+	                } else {
+	                    existingSession.setTrainerID(newTrainerId);
+	                }
+	                break;
+	            case 9:
+	                System.out.print("Is it available? (true/false): ");
+	                existingSession.setAvailability(scanner.nextBoolean());
+	                scanner.nextLine();
+	                break;
+	            case 0:
+	                System.out.println("Saving changes to the database...");
+	                subRunning = false;
+	                break;
+	            default:
+	                System.out.println("Invalid choice. Please try again.");
+	        }
+	    }
+	    
+	    // Κλήση της SessionDBUtils για την εκτέλεση του UPDATE
+	    SessionDBUtils.updateSession(existingSession);
+	}
+	
+	public static void addReservation() {
+	    System.out.println("\nCreate New Reservation\n");
+	    
+	    System.out.print("Please enter the Customer ID making the reservation: ");
+	    int customerId = scanner.nextInt();
+	    scanner.nextLine(); // Καθαρισμός buffer
+	    
+	    // Έλεγχος αν ο πελάτης υπάρχει
+	    if (CustomerDBUtils.getCustomerByID(customerId) == null) {
+	        System.out.println("Error: Customer with ID " + customerId + " does not exist. Reservation aborted.");
+	        return;
+	    }
+	    
+	    // 1. Φτιάχνουμε ένα "κενό" SessionSearch
+	    SessionSearch allSessionsCriteria = new SessionSearch(-1, "", "", "", "", -1, "", false);
+	    
+	    // 2. Φέρνουμε τον κατάλογο
+	    ArrayList<Session> availableSessions = SessionDBUtils.searchSessions(allSessionsCriteria);
+	    
+	    if (availableSessions == null || availableSessions.isEmpty()) {
+	        System.out.println("There are currently no available sessions to book. Reservation aborted.");
+	        return;
+	    }
+	    
+	    //Eκτύπωση του καταλόγου 
+	    System.out.println("\nAvailable Sessions Catalog:\n");
+	    System.out.printf("%-10s %-20s %-25s %-15s %-10s\n", "Code", "Type", "Date & Time", "Gym Code", "Price");
+	    
+	    for (Session s : availableSessions) {
+	        System.out.printf("%-10d %-20s %-25s %-15d $%-10d\n", 
+	            s.getSessionCode(), s.getSessionType(), s.getDateAndTime(), s.getGymCode(), s.getPrice());
+	    }
+	    System.out.println("\n");
+	    
+	    // Ο χρήστης διαλέγει από το μενού
+	    System.out.print("Please select a Session Code from the list above: ");
+	    int sessionCode = scanner.nextInt();
+	    scanner.nextLine(); // Καθαρισμός buffer
+	    
+	    if (SessionDBUtils.getSessionByID(sessionCode) == null) {
+	        System.out.println("Error: Invalid Session Code. Reservation aborted.");
+	        return;
+	    }
+	    
+	    // Αυτόματη καταγραφή της τωρινής ώρας για την κράτηση
+	    java.time.LocalDateTime now = java.time.LocalDateTime.now();
+	    java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+	    String bookingDate = now.format(formatter);
+	    System.out.println("Booking timestamp automatically recorded as: " + bookingDate);
+	    
+	    // Ασφαλής ερώτηση για το Invoice
+	    System.out.print("Will the customer need an invoice? (Y/N): ");
+	    String invoiceInput = scanner.nextLine().trim().toLowerCase();
+	    boolean invoice = invoiceInput.equals("y") || invoiceInput.equals("yes") || invoiceInput.equals("true");
+	    
+	    // Πιο φυσική ερώτηση για το Status (Now = Confirmed, Later = Pending)
+	    System.out.print("Will the customer pay now or later? (Type 'NOW' or 'LATER'): ");
+	    String paymentChoice = scanner.nextLine().trim().toUpperCase();
+	    
+	    String status;
+	    if (paymentChoice.equals("NOW")) {
+	        status = "CONFIRMED";
+	    } else {
+	        status = "PENDING";
+	    }
+	    
+	    // Δημιουργία του αντικειμένου Reservation
+	    Reservation newReservation = new Reservation(0, bookingDate, invoice, status, sessionCode, customerId);
+	    
+	    // Κλήση της βάσης
+	    ReservationDBUtils.addReservation(newReservation);
+	}
+	
+	public static void updateReservation() {
+	    System.out.println("\nUpdate Reservation Data\n");
+	    
+	    System.out.print("Please enter the Reservation Code to modify: ");
+	    int reservationCode = scanner.nextInt();
+	    scanner.nextLine(); // Καθαρισμός του buffer
+	    
+	    // Αναζήτηση της κράτησης (Reservation)
+	    Reservation existingReservation = ReservationDBUtils.getReservationByID(reservationCode);
+	    if (existingReservation == null) {
+	        System.out.println("No Reservation was found with this Code.");
+	        return;
+	    }
+	    
+	    boolean subRunning = true;
+	    while (subRunning) {
+	        System.out.println("\nCurrent Reservation Data:\n");
+	        System.out.println("1. Date & Time: " + existingReservation.getDateAndTime());
+	        System.out.println("2. Invoice Needed: " + (existingReservation.getInvoiceNeeded() ? "Yes" : "No"));
+	        System.out.println("3. Status: " + existingReservation.getReservationStatus());
+	        System.out.println("4. Session Code: " + existingReservation.getSessionCode());
+	        System.out.println("5. Customer ID: " + existingReservation.getCustomerID());
+	        System.out.println("0. Save Changes & Exit");
+	        System.out.print("\nChoice (0-5): ");
+	        
+	        int subChoice = scanner.nextInt();
+	        scanner.nextLine(); // Καθαρισμός του buffer
+	        
+	        switch (subChoice) {
+	            case 1:
+	                System.out.print("Enter New Date & Time (e.g., DD/MM/YYYY HH:MM): ");
+	                existingReservation.setDateAndTime(scanner.nextLine());
+	                break;
+	            case 2:
+	                System.out.print("Will the customer need an invoice? (Type 'Y' or 'N'): ");
+	                String invoiceInput = scanner.nextLine().trim().toLowerCase();
+	                boolean invoice = invoiceInput.equals("y") || invoiceInput.equals("yes") || invoiceInput.equals("t") || invoiceInput.equals("true");
+	                existingReservation.setInvoiceNeeded(invoice);
+	                break;
+	            case 3:
+	                System.out.print("Enter New Status (e.g., PENDING, CONFIRMED, CANCELLED): ");
+	                existingReservation.setReservationStatus(scanner.nextLine().toUpperCase());
+	                break;
+	            case 4:
+	                System.out.print("Enter New Session Code: ");
+	                int newSessionCode = scanner.nextInt();
+	                scanner.nextLine();
+	                
+	                // Φέρνουμε το νέο Session από τη βάση δεδομένων
+	                Session targetSession = SessionDBUtils.getSessionByID(newSessionCode);
+	                
+	                // 'Ελεγχος Διαθεσιμότητας
+	                if (targetSession == null) {
+	                    System.out.println("Error: Target Session does not exist. Session Code not changed.");
+	                } else if (!targetSession.getAvailability()) {
+	                    // Αν το Session βρέθηκε, αλλά η διαθεσιμότητά του (availability) είναι false
+	                    System.out.println("Error: The requested Session (Code: " + newSessionCode + ") is currently unavailable or full. Session Code not changed.");
+	                } else {
+	                    // Αν περάσει και τους δύο ελέγχους, τότε γίνεται η αλλαγή
+	                    existingReservation.setSessionCode(newSessionCode);
+	                    System.out.println("Success: Session Code provisionally updated to " + newSessionCode + ".");
+	                }
+	                break;
+	            case 5:
+	                System.out.print("Enter New Customer ID: ");
+	                int newCustomerId = scanner.nextInt();
+	                scanner.nextLine();
+	                
+	                // Έλεγχος αν ο νέος πελάτης υπάρχει
+	                if (CustomerDBUtils.getCustomerByID(newCustomerId) == null) {
+	                    System.out.println("Error: Target Customer does not exist. Customer ID not changed.");
+	                } else {
+	                    existingReservation.setCustomerID(newCustomerId);
+	                }
+	                break;
+	            case 0:
+	                System.out.println("Saving changes to the database...");
+	                subRunning = false;
+	                break;
+	            default:
+	                System.out.println("Invalid choice. Please try again.");
+	        }
+	    }
+	    
+	    // Κλήση της ReservationDBUtils για την εκτέλεση του UPDATE
+	    ReservationDBUtils.updateReservation(existingReservation);
+	}
+	
+	public static void addPayment() {
+	    System.out.println("\nCreate New Payment\n");
+	    
+	    System.out.print("Please enter the Reservation Code for this payment: ");
+	    int reservationCode = scanner.nextInt();
+	    scanner.nextLine(); // Καθαρισμός buffer
+	    
+	    // Έλεγχος αν η κράτηση υπάρχει
+	    Reservation existingRes = ReservationDBUtils.getReservationByID(reservationCode);
+	    if (existingRes == null) {
+	        System.out.println("Error: Reservation with Code " + reservationCode + " does not exist. Payment aborted.");
+	        return;
+	    }
+	    
+	    // --- ΝΕΑ ΛΟΓΙΚΗ: Αυτόματη άντληση του ποσού από το Session ---
+	    // Βρίσκουμε το Session που συνδέεται με αυτή την κράτηση
+	    Session bookedSession = SessionDBUtils.getSessionByID(existingRes.getSessionCode());
+	    if (bookedSession == null) {
+	        System.out.println("Error: The associated Session for this reservation could not be found. Payment aborted.");
+	        return;
+	    }
+	    
+	    // Τραβάμε την τιμή αυτόματα και την τυπώνουμε
+	    int amount = bookedSession.getPrice();
+	    System.out.println("Amount to pay (retrieved from Session): $" + amount);
+	    
+	    System.out.print("Enter Payment Method (e.g., CASH, CARD, BANK_TRANSFER): ");
+	    String paymentMethod = scanner.nextLine().toUpperCase();
+	    
+	    System.out.print("Enter Payment Status (e.g., COMPLETED, PENDING): ");
+	    String paymentStatus = scanner.nextLine().toUpperCase();
+	    
+	    // Για το transID, αν είναι PENDING μπορεί να μην έχει transaction id ακόμα, οπότε βάζουμε 0.
+	    System.out.print("Enter Points Transaction ID (or 0 if none): ");
+	    int transID = scanner.nextInt();
+	    scanner.nextLine(); // Καθαρισμός buffer
+	    
+	    // Αυτόματη καταγραφή ημερομηνίας/ώρας πληρωμής
+	    java.time.LocalDateTime now = java.time.LocalDateTime.now();
+	    java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+	    String paymentDate = now.format(formatter);
+	    System.out.println("Payment timestamp automatically recorded as: " + paymentDate);
+	    
+	    // Δημιουργία αντικειμένου Payment (0 για το AUTO_INCREMENT paymentID)
+	    Payment newPayment = new Payment(0, amount, paymentMethod, paymentDate, reservationCode, transID, paymentStatus);
+	    
+	    // Κλήση της βάσης
+	    PaymentDBUtils.addPayment(newPayment);
+	    
+	    if (paymentStatus.equals("COMPLETED")) {
+	        existingRes.setReservationStatus("CONFIRMED");
+	        ReservationDBUtils.updateReservation(existingRes);
+	        System.out.println("Associated Reservation status automatically updated to CONFIRMED.");
+	    }
+	}
+	
+}
+
 	private static void searchAndDisplayTrainers() {
 		System.out.println("\n Trainer's List");
 		

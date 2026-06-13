@@ -37,33 +37,35 @@ public class Session {
 	    public void setSessionCode(int sessionCode) {
 			if(sessionCode<=0){
 			throw new IllegalArgumentException("The Session Code can't be a negative number.");
-			}	
-	        this.sessionCode = sessionCode;
-	    }
-	
-	    public String getSessionType() {
-	        return sessionType;
-	    }
-	
-	    public void setSessionType(String sessionType) {
-			if(sessionType==null || sessionType.length() == 0){
+		}	
+        this.sessionCode = sessionCode;
+    }
+
+    public String getSessionType() { 
+    	return sessionType; 
+    }
+
+    public void setSessionType(String sessionType) {
+		if(sessionType==null || sessionType.length() == 0){
 			throw new IllegalArgumentException("The Session Type field cant be empty.");
-			}
-	        this.sessionType = sessionType;
-	    }
-	    public String getDescription() { 
-	        return description; 
-	    }
-	    public void setDescription(String description) {
-	        this.description = description;
-	    }
-	
-	    public int getMaxParticipants() {
-	        return maxParticipants;
-	    }
-	
-	    public void setMaxParticipants(int maxParticipants) {
-			if(maxParticipants<=0){
+		}
+        this.sessionType = sessionType;
+    }
+    
+    public String getDescription() { 
+    	return description; 
+    }
+    
+    public void setDescription(String description) { 
+    	this.description = description; 
+    }
+
+    public int getMaxParticipants() { 
+    	return maxParticipants;
+    }
+
+    public void setMaxParticipants(int maxParticipants) {
+		if(maxParticipants<=0){
 			throw new IllegalArgumentException("The number of Max participants can't be negative.");
 			}
 	        this.maxParticipants = maxParticipants;
@@ -136,4 +138,34 @@ public class Session {
 	    	setAmountOfParticipants(getAmountOfParticipants()+1);
 	    }
 
+    public void setGymCode(int gymGymCode) { 
+    	this.gymCode = gymGymCode;
+    }
+
+	public String getDateAndTime() { 
+		return dateAndTime;
 	}
+
+    public void setDateAndTime(String dateAndTime) {
+		if(dateAndTime==null || dateAndTime.length() == 0){
+			throw new IllegalArgumentException("The Date And duration field cant be empty.");
+		}
+        this.dateAndTime = dateAndTime;
+    }
+    
+    public int getAmountOfParticipants() { 
+    	return this.amountOfParticipants;
+    }
+    
+    public void setAmountOfParticipants(int amount) {
+    	if (amount>=0) {
+    		this.amountOfParticipants = amount;	    		
+    	} else {
+        	throw new IllegalArgumentException("The amount of participants cannot be a negative number.");
+    	}
+    }
+    
+    public void addParticipant() {
+    	setAmountOfParticipants(getAmountOfParticipants()+1);
+    }
+}
