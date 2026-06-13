@@ -134,21 +134,49 @@ public class ReservationDBUtils {
 		return null;		
 	}
 	
+	//grab all cancelled reservations
 	public static ArrayList<Reservation> getCancelledReservations(){
 		String sql= "SELECT * FROM reservation WHERE reservation_Status = 'CANCELLED';";
 		ArrayList<Reservation> cancelledReservations= new ArrayList<>();
+		
 		try (Connection conn= SQLConnector.getConnection();
-				Statement stm= conn.createStatement()){
+				Statement stm= conn.createStatement()){	
 			ResultSet res= stm.executeQuery(sql);
 			while(res.next()) {
 				Reservation currRes= new Reservation(
-						//continue here
+						res.getInt("reservation_Code"),
+						res.getObject("date_And_Time", LocalDateTime.class),
+						res.getBoolean("invoice_Needed"),
+						ReservationStatus.valueOf(res.getString("reservation_Status").toUpperCase()),
+						res.getInt("session_Session_Code"),
+						res.getInt("customer_Customer_ID")
 						);
+				cancelledReservations.add(currRes);
 			}
+			return cancelledReservations;
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return null;	
+	}
+	
+	//delete reservations based on id
+	public static void deleteReservationsById(String ids) {
+		//check for valid values given
+		if (ids == null || ids.trim().isEmpty()) {
+			System.out.println("Cannot delete: Invalid set of reservations given.");
+			return;			
+		}
+
+	    String sqlQuery = "DELETE FROM reservation WHERE reservation_Code IN (" + ids + ")"; //delete only the reservations that contain the IDs we are after
+		try (Connection conn= SQLConnector.getConnection();
+				Statement stm= conn.createStatement()){	
+			int rowsAffected= stm.executeUpdate(sqlQuery); //execute deletion in database
+			System.out.println("Successfully deleted "+rowsAffected+" reservations out of " +ids.split(", ").length+" ids given");
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
 	}
 	
-}
+	}
 

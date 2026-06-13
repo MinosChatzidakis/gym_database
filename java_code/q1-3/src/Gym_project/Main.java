@@ -8,9 +8,9 @@ import java.util.Scanner;
 
 public class Main {
 
+	static Scanner scanner = new Scanner(System.in);
 	public static void main(String[] args) {
 		
-		Scanner scanner = new Scanner(System.in);
 		boolean isRunning = true;
 		
 		
@@ -26,7 +26,7 @@ public class Main {
 			
 			switch (choice) {
 				case 1:
-					SessionDBUtils.testQuery();
+					//SessionDBUtils.testQuery();
 					adminMenu(scanner);
 					break;
 					
@@ -67,6 +67,12 @@ public class Main {
 				case 1010:
 					handleUnpaidReservations();
 					//manuallyRecordPayment();
+					break;
+				case 1020:
+					manuallyRecordPayment();
+					break;
+				case 1030:
+					handleCancelledReservations();
 					break;
 				case 2:
 					System.out.println("\n Search Gyms");
@@ -333,12 +339,12 @@ public class Main {
 				
 				ReservationStatus reservationStatus;
 				PaymentStatus paymentStatus;
-				String paymentMethod = "";
+				PaymentMethods paymentMethod;
 				
 				if (payChoice == 1) {
 					reservationStatus = ReservationStatus.COMPLETE;
 					paymentStatus = PaymentStatus.CONFIRMED;
-					paymentMethod = "Credit Card";
+					paymentMethod = PaymentMethods.CREDIT_CARD;
 				}else {
 					reservationStatus = ReservationStatus.PENDING;
 					paymentStatus = PaymentStatus.PENDING;
@@ -350,9 +356,9 @@ public class Main {
 				    scanner.nextLine();
 				    
 				    if(methodChoice == 1) {
-				    	paymentMethod = "Credit Card";
+				    	paymentMethod = PaymentMethods.CREDIT_CARD;
 				    }else {
-				    	paymentMethod = "Cash";
+				    	paymentMethod = PaymentMethods.CASH;
 				    }
 				}
 				
@@ -365,7 +371,7 @@ public class Main {
 						int generatedReservationCode = ReservationDBUtils.addReservationAndGetCode(r);
 						SessionDBUtils.checkAndUpdateAvailability(selectedSession);
 						r.setReservationCode(generatedReservationCode);
-						//handlePayment(r, s, paymentStatus); 
+						handleNewPayment(r, selectedSession, paymentMethod, paymentStatus); // create and store new payment 
 						
 					}catch(SQLException e) {
 						System.out.println("Error in recording reservation. Please try again later.");
@@ -440,7 +446,7 @@ public class Main {
 	}
 
 	//user has accepted the session and the reservation has been created => proceed with the payment
-	private static void handlePayment(Reservation selectedReservation, Session selectedSession, PaymentMethods selectedPaymentMethod, PaymentStatus paymentStatus) {
+	private static void handleNewPayment(Reservation selectedReservation, Session selectedSession, PaymentMethods selectedPaymentMethod, PaymentStatus paymentStatus) {
 		Payment newPayment= new Payment(
 					selectedSession.getPrice(),
 					selectedPaymentMethod,
@@ -492,7 +498,7 @@ public class Main {
 		for (Reservation ur : unpaidReservations){ // display all overdue reservations 
 			System.out.printf("%-15s | %-20s | %-25s | %-15s | %-30s\n",
 	                "ID: "+ur.getReservationCode(), "Reserv. Date: "+ur.getDateAndTime(), "Invoice needed: "+ur.getInvoiceNeeded(), "Status: "+ur.getReservationStatus().toString(), "Session Id:"+ur.getSessionCode(), "Customer ID: " + ur.getcustomerID());
-			resIdsString.append(ur.getReservationCode()).append(", "); //get all IDs that need changing in their status
+			resIdsString.append(ur.getReservationCode()).append(", "); //gather all IDs that need changing in their status
 			
 		}
 		resIdsString.delete(resIdsString.length()-2, resIdsString.length()); //remove trailing comma
@@ -508,7 +514,28 @@ public class Main {
 	}
 	
 	private static void handleCancelledReservations() {
-		ArrayList<> cancelledReservations= ReservationDBUtils.
+		ArrayList<Reservation> cancelledReservations= ReservationDBUtils.getCancelledReservations(); // get all cancelled reservations
+		//HashMap<Integer, Reservation> pastReservationsMap= new HashMap<>();
+		StringBuilder idSb= new StringBuilder();
+		Integer num=0;
+		for(Reservation r:cancelledReservations) {
+			System.out.printf("%-15s | %-20s | %-25s | %-15s | %-30s | %-15s | %-15s\n",
+	                ++num+"ID: "+r.getReservationCode(), "Reserv. Date: "+r.getDateAndTime(), "Invoice needed: "+r.getInvoiceNeeded(), "Status: "+r.getReservationStatus().toString(), "Session Id:"+r.getSessionCode(), "Customer ID: " + r.getcustomerID() + "Is passed: " + (r.isPast()?"YES":"NO"));
+			if(r.isPast()) { //if the reservation is cancelled and in the past, 
+				idSb.append(r.getReservationCode()).append(", ");
+			}
+		}
+		char letter;
+		do{ 
+			System.out.println("Delete past reservations? (Y/N)");
+			String choice= scanner.next();
+			letter= Character.toUpperCase(choice.charAt(0));
+		}while((letter!= 'Y' && letter != 'N') );
+		if(letter == 'Y') {
+			idSb.delete(idSb.length()-2, idSb.length()); //remove trailing comma
+			ReservationDBUtils.deleteReservationsById(idSb.toString());	
+		}
 	}
+
 	
 }
