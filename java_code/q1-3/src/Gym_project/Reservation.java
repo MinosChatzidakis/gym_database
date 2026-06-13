@@ -57,7 +57,11 @@ public class Reservation {
 		return sessionCode;
 	}
 	
-	public int getcustomerID() {
+	public void setSessionCode(int sessionCode) {
+		this.sessionCode = sessionCode;
+	}
+	
+	public int getCustomerID() {
 		return customerID;
 	}
 	
@@ -65,4 +69,11 @@ public class Reservation {
 		this.customerID = customerID;
 	}
 
+	public boolean isPast() {
+	    if (this.dateAndTime == null) {
+	        return false; 
+	    }
+
+	    return this.dateAndTime.isBefore(LocalDateTime.now());
+	}
 }

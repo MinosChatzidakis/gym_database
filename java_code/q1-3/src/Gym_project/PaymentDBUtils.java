@@ -5,6 +5,85 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+
+public class PaymentDBUtils { 
+	
+	public static void addPayment(Payment p) {
+	    
+	    String sqlQuery = "INSERT INTO payment (amount, payment_Method, payment_Date, payment_Status, reservation_Reservation_Code, pts_Transactions_Trans_ID) VALUES ("
+	            + p.getAmount() + ", '"
+	            + p.getPaymentMethod() + "', '"
+	            + p.getPaymentDate() + "', '"
+	            + p.getPaymentStatus() + "', "
+	            + p.getReservationCode() + ", "
+	            + p.getTransID() + ")";
+	            
+	    try (Connection conn = SQLConnector.getConnection(); 
+	         Statement stm = conn.createStatement()) {
+	        
+	        int rowsAffected = stm.executeUpdate(sqlQuery);
+	        if (rowsAffected > 0) {
+	            System.out.println("Payment was successfully added to the database.");
+	        } else {
+	            System.out.println("Something went wrong and the payment could not be added.");
+	        }
+	    } catch (SQLException e) {
+	        System.out.println("Error in adding payment to db:");
+	        e.printStackTrace();
+	    }
+	}
+	
+	//Κάνει το UPDATE στη βάση
+	public static void updatePayment(Payment p) {
+	    String sqlQuery = "UPDATE payment SET "
+	            + "amount = " + p.getAmount() + ", "
+	            + "payment_Method = '" + p.getPaymentMethod() + "', "
+	            + "payment_Status = '" + p.getPaymentStatus() + "' "
+	            + "WHERE payment_ID = " + p.getPaymentID();
+	            
+	    try (Connection conn = SQLConnector.getConnection(); 
+	         Statement stm = conn.createStatement()) {
+	        
+	        int rowsAffected = stm.executeUpdate(sqlQuery);
+	        if (rowsAffected > 0) {
+	            System.out.println("Payment data updated successfully in the database.");
+	        } else {
+	            System.out.println("No changes were made to the Payment.");
+	        }
+	    } catch (SQLException e) {
+	        System.out.println("Error updating Payment data in db:");
+	        e.printStackTrace();
+	    }
+	}
+	
+	//Φέρνει την πληρωμή από το ID
+	public static Payment getPaymentByID(int paymentId) {
+	    String sql = "SELECT * FROM payment WHERE payment_ID = " + paymentId + " LIMIT 1";
+	    try (Connection conn = SQLConnector.getConnection(); 
+	         Statement stm = conn.createStatement();
+	         ResultSet res = stm.executeQuery(sql)) {		
+
+	        if (res.next()) { 
+	            return new Payment(
+	                res.getInt("payment_ID"),
+	                res.getInt("amount"),
+	                res.getString("payment_Method"),
+	                res.getString("payment_Date"),
+	                res.getInt("reservation_Reservation_Code"),
+	                res.getInt("pts_Transactions_Trans_ID"),
+	                res.getString("payment_Status")
+	            );
+	        }				    
+	    } catch (SQLException e) {
+	        System.out.println("Error fetching payment by ID:");
+	        e.printStackTrace();
+	    }
+	    return null;
+	}
+
+	public static ArrayList<PendingPayment> getPendingPayments() {
 import java.util.ArrayList;
 
 public abstract class PaymentDBUtils {
@@ -52,6 +131,38 @@ public abstract class PaymentDBUtils {
 			e.printStackTrace();
 		}
 		return null; // no pending payments were found
+	}
+	
+	// add payment to database
+	public static int addPayment(Payment p) throws SQLException {
+	    String dateValueForSQL;//handle the possibility of a null date
+	    if (p.getPaymentDate() == null) {
+	        dateValueForSQL = "NULL"; // SQL keyword for no data
+	    } else {
+	        dateValueForSQL = "'" + java.sql.Timestamp.valueOf(p.getPaymentDate()) + "'"; //actual date
+	    }
+	    
+	    String sqlQuery = "INSERT INTO payment (amount, payment_Method, payment_Date, payment_Status, reservation_Reservation_Code, pts_Transactions_Trans_ID) VALUES (" 
+	            + p.getAmount() + ", '" 
+	            + p.getPaymentMethod().name() + "', " 
+	            + dateValueForSQL + ", '" 
+	            + p.getPaymentStatus().name() + "', " 
+	            + p.getReservationCode() + ", " 
+	            + p.getTransID() + ")";
+
+	    try (Connection conn = SQLConnector.getConnection();
+	         Statement stmt = conn.createStatement()) {
+	        
+	        stmt.executeUpdate(sqlQuery, Statement.RETURN_GENERATED_KEYS);
+	        
+	        try (ResultSet rs = stmt.getGeneratedKeys()) {
+	            if (rs.next()) {
+	                return rs.getInt(1);
+	            } else {
+	                throw new SQLException("Payment inserted, but no ID was generated."); // no id recorded = throw error
+	            }
+	        } 
+	    } 
 	}
 	
 	public static boolean confirmPaymentChangeInDB(int paymentId) {
