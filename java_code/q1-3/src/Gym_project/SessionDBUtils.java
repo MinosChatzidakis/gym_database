@@ -70,8 +70,8 @@ public abstract class SessionDBUtils {
 	                res.getInt("availability"),
 	                res.getInt("trainer_trainer_id"),
 	                res.getInt("gym_Gym_Code"),
-	                res.getString("date_And_Time"),
-	                res.getInt("amount_Of_Participants") // <-- Η προσθήκη έγινε εδώ
+	                res.getObject("date_And_Time", LocalDateTime.class),
+	                res.getInt("amount_Of_Participants")
 	            );
 	            availableSessions.add(currentSession);
 	        }

@@ -1151,17 +1151,17 @@ public class Main {
 	        System.out.println("Error: The associated Session could not be found. Payment aborted.");
 	        return;
 	    }
-	    int amount = bookedSession.getPrice();
+	    float amount = bookedSession.getPrice();
 	    System.out.println("Amount to pay (Auto-retrieved from Session): $" + amount);
 	    
-	    String paymentMethodStr = "";
-	    String paymentStatusStr = "";
+	    String paymentMethodStr;
+	    String paymentStatusStr;
 	    
-	    String currentResStatus = existingRes.getReservationStatus().toUpperCase();
+	    ReservationStatus currentResStatus = existingRes.getReservationStatus();
 	    
 	    // ΕΛΕΓΧΟΣ ΛΟΓΙΚΗΣ: Ταυτόχρονη Πληρωμή (COMPLETE) vs Ετεροχρονισμένη (PENDING)
-	    if (currentResStatus.equals("COMPLETE") || currentResStatus.equals("CONFIRMED")) {
-	        System.out.println("\n[Simultaneous Online Payment Detected]");
+	    if (currentResStatus==ReservationStatus.COMPLETE) {
+	        System.out.println("\nSimultaneous Online Payment Detected");
 	        System.out.println("Rule: For immediate payments, only CREDIT_CARD or BANK_TRANSFER are accepted.");
 	        
 	        boolean valid = false;
@@ -1208,12 +1208,14 @@ public class Main {
 	    System.out.println("Payment timestamp automatically recorded as: " + paymentDate);
 	    
 	    // Δημιουργία Payment
-	    Payment newPayment = new Payment(0, amount, paymentMethodStr, paymentDate, reservationCode, transID, paymentStatusStr);
+	    Payment newPayment = new Payment(
+	    		amount, paymentMethodStr, paymentDate, reservationCode, transID, paymentStatusStr
+	    		);
 	    PaymentDBUtils.addPayment(newPayment);
 	    
 	    // Αν η κράτηση ήταν PENDING και τώρα η πληρωμή έγινε CONFIRMED, αναβαθμίζουμε την κράτηση
 	    if (currentResStatus.equals("PENDING") && paymentStatusStr.equals("CONFIRMED")) {
-	        existingRes.setReservationStatus("COMPLETE"); 
+	        existingRes.setReservationStatus(ReservationStatus.COMPLETE); 
 	        ReservationDBUtils.updateReservation(existingRes);
 	        System.out.println("Associated Reservation status automatically updated to COMPLETE.");
 	    }
@@ -1237,13 +1239,13 @@ public class Main {
 	    String newStatus = scanner.nextLine().trim().toUpperCase();
 	    
 	    if (!newStatus.isEmpty()) {
-	        existingPayment.setPaymentStatus(newStatus);
+	        existingPayment.setPaymentStatus(PaymentStatus.valueOf(newStatus.toUpperCase()));
 	        
 	        // BUSINESS LOGIC: Αν άλλαξε σε CONFIRMED, πρέπει να ενημερώσουμε την κράτηση
 	        if (newStatus.equals(PaymentStatus.CONFIRMED.toString())) {
 	            Reservation existingRes = ReservationDBUtils.getReservationByID(existingPayment.getReservationCode());
-	            if (existingRes != null && existingRes.getReservationStatus().equalsIgnoreCase(ReservationStatus.PENDING.toString())) {
-	                existingRes.setReservationStatus(ReservationStatus.COMPLETE.toString());
+	            if (existingRes != null && existingRes.getReservationStatus()==ReservationStatus.PENDING) {
+	                existingRes.setReservationStatus(ReservationStatus.COMPLETE);
 	                ReservationDBUtils.updateReservation(existingRes);
 	                System.out.println("Auto-Update: Associated Reservation changed to COMPLETE.");
 	            }
@@ -1252,8 +1254,6 @@ public class Main {
 	    
 	    PaymentDBUtils.updatePayment(existingPayment);
 	}
-	
-}
 
 	private static void searchAndDisplayTrainers() {
 		System.out.println("\n Trainer's List");
@@ -1289,7 +1289,7 @@ public class Main {
 						(res.getInvoiceNeeded() ? "YES" : "NO"),
 						res.getReservationStatus().name(),
 						res.getSessionCode(),
-						res.getcustomerID());
+						res.getCustomerID());
 			}
 		
 		
@@ -1466,7 +1466,7 @@ public class Main {
 		
 		for (Reservation ur : unpaidReservations){ // display all overdue reservations 
 			System.out.printf("%-15s | %-20s | %-25s | %-15s | %-30s\n",
-	                "ID: "+ur.getReservationCode(), "Reserv. Date: "+ur.getDateAndTime(), "Invoice needed: "+ur.getInvoiceNeeded(), "Status: "+ur.getReservationStatus().toString(), "Session Id:"+ur.getSessionCode(), "Customer ID: " + ur.getcustomerID());
+	                "ID: "+ur.getReservationCode(), "Reserv. Date: "+ur.getDateAndTime(), "Invoice needed: "+ur.getInvoiceNeeded(), "Status: "+ur.getReservationStatus().toString(), "Session Id:"+ur.getSessionCode(), "Customer ID: " + ur.getCustomerID());
 			resIdsString.append(ur.getReservationCode()).append(", "); //gather all IDs that need changing in their status
 			
 		}
@@ -1489,7 +1489,7 @@ public class Main {
 		Integer num=0;
 		for(Reservation r:cancelledReservations) {
 			System.out.printf("%-15s | %-20s | %-25s | %-15s | %-30s | %-15s | %-15s\n",
-	                ++num+"ID: "+r.getReservationCode(), "Reserv. Date: "+r.getDateAndTime(), "Invoice needed: "+r.getInvoiceNeeded(), "Status: "+r.getReservationStatus().toString(), "Session Id:"+r.getSessionCode(), "Customer ID: " + r.getcustomerID() + "Is passed: " + (r.isPast()?"YES":"NO"));
+	                ++num+"ID: "+r.getReservationCode(), "Reserv. Date: "+r.getDateAndTime(), "Invoice needed: "+r.getInvoiceNeeded(), "Status: "+r.getReservationStatus().toString(), "Session Id:"+r.getSessionCode(), "Customer ID: " + r.getCustomerID() + "Is passed: " + (r.isPast()?"YES":"NO"));
 			if(r.isPast()) { //if the reservation is cancelled and in the past, 
 				idSb.append(r.getReservationCode()).append(", ");
 			}

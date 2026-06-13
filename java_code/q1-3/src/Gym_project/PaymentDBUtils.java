@@ -4,36 +4,12 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-public class PaymentDBUtils { 
-	
-	public static void addPayment(Payment p) {
-	    
-	    String sqlQuery = "INSERT INTO payment (amount, payment_Method, payment_Date, payment_Status, reservation_Reservation_Code, pts_Transactions_Trans_ID) VALUES ("
-	            + p.getAmount() + ", '"
-	            + p.getPaymentMethod() + "', '"
-	            + p.getPaymentDate() + "', '"
-	            + p.getPaymentStatus() + "', "
-	            + p.getReservationCode() + ", "
-	            + p.getTransID() + ")";
-	            
-	    try (Connection conn = SQLConnector.getConnection(); 
-	         Statement stm = conn.createStatement()) {
-	        
-	        int rowsAffected = stm.executeUpdate(sqlQuery);
-	        if (rowsAffected > 0) {
-	            System.out.println("Payment was successfully added to the database.");
-	        } else {
-	            System.out.println("Something went wrong and the payment could not be added.");
-	        }
-	    } catch (SQLException e) {
-	        System.out.println("Error in adding payment to db:");
-	        e.printStackTrace();
-	    }
-	}
+public abstract class PaymentDBUtils { 
 	
 	//Κάνει το UPDATE στη βάση
 	public static void updatePayment(Payment p) {
@@ -58,7 +34,6 @@ public class PaymentDBUtils {
 	    }
 	}
 	
-	//Φέρνει την πληρωμή από το ID
 	public static Payment getPaymentByID(int paymentId) {
 	    String sql = "SELECT * FROM payment WHERE payment_ID = " + paymentId + " LIMIT 1";
 	    try (Connection conn = SQLConnector.getConnection(); 
@@ -68,12 +43,12 @@ public class PaymentDBUtils {
 	        if (res.next()) { 
 	            return new Payment(
 	                res.getInt("payment_ID"),
-	                res.getInt("amount"),
-	                res.getString("payment_Method"),
-	                res.getString("payment_Date"),
+	                res.getFloat("amount"),
+	                PaymentMethods.valueOf(res.getString("payment_Method").toUpperCase()),
+	                res.getObject("payment_Date", LocalDateTime.class),
 	                res.getInt("reservation_Reservation_Code"),
-	                res.getInt("pts_Transactions_Trans_ID"),
-	                res.getString("payment_Status")
+	                //res.getInt("pts_Transactions_Trans_ID"),
+	                PaymentStatus.valueOf(res.getString("payment_Status").toUpperCase())
 	            );
 	        }				    
 	    } catch (SQLException e) {
@@ -82,11 +57,6 @@ public class PaymentDBUtils {
 	    }
 	    return null;
 	}
-
-	public static ArrayList<PendingPayment> getPendingPayments() {
-import java.util.ArrayList;
-
-public abstract class PaymentDBUtils {
 	// get payments that are still pending
 	public static ArrayList<PendingPayment> getPendingPayments() {
 		// payment_status= pending && session_status= pending
@@ -104,15 +74,6 @@ public abstract class PaymentDBUtils {
 			ResultSet res= stm.executeQuery(sql);
 			ArrayList<PendingPayment> pendingPayments= new ArrayList<>();
 			while(res.next()) {
-				/*Payment currentPayment= new Payment(
-						res.getFloat("amount"),
-						PaymentMethods.valueOf(res.getString("paymentMethod")), //change this to the value of the local enumeration we have in place
-						res.getObject("date_And_Time", LocalDateTime.class),
-						res.getInt("reservation_Reservation_Code"),
-						PaymentStatus.valueOf(res.getString("payment_Status")) //change this to the value of the local enumeration we have in place
-						//date_And_Time gets the reservation date
-						//customer_Customer_ID gets the customer ID
-						);*/
 
 				PendingPayment currentPendingPayment= new PendingPayment(
 							res.getInt("pid"),

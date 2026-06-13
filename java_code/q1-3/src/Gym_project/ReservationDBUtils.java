@@ -43,9 +43,9 @@ public class ReservationDBUtils {
 	        if (res.next()) { 
 	            return new Reservation(
 	                res.getInt("reservation_Code"),
-	                res.getString("date_And_Time"),
+	                res.getObject("date_And_Time", LocalDateTime.class),
 	                res.getBoolean("invoice_Needed"),
-	                res.getString("reservation_Status"),
+	                ReservationStatus.valueOf(res.getString("reservation_Status").toUpperCase()),
 	                res.getInt("session_Session_Code"),
 	                res.getInt("customer_Customer_ID")
 	            );
@@ -56,6 +56,7 @@ public class ReservationDBUtils {
 	    }
 	    return null; // Επιστρέφει null αν δεν βρεθεί η κράτηση
 	}
+
 	public static int addReservationAndGetCode(Reservation r) throws SQLException {
 	    
 	    int invoiceVal = r.getInvoiceNeeded() ? 1 : 0;
@@ -64,7 +65,7 @@ public class ReservationDBUtils {
 	            + invoiceVal + ", '"
 	            + r.getReservationStatus().name() + "', "
 	            + r.getSessionCode() + ", "
-	            + r.getcustomerID() + ")";
+	            + r.getCustomerID() + ")";
 	    try (Connection conn = SQLConnector.getConnection();
 	         Statement stmt = conn.createStatement()) {
 	        
@@ -81,6 +82,7 @@ public class ReservationDBUtils {
 	            }
 	        }
 	    }
+	}
 	
 	public static ArrayList<Reservation> getActiveReservations() {
 		String sqlQuery= "SELECT * FROM reservation WHERE reservation_Status = 'PENDING' OR reservation_Status = 'COMPLETE' ORDER BY reservation_Status ASC;";
@@ -225,7 +227,6 @@ public class ReservationDBUtils {
 		}
 	}
 	
-	}
 	public static boolean cancelReservationInDB(int resCode) {
 		String updateResSql = "UPDATE reservation SET reservation_Status = 'CANCELLED' WHERE reservation_Code = " + resCode + ";";
 		
@@ -247,4 +248,3 @@ public class ReservationDBUtils {
 		return false;
 	}
 }
-
