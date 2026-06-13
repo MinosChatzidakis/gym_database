@@ -228,10 +228,10 @@ public class ReservationDBUtils {
 	}
 	
 	public static boolean cancelReservationInDB(int resCode) {
-		String updateResSql = "UPDATE reservation SET reservation_Status = 'CANCELLED' WHERE reservation_Code = " + resCode + ";";
+		String updateResSql = "UPDATE reservation SET reservation_Status = 'CANCELLED' WHERE reservation_Code = " + resCode;
 		
 		String updateSessionSql = "UPDATE session "
-								+ "SET availability = 1 "
+								+ "SET availability = 1, amount_of_participants = amount_of_participants - 1 "
 								+ "WHERE session_Code = (SELECT session_Session_Code FROM reservation WHERE reservation_Code = " + resCode + ")";
 		
 		try (Connection conn = SQLConnector.getConnection();
@@ -247,4 +247,50 @@ public class ReservationDBUtils {
 		}
 		return false;
 	}
+	
+	public static ArrayList<Reservation> displayReservationsByCustomerPhone(String phoneNumber) {
+		String sqlQuery = "SELECT r.reservation_Code, r.date_And_Time, r.invoice_Needed, r.reservation_Status, r.session_Session_Code, r.customer_Customer_ID "
+                + "FROM reservation r "
+                + "JOIN customer c ON r.customer_Customer_ID = c.customer_ID "
+                + "WHERE c.phone = '" + phoneNumber + "' "
+                + "ORDER BY r.date_And_Time DESC;";
+		
+		ArrayList<Reservation> reservationList = new ArrayList<>();
+		
+		try (Connection conn = SQLConnector.getConnection();
+				Statement stm = conn.createStatement();
+				ResultSet res = stm.executeQuery(sqlQuery)) {
+			
+			
+			while (res.next()) {
+				String dbStatus = res.getString("reservation_Status").toUpperCase();
+				ReservationStatus status;
+				
+				if(dbStatus.equals("COMPLETE")) {
+					status = ReservationStatus.COMPLETE;
+				}else if(dbStatus.equals("CANCELLED")) {
+					status = ReservationStatus.CANCELLED;
+				}else {
+					status = ReservationStatus.PENDING;
+				}
+				
+				Reservation currentReservation = new Reservation(
+						res.getInt("reservation_Code"),
+						res.getObject("date_And_Time", LocalDateTime.class),
+						res.getBoolean("invoice_Needed"),
+						status,
+						res.getInt("session_Session_Code"),
+						res.getInt("customer_Customer_ID")
+						);
+				reservationList.add(currentReservation);
+				
+			}
+			
+			return reservationList;
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 }
