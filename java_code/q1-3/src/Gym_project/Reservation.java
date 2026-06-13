@@ -1,15 +1,17 @@
 package Gym_project;
 
+import java.time.LocalDateTime;
+
 public class Reservation {
 	
 	private int reservationCode;
-	private String dateAndTime;
+	private LocalDateTime  dateAndTime;
 	private boolean invoiceNeeded;
-	private String reservationStatus;
+	private ReservationStatus reservationStatus;
 	private int sessionCode;
 	private int customerID;
 	
-	public Reservation(int reservationCode, String dateAndTime, boolean invoiceNeeded, String reservationStatus, int sessionCode, int customerID) {
+	public Reservation(int reservationCode, LocalDateTime  dateAndTime, boolean invoiceNeeded, ReservationStatus reservationStatus, int sessionCode, int customerID) {
 		this.reservationCode = reservationCode;
 		this.dateAndTime = dateAndTime;
 		this.invoiceNeeded = invoiceNeeded;
@@ -18,9 +20,6 @@ public class Reservation {
 		this.customerID = customerID;
 	}
 	
-	public Reservation(){
-		
-	}
 	
 	public int getReservationCode() { 
 		return reservationCode;
@@ -30,11 +29,11 @@ public class Reservation {
 		this.reservationCode = reservationCode;
 	}
 	
-	public String getDateAndTime() {
+	public LocalDateTime getDateAndTime() {
 		return dateAndTime;
 	}
 	
-	public void setDateAndTime(String dateAndTime) {
+	public void setDateAndTime(LocalDateTime dateAndTime) {
 		this.dateAndTime = dateAndTime;
 	}
 	
@@ -46,11 +45,11 @@ public class Reservation {
 		this.invoiceNeeded = invoiceNeeded;
 	}
 	
-	public String getReservationStatus() {
+	public ReservationStatus getReservationStatus() {
 		return reservationStatus;
 	}
 	
-	public void setReservationStatus(String reservationStatus) {
+	public void setReservationStatus(ReservationStatus reservationStatus) {
 		this.reservationStatus = reservationStatus;
 	}
 	

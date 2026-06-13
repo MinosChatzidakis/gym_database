@@ -1,23 +1,27 @@
 package Gym_project;
 
+import java.time.LocalDateTime ;
+
 public class Payment {
 	
 	private int paymentID;
-	private int amount;
-	private String paymentMethod;
-	private String paymentDate;
-	private int reservationCode; 
-	private String paymentStatus; 
+	private float amount;
+	private PaymentMethods paymentMethod;
+	private LocalDateTime  paymentDate;
+	private int reservationCode;
+	private PaymentStatus paymentStatus;
 	private int transID;
 	
 	
-	public Payment(int paymentID, int amount, String paymentMethod, String paymentDate, int reservationCode, int transID, String paymentStatus) {
-		this.paymentID = paymentID;
+	
+	public Payment(/*int paymentID ,*/ float amount, PaymentMethods paymentMethod, LocalDateTime paymentDate, int reservationCode,/* int transID ,*/ PaymentStatus paymentStatus) {
+		//this.paymentID = paymentID;
 		this.amount = amount;
 		this.paymentMethod = paymentMethod;
 		this.paymentDate = paymentDate;
 		this.reservationCode = reservationCode;
-		this.transID = transID;
+		//this.transID = transID; -- this concerns question 4 -- possible need to rename to pts_Transactions_Trans_ID 
+		//this.paymentStatus = PaymentStatus.PENDING; -- consider this approach
 		this.paymentStatus = paymentStatus;
 	}
 	
@@ -29,31 +33,22 @@ public class Payment {
 		this.paymentID = paymentID;
 	}
 	
-	public int getAmount() {
+	public float getAmount() {
 		return amount;
 	}
 	
-	public void setAmount(int amount) {
+	public void setAmount(float amount) {
 		this.amount = amount;
 	}
 	
-	public String getPaymentMethod() {
+	public PaymentMethods getPaymentMethod() {
 		return paymentMethod;
 	}
 	
-	public void setPaymentMethod(String paymentMethod) {
+	public void setPaymentMethod(PaymentMethods paymentMethod) {
 		this.paymentMethod = paymentMethod;
 	}
 	
-	public String getPaymentDate() {
-		return paymentDate;
-	}
-	
-	public void setPaymentDate(String paymentDate) {
-		this.paymentDate = paymentDate;
-	}
-
-	// ΠΡΟΣΘΗΚΗ: Getter & Setter για το Reservation Code ως int
 	public int getReservationCode() {
 		return reservationCode;
 	}
@@ -70,10 +65,23 @@ public class Payment {
 		this.transID = transID;
 	}
 	
-	// ΠΡΟΣΘΗΚΗ: Getter & Setter για το Payment Status ως String
-	public String getPaymentStatus() {
+	public LocalDateTime  getPaymentDate() {
+		return paymentDate;
+	}
+	
+	public void setPaymentDate(LocalDateTime  paymentDate) {
+		this.paymentDate = paymentDate;
+	}
+	
+	public PaymentStatus getPaymentStatus() {
 		return paymentStatus;
 	}
+	
+	public void setPaymentStatus(PaymentStatus paymentStatus) {
+		this.paymentStatus = paymentStatus;
+	}
+}
+
 
 	public void setPaymentStatus(String paymentStatus) {
 		this.paymentStatus = paymentStatus;

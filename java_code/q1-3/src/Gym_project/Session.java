@@ -1,39 +1,41 @@
-package Gym_project;
-	
+	package Gym_project;
+
+import java.time.LocalDateTime;
+
 public class Session {
-	private int sessionCode;
-    private String sessionType;
-    private String description;
-    private int maxParticipants;
-    private int duration;
-    private int price;
-    private boolean availability;
-    private int trainerID;
-    private int gymCode;
-	private String dateAndTime;
-	private int amountOfParticipants;
-
-   
-    public Session(int sessionCode, String sessionType, String description, int maxParticipants , int duration , int price , boolean availability , int trainerID , int gymCode , String dateAndTime, int amountOfParticipants) {
-        this.sessionCode = sessionCode;
-        this.sessionType = sessionType;
-        this.description = description;
-        this.maxParticipants = maxParticipants;
-        this.duration = duration;
-        this.price = price;
-        this.availability = availability;
-        this.trainerID = trainerID;
-        this.gymCode = gymCode;
-		this.dateAndTime = dateAndTime;
-		this.amountOfParticipants = amountOfParticipants;
-    }
-    
-    public int getSessionCode() { 
-    	return sessionCode; 
-    }
-
-    public void setSessionCode(int sessionCode) {
-		if(sessionCode<=0){
+		private int sessionCode;
+	    private String sessionType;
+	    private String description;
+	    private int maxParticipants;
+	    private int duration;
+	    private float price;
+	    private int availability;
+	    private int trainerID;
+	    private int gymCode;
+		private LocalDateTime dateAndTime;
+		private int amountOfParticipants;
+	
+	    public Session(int sessionCode, String sessionType, String description, int maxParticipants , int duration , float price , int availability , int trainerID , int gymCode , LocalDateTime dateAndTime) {
+	        this.sessionCode = sessionCode;
+	        this.sessionType = sessionType;
+	        this.description = description;
+	        this.maxParticipants = maxParticipants;
+	        this.duration = duration;
+	        this.price = price;
+	        this.availability = availability;
+	        this.trainerID = trainerID;
+	        this.gymCode = gymCode;
+			this.dateAndTime = dateAndTime;
+			this.amountOfParticipants = 0;
+	    }
+	    
+	
+	    public int getSessionCode() {
+	        return sessionCode;
+	    }
+	
+	    public void setSessionCode(int sessionCode) {
+			if(sessionCode<=0){
 			throw new IllegalArgumentException("The Session Code can't be a negative number.");
 		}	
         this.sessionCode = sessionCode;
@@ -65,45 +67,76 @@ public class Session {
     public void setMaxParticipants(int maxParticipants) {
 		if(maxParticipants<=0){
 			throw new IllegalArgumentException("The number of Max participants can't be negative.");
-		}
-        this.maxParticipants = maxParticipants;
-    }
-    
-    public int getDuration() {
-    	return duration; 
-    }
+			}
+	        this.maxParticipants = maxParticipants;
+	    }
+	    
+	    public int getDuration() {
+	        return duration;
+	    }
+	
+	    public void setDuration(int duration) {
+	        this.duration = duration;
+	    }
+	    
+	    public float getPrice() {
+	        return price;
+	    }
+	
+	    public void setPrice(float price) {
+	        this.price = price;
+	    }
+	    
+	    public int getAvailability() {
+	        return availability;
+	    }
+	    
+	    public void setAvailability(int availability) {
+	        this.availability = availability;
+	    }
+	    
+	    public int getTrainerTrainerID() {
+	        return trainerID;
+	    }
+	
+	    public void setTrainerID(int trainerTrainerID) {
+	        this.trainerID = trainerTrainerID;
+	    }
+	    
+	    public int getGymCode() {
+	        return gymCode;
+	    }
+	
+	    public void setGymCode(int gymGymCode) {
+	        this.gymCode = gymGymCode;
+	    }
 
-    public void setDuration(int duration) { 
-    	this.duration = duration; 
-    }
-    
-    public int getPrice() { 
-    	return price;
-    }
-
-    public void setPrice(int price) { 
-    	this.price = price; 
-    }
-    
-    public boolean getAvailability() { 
-    	return availability; 
-    }
-    
-    public void setAvailability(boolean availability) {
-    	this.availability = availability;
-    }
-    
-    public int getTrainerTrainerID() { 
-    	return trainerID;
-    }
-
-    public void setTrainerID(int trainerTrainerID) {
-    	this.trainerID = trainerTrainerID;
-    }
-    
-    public int getGymCode() { 
-    	return gymCode;
-    }
+		public LocalDateTime getDateAndTime() {
+	        return dateAndTime;
+	    }
+	
+	    public void setDateAndTime(LocalDateTime dateAndTime) {
+			if(dateAndTime==null){
+			throw new IllegalArgumentException("The Date And duration field cant be empty.");
+			}
+	        this.dateAndTime = dateAndTime;
+	    }
+	    
+	    public int getAmountOfParticipants() {
+	    	return this.amountOfParticipants;
+	    }
+	    
+	    public void setAmountOfParticipants(int amount) {
+	    	if (amount>=0) {
+	    		this.amountOfParticipants= amount;	    		
+	    	}else {
+	    		throw new IllegalArgumentException("The amount of participants in this session cannot be a negative number.");
+	    	}
+	    }
+	    
+	    public void addParticipant() {
+	    	setAmountOfParticipants(getAmountOfParticipants()+1);
+	    }
 
     public void setGymCode(int gymGymCode) { 
     	this.gymCode = gymGymCode;

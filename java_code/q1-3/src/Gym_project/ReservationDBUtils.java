@@ -4,32 +4,10 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class ReservationDBUtils {
-	
-	public static void addReservation(Reservation r) {
-	    
-	    String sqlQuery = "INSERT INTO reservation (date_And_Time, invoice_Needed, reservation_Status, session_Session_Code, customer_Customer_ID) VALUES ('"
-	            + r.getDateAndTime() + "', "
-	            + (r.getInvoiceNeeded() ? 1 : 0) + ", '"
-	            + r.getReservationStatus() + "', "
-	            + r.getSessionCode() + ", "
-	            + r.getCustomerID() + ")";
-	    
-	    try (Connection conn = SQLConnector.getConnection(); 
-	         Statement stm = conn.createStatement()) {
-	        
-	        int rowsAffected = stm.executeUpdate(sqlQuery);
-	        if (rowsAffected > 0) {
-	            System.out.println("Reservation was successfully added to the database.");
-	        } else {
-	            System.out.println("Something went wrong and the reservation could not be added.");
-	        }
-	    } catch (SQLException e) {
-	        System.out.println("Error in adding reservation to db:");
-	        e.printStackTrace();
-	    }
-	}
 	
 	public static void updateReservation(Reservation r) {
 	    
@@ -78,38 +56,111 @@ public class ReservationDBUtils {
 	    }
 	    return null; // Επιστρέφει null αν δεν βρεθεί η κράτηση
 	}
-	
-	public ResultSet getActiveReservations() {
-		String sqlQuery= "SELECT * FROM reservation WHERE reservation_status = 'PENDING' OR reservation_status = 'COMPLETE' ORDER BY reservation_status;";
-		try {
-			Connection conn= SQLConnector.getConnection();
+	public static int addReservationAndGetCode(Reservation r) {
+		
+		int invoiceVal = r.getInvoiceNeeded() ? 1 : 0;
+		String sqlQuery= "INSERT INTO reservation (date_And_Time, invoice_Needed, reservation_Status, session_Session_Code, customer_Customer_ID) VALUES ('"
+				+ r.getDateAndTime() + "', "
+				+ invoiceVal + ", '"
+				+ r.getReservationStatus().name() + "', "
+				+ r.getSessionCode() + ", "
+				+ r.getcustomerID() + ")";
+		
+		try{
+			Connection conn = SQLConnector.getConnection(); //establish connection via the class we created
 			Statement stm= conn.createStatement();
-			ResultSet res= stm.executeQuery(sqlQuery);
-			if(res.next()) {
-				return res;
+			int rowsAffected= stm.executeUpdate(sqlQuery, Statement.RETURN_GENERATED_KEYS); //run the query on the database and store amount of rows affected by it
+			if(rowsAffected>0) {
+				//System.out.println("Reservation was successfully added to db.");
+				try (ResultSet generatedKeys = stm.getGeneratedKeys()){
+					if(generatedKeys.next()) {
+						return generatedKeys.getInt(1);
+					}	
+				}
+			}	
+		}catch(SQLException e) {
+			System.out.println("Error in adding reservation to db:");
+			e.printStackTrace();
+		}
+		return -1;
+	}
+	
+	public static ArrayList<Reservation> getActiveReservations() {
+		String sqlQuery= "SELECT * FROM reservation WHERE reservation_Status = 'PENDING' OR reservation_Status = 'COMPLETE' ORDER BY reservation_Status ASC;";
+		
+		ArrayList<Reservation> activeList = new ArrayList<>();
+		
+		try (Connection conn= SQLConnector.getConnection();
+			Statement stm= conn.createStatement();
+			ResultSet res= stm.executeQuery(sqlQuery);){
+			
+			while (res.next()) {
+				
+				String dbStatus = res.getString("reservation_Status").toUpperCase();
+                ReservationStatus status;
+                
+                if (dbStatus.equals("CONFIRMED") || dbStatus.equals("COMPLETE")) {
+                    status = ReservationStatus.COMPLETE;
+                } else if (dbStatus.equals("CANCELLED")) {
+                    status = ReservationStatus.CANCELLED;
+                } else {
+                    status = ReservationStatus.PENDING; 
+                }				
+				Reservation currentReservation = new Reservation(
+						res.getInt("reservation_Code"),
+						res.getObject("date_And_Time", LocalDateTime.class),
+						res.getBoolean("invoice_Needed"),
+						status,
+						res.getInt("session_Session_Code"),
+						res.getInt("customer_Customer_ID")
+					); 
+				
+				activeList.add(currentReservation);
 			}
+			
+			return activeList;
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
 	
-
-	public ResultSet getUnpaidReservations() {
-		// payment_status= pending && session_status= pending
-		String sql= "SELECT * FROM payment p JOIN reservation r ON p.Reservation_code = r.reservation_code WHERE p.payment_status = 'PENDING' AND r.reservation_status = 'PENDING'";
-		try {
-			Connection conn = SQLConnector.getConnection(); //establish connection via the class we created
-			Statement stm= conn.createStatement();
-			ResultSet res= stm.executeQuery(sql);
-			if(res.next()) {
-				return res;
+	
+	public static void updateReservationStatus(int id, ReservationStatus status) {
+		String sql= "UPDATE reservation SET reservation_Status = '"+status+"' WHERE reservation_Code = " +id+";";
+		try(Connection conn = SQLConnector.getConnection(); //establish connection via the class we created
+				Statement stm= conn.createStatement();) {
+			int rowsAffected= stm.executeUpdate(sql);
+			 
+			if(rowsAffected>0) {
+				System.out.println("");
 			}else {
 				System.out.println("Something went wrong and the reservation could not be added to db.");
 			}
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
-		return null;
+	}
+	
+	public static boolean cancelReservationInDB(int resCode) {
+		String updateResSql = "UPDATE reservation SET reservation_Status = 'CANCELLED' WHERE reservation_Code = " + resCode + ";";
+		
+		String updateSessionSql = "UPDATE session "
+								+ "SET availability = 1 "
+								+ "WHERE session_Code = (SELECT session_Session_Code FROM reservation WHERE reservation_Code = " + resCode + ")";
+		
+		try (Connection conn = SQLConnector.getConnection();
+				Statement stm = conn.createStatement()){
+			
+			int rowsAffected = stm.executeUpdate(updateResSql);
+			if (rowsAffected > 0) {
+				stm.executeUpdate(updateSessionSql);
+				return true;
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 }
+
