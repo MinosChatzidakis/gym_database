@@ -34,6 +34,54 @@ public class PaymentDBUtils {
 	        e.printStackTrace();
 	    }
 	}
+	
+	//Κάνει το UPDATE στη βάση
+	public static void updatePayment(Payment p) {
+	    String sqlQuery = "UPDATE payment SET "
+	            + "amount = " + p.getAmount() + ", "
+	            + "payment_Method = '" + p.getPaymentMethod() + "', "
+	            + "payment_Status = '" + p.getPaymentStatus() + "' "
+	            + "WHERE payment_ID = " + p.getPaymentID();
+	            
+	    try (Connection conn = SQLConnector.getConnection(); 
+	         Statement stm = conn.createStatement()) {
+	        
+	        int rowsAffected = stm.executeUpdate(sqlQuery);
+	        if (rowsAffected > 0) {
+	            System.out.println("Payment data updated successfully in the database.");
+	        } else {
+	            System.out.println("No changes were made to the Payment.");
+	        }
+	    } catch (SQLException e) {
+	        System.out.println("Error updating Payment data in db:");
+	        e.printStackTrace();
+	    }
+	}
+	
+	//Φέρνει την πληρωμή από το ID
+	public static Payment getPaymentByID(int paymentId) {
+	    String sql = "SELECT * FROM payment WHERE payment_ID = " + paymentId + " LIMIT 1";
+	    try (Connection conn = SQLConnector.getConnection(); 
+	         Statement stm = conn.createStatement();
+	         ResultSet res = stm.executeQuery(sql)) {		
+
+	        if (res.next()) { 
+	            return new Payment(
+	                res.getInt("payment_ID"),
+	                res.getInt("amount"),
+	                res.getString("payment_Method"),
+	                res.getString("payment_Date"),
+	                res.getInt("reservation_Reservation_Code"),
+	                res.getInt("pts_Transactions_Trans_ID"),
+	                res.getString("payment_Status")
+	            );
+	        }				    
+	    } catch (SQLException e) {
+	        System.out.println("Error fetching payment by ID:");
+	        e.printStackTrace();
+	    }
+	    return null;
+	}
 
 	public static ArrayList<PendingPayment> getPendingPayments() {
 		String sql= "SELECT p.payment_ID as pid, p.payment_Status as pstatus, p.payment_Method as pmethod, p.amount as pamount, "

@@ -3,5 +3,5 @@ package Gym_project;
 public enum PaymentMethods {
 	CASH,
 	CREDIT_CARD,
-	BANK_TRANSER
+	BANK_TRANFSER
 }
