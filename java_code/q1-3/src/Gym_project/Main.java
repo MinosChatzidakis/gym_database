@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -838,7 +839,7 @@ public class Main {
 	    int duration = scanner.nextInt();
 	    
 	    System.out.print("Enter Price ($): ");
-	    int price = scanner.nextInt();
+	    float price = scanner.nextInt();
 	    scanner.nextLine(); // Καθαρισμός buffer
 	    
 	    System.out.print("Enter Date and Time (e.g., DD/MM/YYYY HH:MM): ");
@@ -855,19 +856,18 @@ public class Main {
 	    
 	    System.out.print("Enter Trainer ID for this session: ");
 	    int trainerId = scanner.nextInt();
-	    scanner.nextLine(); // Καθαρισμός buffer
+	    scanner.nextLine();
 	    
-	    // Έλεγχος αν ο προπονητής υπάρχει
+	    //check if the trainer exists
 	    if (TrainerDBUtils.getTrainerByID(trainerId) == null) {
 	        System.out.println("Error: Trainer with ID " + trainerId + " does not exist. Session creation aborted.");
 	        return;
 	    }
 	    
-	    // Δημιουργία αντικειμένου Session. 
+	    // Create session 
 	    // 0 για το ID (AUTO_INCREMENT), true για τη διαθεσιμότητα (availability), 0 αρχικοί συμμετέχοντες
-	    Session newSession = new Session(0, type, description, maxPart, duration, price, true, trainerId, gymCode, dateTime, 0);
+	    Session newSession = new Session(type, description, maxPart, duration, price, 1, trainerId, gymCode, LocalDateTime.parse(dateTime), 0);
 	    
-	    // Κλήση της SessionDBUtils
 	    SessionDBUtils.addSession(newSession);
 	}
 	
@@ -896,12 +896,12 @@ public class Main {
 	        System.out.println("6. Date & Time: " + existingSession.getDateAndTime());
 	        System.out.println("7. Gym Code: " + existingSession.getGymCode());
 	        System.out.println("8. Trainer ID: " + existingSession.getTrainerTrainerID());
-	        System.out.println("9. Availability: " + (existingSession.getAvailability() ? "Yes" : "No"));
+	        System.out.println("9. Availability: " + (existingSession.getAvailability()==1 ? "Yes" : "No"));
 	        System.out.println("0. Save Changes & Exit");
 	        System.out.print("Choice (0-9): ");
 	        
 	        int subChoice = scanner.nextInt();
-	        scanner.nextLine(); // Καθαρισμός του buffer
+	        scanner.nextLine();
 	        
 	        switch (subChoice) {
 	            case 1:
@@ -929,7 +929,7 @@ public class Main {
 	                break;
 	            case 6:
 	                System.out.print("Enter New Date & Time (e.g., DD/MM/YYYY HH:MM): ");
-	                existingSession.setDateAndTime(scanner.nextLine());
+	                existingSession.setDateAndTime(LocalDateTime.parse(scanner.nextLine()));
 	                break;
 	            case 7:
 	                System.out.print("Enter New Gym Code: ");
@@ -954,8 +954,19 @@ public class Main {
 	                }
 	                break;
 	            case 9:
-	                System.out.print("Is it available? (true/false): ");
-	                existingSession.setAvailability(scanner.nextBoolean());
+	                char ans;
+	                int availability;
+	            	do {
+	                	System.out.print("Is it available? (Y/N): ");
+	                	ans= Character.toUpperCase(scanner.next().charAt(0));
+	                	availability= ans=='Y'?1:0;
+	                }while(ans!='Y'&&ans!='N');
+	                try{
+	                	existingSession.setAvailability(availability);
+	                }catch(IllegalArgumentException e) {
+	                	System.out.println("Something went wrong. Please try again later: ");
+	                	e.printStackTrace();
+	                }
 	                scanner.nextLine();
 	                break;
 	            case 0:
@@ -1016,32 +1027,39 @@ public class Main {
 	    }
 	    
 	    // Αυτόματη καταγραφή της τωρινής ώρας για την κράτηση
-	    java.time.LocalDateTime now = java.time.LocalDateTime.now();
-	    java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-	    String bookingDate = now.format(formatter);
-	    System.out.println("Booking timestamp automatically recorded as: " + bookingDate);
+		/*
+		 * java.time.LocalDateTime now = java.time.LocalDateTime.now();
+		 * java.time.format.DateTimeFormatter formatter =
+		 * java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"); String
+		 * bookingDate = now.format(formatter);
+		 */
+	    LocalDateTime now= LocalDateTime.now();
+	    System.out.println("Booking timestamp automatically recorded as: " + now);
 	    
-	    // Ασφαλής ερώτηση για το Invoice
-	    System.out.print("Will the customer need an invoice? (Y/N): ");
-	    String invoiceInput = scanner.nextLine().trim().toLowerCase();
-	    boolean invoice = invoiceInput.equals("y") || invoiceInput.equals("yes") || invoiceInput.equals("true");
+	    char letter;
+	    do{ 
+	    	System.out.print("Will the customer need an invoice? (Y/N): ");
+			String choice= scanner.next();
+			letter= Character.toUpperCase(choice.charAt(0));
+		}while((letter!= 'Y' && letter != 'N'));
 	    
-	    // Πιο φυσική ερώτηση για το Status (Now = COMPLETE, Later = PENDING)
+	    
+	    int invoice = letter == 'Y'?1:0;
+	    
 	    System.out.print("Will the customer pay now or later? (Type 'NOW' or 'LATER'): ");
 	    String paymentChoice = scanner.nextLine().trim().toUpperCase();
 	    
-	    String status;
+	    ReservationStatus status;
 	    if (paymentChoice.equals("NOW")) {
-	        status = "COMPLETE"; // ΔΙΟΡΘΩΘΗΚΕ: Έγινε COMPLETE για να ταιριάζει με το Enum σου!
+	        status = ReservationStatus.COMPLETE;
 	        System.out.println("\n[!] Reminder: Don't forget to go to 'Add New Payment' immediately to record the transaction.");
 	    } else {
-	        status = "PENDING";
+	        status = ReservationStatus.PENDING;
 	    }
 	    
 	    // Δημιουργία του αντικειμένου Reservation
-	    Reservation newReservation = new Reservation(0, bookingDate, invoice, status, sessionCode, customerId);
-	    
-	    // Κλήση της βάσης
+	    Reservation newReservation = new Reservation(0, now, invoice, status, sessionCode, customerId);
+
 	    ReservationDBUtils.addReservation(newReservation);
 	}
 	
@@ -1063,7 +1081,7 @@ public class Main {
 	    while (subRunning) {
 	        System.out.println("\nCurrent Reservation Data:\n");
 	        System.out.println("1. Date & Time: " + existingReservation.getDateAndTime());
-	        System.out.println("2. Invoice Needed: " + (existingReservation.getInvoiceNeeded() ? "Yes" : "No"));
+	        System.out.println("2. Invoice Needed: " + (existingReservation.getInvoiceNeeded()==1 ? "Yes" : "No"));
 	        System.out.println("3. Status: " + existingReservation.getReservationStatus());
 	        System.out.println("4. Session Code: " + existingReservation.getSessionCode());
 	        System.out.println("5. Customer ID: " + existingReservation.getCustomerID());
@@ -1079,14 +1097,26 @@ public class Main {
 	                existingReservation.setDateAndTime(scanner.nextLine());
 	                break;
 	            case 2:
-	                System.out.print("Will the customer need an invoice? (Type 'Y' or 'N'): ");
-	                String invoiceInput = scanner.nextLine().trim().toLowerCase();
-	                boolean invoice = invoiceInput.equals("y") || invoiceInput.equals("yes") || invoiceInput.equals("t") || invoiceInput.equals("true");
+	            	char letter;
+	        	    do{ 
+	        	    	System.out.print("Will the customer need an invoice? (Y/N): ");
+	        			String choice= scanner.next();
+	        			letter= Character.toUpperCase(choice.charAt(0));
+	        		}while((letter!= 'Y' && letter != 'N'));
+	        	    int invoice = letter == 'Y'?1:0;
 	                existingReservation.setInvoiceNeeded(invoice);
 	                break;
 	            case 3:
-	                System.out.print("Enter New Status (e.g., PENDING, CONFIRMED, CANCELLED): ");
-	                existingReservation.setReservationStatus(scanner.nextLine().toUpperCase());
+	                String status;
+	                ReservationStatus resStatus;
+	                do {
+	                	System.out.print("Enter New Status (e.g., PENDING, COMPLETE, CANCELLED): ");
+	                	status= scanner.next().toUpperCase();
+	                }while (List.of("PENDING", "COMPLETE", "CANCELLED").contains(status.toUpperCase()));
+	                if(status=="PENDING")resStatus=ReservationStatus.PENDING;
+	                if(status=="COMPLETE")resStatus=ReservationStatus.COMPLETE;
+	                if(status=="CANCELLED")resStatus=ReservationStatus.CANCELLED;
+	                existingReservation.setReservationStatus(resStatus);
 	                break;
 	            case 4:
 	                System.out.print("Enter New Session Code: ");
@@ -1099,7 +1129,7 @@ public class Main {
 	                // 'Ελεγχος Διαθεσιμότητας
 	                if (targetSession == null) {
 	                    System.out.println("Error: Target Session does not exist. Session Code not changed.");
-	                } else if (!targetSession.getAvailability()) {
+	                } else if (targetSession.getAvailability()==0) {
 	                    // Αν το Session βρέθηκε, αλλά η διαθεσιμότητά του (availability) είναι false
 	                    System.out.println("Error: The requested Session (Code: " + newSessionCode + ") is currently unavailable or full. Session Code not changed.");
 	                } else {
@@ -1183,43 +1213,53 @@ public class Main {
 	        System.out.println("\n[Deferred Payment / Pending Reservation Detected]");
 	        System.out.println("Rule: For pending reservations, all payment methods (including CASH) are accepted.");
 	        
-	        boolean valid = false;
-	        while (!valid) {
+	        // 1. Validate Payment Method using the Enum
+	        PaymentMethods selectedMethod = null;
+	        while (selectedMethod == null) {
 	            System.out.print("Enter Payment Method (CASH, CREDIT_CARD, BANK_TRANSFER): ");
-	            paymentMethodStr = scanner.nextLine().trim().toUpperCase();
-	            if (paymentMethodStr.equals("CASH") || paymentMethodStr.equals("CREDIT_CARD") || paymentMethodStr.equals("BANK_TRANSFER")) {
-	                valid = true;
-	            } else {
-	                System.out.println("Invalid input. Please enter CASH, CREDIT_CARD, or BANK_TRANSFER.");
+	            String methodInput = scanner.nextLine().trim().toUpperCase();
+	            try {
+	                // This instantly checks if the input matches an Enum value and converts it!
+	                selectedMethod = PaymentMethods.valueOf(methodInput);
+	            } catch (IllegalArgumentException e) {
+	                System.out.println("Invalid input. Please enter exactly CASH, CREDIT_CARD, or BANK_TRANSFER.");
 	            }
 	        }
 	        
-	        System.out.print("Enter Payment Status (CONFIRMED, PENDING): ");
-	        paymentStatusStr = scanner.nextLine().trim().toUpperCase();
+	        // 2. Validate Payment Status using the Enum
+	        PaymentStatus selectedStatus = null;
+	        while (selectedStatus == null) {
+	            System.out.print("Enter Payment Status (CONFIRMED, PENDING): ");
+	            String statusInput = scanner.nextLine().trim().toUpperCase();
+	            try {
+	                selectedStatus = PaymentStatus.valueOf(statusInput);
+	            } catch (IllegalArgumentException e) {
+	                System.out.println("Invalid input. Please enter exactly CONFIRMED or PENDING.");
+	            }
+	        }
+	        
+	        System.out.print("Enter Points Transaction ID (or 0 if none): ");
+	        int transID = scanner.nextInt();
+	        scanner.nextLine(); 
+	        
+	        // 3. Keep the LocalDateTime as an object for the constructor, just format it for the print statement
+	        LocalDateTime now = LocalDateTime.now();
+	        java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+	        System.out.println("Payment timestamp automatically recorded as: " + now.format(formatter));
+	        
+	        // 4. Pass the strictly typed variables into the constructor
+	        Payment newPayment = new Payment(
+	                amount, selectedMethod, now, reservationCode, selectedStatus
+	        );
+	        PaymentDBUtils.addPayment(newPayment);
+	        
+	        // Upgrade reservation if needed
+	        if (currentResStatus.equals("PENDING") && selectedStatus == PaymentStatus.CONFIRMED) {
+	            existingRes.setReservationStatus(ReservationStatus.COMPLETE); 
+	            ReservationDBUtils.updateReservation(existingRes);
+	            System.out.println("Associated Reservation status automatically updated to COMPLETE.");
+	        }}
 	    }
-	    
-	    System.out.print("Enter Points Transaction ID (or 0 if none): ");
-	    int transID = scanner.nextInt();
-	    scanner.nextLine(); 
-	    
-	    java.time.LocalDateTime now = java.time.LocalDateTime.now();
-	    java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-	    String paymentDate = now.format(formatter);
-	    System.out.println("Payment timestamp automatically recorded as: " + paymentDate);
-	    
-	    // Δημιουργία Payment
-	    Payment newPayment = new Payment(
-	    		amount, paymentMethodStr, paymentDate, reservationCode, transID, paymentStatusStr
-	    		);
-	    PaymentDBUtils.addPayment(newPayment);
-	    
-	    // Αν η κράτηση ήταν PENDING και τώρα η πληρωμή έγινε CONFIRMED, αναβαθμίζουμε την κράτηση
-	    if (currentResStatus.equals("PENDING") && paymentStatusStr.equals("CONFIRMED")) {
-	        existingRes.setReservationStatus(ReservationStatus.COMPLETE); 
-	        ReservationDBUtils.updateReservation(existingRes);
-	        System.out.println("Associated Reservation status automatically updated to COMPLETE.");
-	    }
-	}
 	
 	public static void updatePayment() {
 	    System.out.println("\n--- Update Payment Data ---\n");
@@ -1286,7 +1326,7 @@ public class Main {
 				System.out.printf("%-18d | %-20s | %-15s | %-12s | %-12d | %-12d\n", 
 						res.getReservationCode(),
 						res.getDateAndTime(),
-						(res.getInvoiceNeeded() ? "YES" : "NO"),
+						(res.getInvoiceNeeded()==1 ? "YES" : "NO"),
 						res.getReservationStatus().name(),
 						res.getSessionCode(),
 						res.getCustomerID());

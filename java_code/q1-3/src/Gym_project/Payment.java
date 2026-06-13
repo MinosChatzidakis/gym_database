@@ -26,14 +26,11 @@ public class Payment {
 	}
 	
 	public Payment(
-			/* int paymentID , */float amount, PaymentMethods paymentMethod, LocalDateTime paymentDate, int reservationCode,/* int transID ,*/ PaymentStatus paymentStatus) {
-		//this.paymentID = paymentID;
+			float amount, PaymentMethods paymentMethod, LocalDateTime paymentDate, int reservationCode,/* int transID ,*/ PaymentStatus paymentStatus) {
 		this.amount = amount;
 		this.paymentMethod = paymentMethod;
 		this.paymentDate = paymentDate;
 		this.reservationCode = reservationCode;
-		//this.transID = transID; -- this concerns question 4 -- possible need to rename to pts_Transactions_Trans_ID 
-		//this.paymentStatus = PaymentStatus.PENDING; -- consider this approach
 		this.paymentStatus = paymentStatus;
 	}
 	

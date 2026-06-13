@@ -30,6 +30,19 @@ public class Session {
 	    }
 	    
 	
+	    public Session(String sessionType, String description, int maxParticipants , int duration , float price , int availability , int trainerID , int gymCode , LocalDateTime dateAndTime, int amountOfParticipants) {
+	        this.sessionType = sessionType;
+	        this.description = description;
+	        this.maxParticipants = maxParticipants;
+	        this.duration = duration;
+	        this.price = price;
+	        this.availability = availability;
+	        this.trainerID = trainerID;
+	        this.gymCode = gymCode;
+			this.dateAndTime = dateAndTime;
+			this.amountOfParticipants = amountOfParticipants;
+	    }
+	    
 	    public int getSessionCode() {
 	        return sessionCode;
 	    }
@@ -92,7 +105,8 @@ public class Session {
 	    }
 	    
 	    public void setAvailability(int availability) {
-	        this.availability = availability;
+	        if(availability != 1 && availability !=0) throw new  IllegalArgumentException("Invalid input");
+	    	this.availability = availability;
 	    }
 	    
 	    public int getTrainerTrainerID() {
