@@ -1,17 +1,20 @@
 package Gym_project;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 public class SessionSearch {
 	private String city;
     private int preferredGymCode;
     private String trainingType;
-    private String date;
-	private String time;
+    private LocalDate date;
+	private LocalTime time;
 	private int trainerId;
 	private String additionalServices;
 	private boolean invoiceNeeded;
 	
 	
-    public SessionSearch(int preferredGymCode, String city, String trainingType , String date , String time , int trainerId , String additionalServices , boolean invoiceNeeded) {
+    public SessionSearch(int preferredGymCode, String city, String trainingType , LocalDate date , LocalTime time , int trainerId , String additionalServices , boolean invoiceNeeded) {
         this.preferredGymCode = preferredGymCode;
         this.city = city;
         this.trainingType = trainingType;
@@ -52,24 +55,24 @@ public class SessionSearch {
         this.trainingType = trainingType;
     }
 
-	public String getDate() {
+	public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(String date) {
-		if(date==null || date.length() == 0){
+    public void setDate(LocalDate date) {
+		if(date==null ){
 			throw new IllegalArgumentException("The date field cannot be empty.");
 		}
         this.date = date;
     }
 
 	
-	public String getTime() {
+	public LocalTime getTime() {
         return time;
     }
 
-    public void setTime(String time) {
-		if(time==null || time.length() == 0){
+    public void setTime(LocalTime time) {
+		if(time==null){
 			throw new IllegalArgumentException("The time field cant be empty.");
 		}
         this.time = time;
