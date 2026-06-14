@@ -1,7 +1,11 @@
 package Gym_project;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -275,12 +279,32 @@ public class Main {
 		
 		System.out.println("Enter Training Type: ");
 		String type = scanner.nextLine();
+		LocalDate userDate = null;
+        LocalTime userTime = null;
+        
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+
+        while (userDate == null) {
+            System.out.print("Enter Date (dd/MM/yyyy): ");
+            String dateInput = scanner.nextLine().trim();
+            try {
+                userDate = LocalDate.parse(dateInput, dateFormatter);
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid date format. Please use exactly dd/MM/yyyy (e.g., 25/12/2026).");
+            }
+        }
+        
+        while (userTime == null) {
+            System.out.print("Enter Time (HH:mm): ");
+            String timeInput = scanner.nextLine().trim();
+            try {
+                userTime = LocalTime.parse(timeInput, timeFormatter);
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid time format. Please use exactly HH:mm in 24-hour format (e.g., 14:30).");
+            }
+        }
 		
-		System.out.println("Enter Date e.g. DD/MM/YYYY: ");
-		String date = scanner.nextLine();
-		
-		System.out.println("Enter Time e.g. HH:MM: ");
-		String time = scanner.nextLine();
 		
 		int selectedTrainerId = 0;
 		if (selectedGymCode > 0) {
@@ -313,13 +337,18 @@ public class Main {
 		System.out.println("Enter Additional Services: ");
 		String services = scanner.nextLine();
 		
-		//-------------CORRECT THIS, I HAVE SOMETHING SIMILAR IN PLACE IN A DIFFERENT PART----------------------------------
-		System.out.println("Is Invoice Needed? (true/false):");
-		boolean invoice = scanner.nextBoolean();
-		scanner.nextLine();
+		char letter;
+	    do{ 
+	    	System.out.print("Will the customer need an invoice? (Y/N): ");
+			String choice= scanner.next();
+			letter= Character.toUpperCase(choice.charAt(0));
+		}while((letter!= 'Y' && letter != 'N'));
+	    
+	    
+	    int invoice = letter == 'Y'?1:0;
 		
 		//begin search and display results
-		SessionSearch criteria = new SessionSearch(selectedGymCode, selectedCity, type, date, time, selectedTrainerId, services,invoice);
+		SessionSearch criteria = new SessionSearch(selectedGymCode, selectedCity, type, userDate, userTime, selectedTrainerId, services, invoice==1);
 		ArrayList<Session> availableSessions = SessionDBUtils.searchSessions(criteria);
 		
 		HashMap<Integer, Session> sessionsMap= new HashMap<>(); //number presented on the screen, selectedSession
@@ -378,8 +407,8 @@ public class Main {
 					c.setPhone(phone);
 					err= false;
 				}catch(IllegalArgumentException e) {
-					return;
 					e.printStackTrace();
+					return;
 				}				
 			}
 			err= true;
@@ -402,7 +431,7 @@ public class Main {
 	        System.out.println("Date and Time: " + selectedSession.getDateAndTime());
 	        System.out.println("Duration: " + selectedSession.getDuration() + " mins");
 	        System.out.println("Total Price: " + selectedSession.getPrice() + " €");
-	        System.out.println("Invoice Needed: " + (invoice ? "YES" : "NO"));
+	        System.out.println("Invoice Needed: " + (invoice==1 ? "YES" : "NO"));
 	        
 			Character ans= ' ';
 			while (Character.toUpperCase(ans) != 'Y' && Character.toUpperCase(ans) != 'N'){
@@ -1022,12 +1051,12 @@ public class Main {
 	    }
 	    
 
-	    SessionSearch allSessionsCriteria = new SessionSearch(-1, "", "", "", "", -1, "", false);
+	    //SessionSearch allSessionsCriteria = new SessionSearch(-1, "", "", "", null, -1, "", false);
 	    
 
-	    ArrayList<Session> availableSessions = SessionDBUtils.searchSessions(allSessionsCriteria);
+	    ArrayList<Session> allAvailableSessions = SessionDBUtils.getAllAvailableSessions();
 	    
-	    if (availableSessions == null || availableSessions.isEmpty()) {
+	    if (allAvailableSessions == null || allAvailableSessions.isEmpty()) {
 	        System.out.println("There are currently no available sessions to book. Reservation aborted.");
 	        return;
 	    }
@@ -1036,7 +1065,7 @@ public class Main {
 	    System.out.println("\nAvailable Sessions Catalog:\n");
 	    System.out.printf("%-10s %-20s %-25s %-15s %-10s\n", "Code", "Type", "Date & Time", "Gym Code", "Price");
 	    
-	    for (Session s : availableSessions) {
+	    for (Session s : allAvailableSessions) {
 	        System.out.printf("%-10d %-20s %-25s %-15d $%-10d\n", 
 	            s.getSessionCode(), s.getSessionType(), s.getDateAndTime(), s.getGymCode(), s.getPrice());
 	    }
