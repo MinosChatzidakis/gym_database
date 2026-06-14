@@ -100,7 +100,7 @@ public class Main {
 				    break;
 				case 7:
 					System.out.println("\nSearch Available Sessions");
-					SearchAvailableSessions();
+					//SearchAvailableSessions();
 					break;
 				case 9:
 					System.out.println("\nUpdate Reservations/Payments");
@@ -135,7 +135,7 @@ public class Main {
 					break;
 				case 3:
 					System.out.println("\nSearch Available Sessions");
-					SearchAvailableSessions();
+					//SearchAvailableSessions();
 					break;
 					
 				case 4:
@@ -246,7 +246,7 @@ public class Main {
 		}
 	}
 	
-	private static void SearchAvailableSessions( ) {
+	/*private static void SearchAvailableSessions( ) {
 		
 		System.out.println("Enter City: ");
 		String selectedCity = scanner.nextLine();
@@ -314,8 +314,8 @@ public class Main {
 		String services = scanner.nextLine();
 		
 		//-------------CORRECT THIS, I HAVE SOMETHING SIMILAR IN PLACE IN A DIFFERENT PART----------------------------------
-		System.out.println("Is Invoice Needed? (true/false):");
-		boolean invoice = scanner.nextBoolean();
+		System.out.println("Is Invoice Needed? (true = 1/false = 0):");
+		int invoice = scanner.nextInt();
 		scanner.nextLine();
 		
 		//begin search and display results
@@ -354,7 +354,6 @@ public class Main {
 		if(selectedSession != null) {
 			Customer c = new Customer(-1, "", "", "", "", selectedSession.getGymCode());
 			boolean err= true;
-			// Καταγραφή του ονόματος και του επωνύμου του πελάτη
 			while(err) {
 			    System.out.print("Enter your First Name: ");
 			    String firstName = scanner.nextLine();
@@ -461,7 +460,7 @@ public class Main {
 				
 				if(generatedCustomerId > 0) {
 					
-					//----------SOLVE THE ERROR I MENTIONED IN LINE 316 FIRST AND THEN SOLVE THIS ONE---------------------
+					
 					Reservation r = new Reservation(selectedSession.getDateAndTime(), invoice, reservationStatus, selectedSession.getSessionCode(), generatedCustomerId);
 					try {
 						int generatedReservationCode = ReservationDBUtils.addReservationAndGetCode(r);
@@ -477,7 +476,7 @@ public class Main {
 			}
 		}
 		
-	}
+	}*/
 	
 	private static void searchAndDisplayGyms() {
 		System.out.println("\n Λίστα Γυμναστηρίων");
