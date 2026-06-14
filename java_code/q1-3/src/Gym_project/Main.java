@@ -313,10 +313,15 @@ public class Main {
 		System.out.println("Enter Additional Services: ");
 		String services = scanner.nextLine();
 		
-		//-------------CORRECT THIS, I HAVE SOMETHING SIMILAR IN PLACE IN A DIFFERENT PART----------------------------------
-		System.out.println("Is Invoice Needed? (true/false):");
-		boolean invoice = scanner.nextBoolean();
-		scanner.nextLine();
+		char letter;
+	    do{ 
+	    	System.out.print("Will the customer need an invoice? (Y/N): ");
+			String choice= scanner.next();
+			letter= Character.toUpperCase(choice.charAt(0));
+		}while((letter!= 'Y' && letter != 'N'));
+	    
+	    
+	    int invoice = letter == 'Y'?1:0;
 		
 		//begin search and display results
 		SessionSearch criteria = new SessionSearch(selectedGymCode, selectedCity, type, date, time, selectedTrainerId, services,invoice);
