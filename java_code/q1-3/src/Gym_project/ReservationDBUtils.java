@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -105,9 +106,11 @@ public class ReservationDBUtils {
                 } else {
                     status = ReservationStatus.PENDING; 
                 }				
-				Reservation currentReservation = new Reservation(
+                Timestamp timestamp = res.getTimestamp("date_And_Time"); //res object contains a timestamp
+                LocalDateTime datetime = (timestamp != null) ? timestamp.toLocalDateTime() : null; //convert it to a LocalDateTime object
+                Reservation currentReservation = new Reservation(
 						res.getInt("reservation_Code"),
-						res.getObject("date_And_Time", LocalDateTime.class),
+						datetime,
 						res.getInt("invoice_Needed"),
 						status,
 						res.getInt("session_Session_Code"),
@@ -172,7 +175,7 @@ public class ReservationDBUtils {
 						res.getInt("invoice_Needed"),
 						ReservationStatus.valueOf(res.getString("reservation_Status").toUpperCase()),
 						res.getInt("session_Session_Code"),
-						res.getInt("customer_Customer_ID)")
+						res.getInt("customer_Customer_ID")
 						);
 				unpaidReservations.add(currentReservation);
 			}
@@ -221,7 +224,7 @@ public class ReservationDBUtils {
 		try (Connection conn= SQLConnector.getConnection();
 				Statement stm= conn.createStatement()){	
 			int rowsAffected= stm.executeUpdate(sqlQuery); //execute deletion in database
-			System.out.println("Successfully deleted "+rowsAffected+" reservations out of " +ids.split(", ").length+" ids given");
+			System.out.println("Successfully deleted "+rowsAffected+"/" +ids.split(", ").length+" past cancelled reservations");
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}

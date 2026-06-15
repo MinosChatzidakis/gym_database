@@ -29,12 +29,16 @@ public class Reservation {
 	}
 	
 	
+	public void setReservationCode(int code) {
+		if(code<0) {
+			throw new IllegalArgumentException("Invalid value given for the 'reservation code' field.");
+		}else{
+			this.reservationCode= code;
+		}
+	}
+	
 	public int getReservationCode() { 
 		return reservationCode;
-	}
-
-	public void setReservationCode(int reservationCode) {
-		this.reservationCode = reservationCode;
 	}
 	
 	public LocalDateTime getDateAndTime() {
