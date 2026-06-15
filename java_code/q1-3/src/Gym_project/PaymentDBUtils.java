@@ -103,13 +103,15 @@ public abstract class PaymentDBUtils {
 	        dateValueForSQL = "'" + java.sql.Timestamp.valueOf(p.getPaymentDate()) + "'"; //actual date
 	    }
 	    
-	    String sqlQuery = "INSERT INTO payment (amount, payment_Method, payment_Date, payment_Status, reservation_Reservation_Code, pts_Transactions_Trans_ID) VALUES (" 
+	    String sqlQuery = "INSERT INTO payment (amount, payment_Method, payment_Date, payment_Status, reservation_Reservation_Code) VALUES (" 
 	            + p.getAmount() + ", '" 
 	            + p.getPaymentMethod().name() + "', " 
 	            + dateValueForSQL + ", '" 
 	            + p.getPaymentStatus().name() + "', " 
-	            + p.getReservationCode() + ", " 
-	            + p.getTransID() + ")";
+	            + p.getReservationCode()+ ")";
+	            //  +", " + p.getTransID()  reservation_Reservation_Code,
+	    // (10.0, 'CASH', NULL, 'PENDING', 0)
+	    //---------------------------CONTINUE HERE BITCH ASS NIGGER!!!!!!
 
 	    try (Connection conn = SQLConnector.getConnection();
 	         Statement stmt = conn.createStatement()) {
@@ -127,10 +129,10 @@ public abstract class PaymentDBUtils {
 	}
 	
 	public static boolean confirmPaymentChangeInDB(int paymentId) {
-		String updatePaymentSql = "UPDATE payment set payment_Status = 'COMPLETE' WHERE payment_ID = " + paymentId + ";";
+		String updatePaymentSql = "UPDATE payment set payment_Status = 'COMPLETE' WHERE payment_ID = " + paymentId + ";"; //handle reservation status
 		String updateReservationSql = "UPDATE reservation "
 									+ "SET reservation_Status = 'COMPLETE' "
-									+ "WHERE reservation_Code = (SELECT reservation_Reservation_Code FROM payment WHERE payment_ID = " + paymentId + ");";
+									+ "WHERE reservation_Code = (SELECT reservation_Reservation_Code FROM payment WHERE payment_ID = " + paymentId + ");"; //handle payment status;
 		
 		try (Connection conn = SQLConnector.getConnection();
 				Statement stm = conn.createStatement()){
@@ -146,6 +148,7 @@ public abstract class PaymentDBUtils {
 		
 	}
 	
+	//CORRECT THIS----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	public static void displayAllPaymentsInDB() {
 		String sql = "SELECT p.payment_ID, p.amount, p.payment_Method, p.payment_Status, c.name as cname "
 	               + "FROM payment p "
