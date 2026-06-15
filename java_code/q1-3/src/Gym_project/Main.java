@@ -1069,8 +1069,8 @@ public class Main {
 	    }
 	    
 
+
 	    ArrayList<Session> allAvailableSessions = SessionDBUtils.getAllAvailableSessions();
-	    
 	    if (allAvailableSessions == null || allAvailableSessions.isEmpty()) {
 	        System.out.println("There are currently no available sessions to book. Reservation aborted.");
 	        return;
@@ -1078,7 +1078,6 @@ public class Main {
 	    
 
 	    System.out.println("\nAvailable Sessions Catalog:\n");
-
 	 System.out.printf("%-10s %-25s %-15s %-10s %-15s %-10s\n", 
 	     "Code", "Type", "Date", "Time", "Gym Code", "Price");
 	 System.out.println("--------------------------------------------------------------------------------------");
@@ -1261,6 +1260,7 @@ public class Main {
 	                scanner.nextLine();
 	                
 	                //checks if the customer exists
+
 	                if (CustomerDBUtils.getCustomerByID(newCustomerId) == null) {
 	                    System.out.println("Error: Target Customer does not exist. Customer ID not changed.");
 	                } else {
@@ -1306,7 +1306,6 @@ public class Main {
 	    
 	    ReservationStatus currentResStatus = existingRes.getReservationStatus();
 	    
-	    // ΕΛΕΓΧΟΣ ΛΟΓΙΚΗΣ: Ταυτόχρονη Πληρωμή (COMPLETE) vs Ετεροχρονισμένη (PENDING)
 	    if (currentResStatus==ReservationStatus.COMPLETE) {
 	        System.out.println("\nSimultaneous Online Payment Detected");
 	        System.out.println("Rule: For immediate payments, only CREDIT_CARD or BANK_TRANSFER are accepted.");
@@ -1548,37 +1547,36 @@ public class Main {
 		//in any other case the gym employee manually records the payment once it happens
 	}
 	
+
 	private static void displayPendingPayments() {
 		ArrayList<PendingPayment> pendingPayments= PaymentDBUtils.getPendingPayments();
 		System.out.println("Reservations that have not yet been paid for: ");
 		
 		System.out.printf("%-10s | %-9s | %-15s | %-10s | %-22s | %-20s | %-20s\n", 
                 "ID", "Amount", "Method", "Status", "Customer Name", "Booked On", "Session Date");
-		for(PendingPayment p : pendingPayments) {
-			
-			if(selectedPaymentId == 0) {
-				System.out.println("Operation Cancelled");
-			}
-			boolean idExists = false;
-			for (PendingPayment p : pendingPayments) {
-				if(p.getPaymentId() == selectedPaymentId) {
-					idExists = true; //check if the id given is valid
-					break;
-				}
-			}
-			
-			if (idExists) {
-				boolean success = PaymentDBUtils.confirmPaymentChangeInDB(selectedPaymentId);
-				if(success) {
-					System.out.println("Payment " + selectedPaymentId + " is now marked as COMPLETE.");
-				}else {
-					System.out.println("Could not Update Payment Status.");
-				}
-			}else {
-				System.out.println("Invalid Payment ID, please try again.");
-			}	
+		
+		if (pendingPayments == null || pendingPayments.isEmpty()) {
+			System.out.println("No pending payments found.");
+			return;
 		}
+		
+		java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+		for(PendingPayment p : pendingPayments) {
+			String bookedOnStr = p.getDateOfReservation() != null ? p.getDateOfReservation().format(formatter) : "-";
+			String sessionDateStr = p.getDateOfSession() != null ? p.getDateOfSession().format(formatter): "-";
+			
+			System.out.printf("%-10d | %-9s | %-15s | %-10s | %-22s | %-20s | %-20s\n", 
+	                p.getPaymentId(), 
+	                p.getAmount() + " €", 
+	                p.getPaymentMethod(), 
+	                p.getPaymentStatus(), 
+	                p.getCustomerFullName(), 
+	                bookedOnStr, 
+	                sessionDateStr);
+		}
+			
 	}
+	
 	// handle a payment that has happened after the reservation
 	private static void manuallyRecordPayment() {
 		displayPendingPayments(); 
@@ -1609,6 +1607,7 @@ public class Main {
 	    }else {
 	    	System.out.println("Invalid Payment ID, please try again.");
 	    }
+
 	}
 	
 	private static void updateReservationsOrPayments() {
@@ -1775,6 +1774,7 @@ public class Main {
 		StringBuilder idSb= new StringBuilder();
 		Integer num=0;
 		for(Reservation r:cancelledReservations) {
+
 			System.out.printf("%-15s | %-20s | %-25s | %-15s | %-30s | %-25s | %-15s\n",
 	                "#" + (++num) +" | ID: "+r.getReservationCode(),
 	                "Reserv. Date: "+r.getDateAndTime(),
@@ -1783,6 +1783,7 @@ public class Main {
 	                "Session Id:"+r.getSessionCode(),
 	                "Customer ID: " + r.getCustomerID(),
 	                "Is passed: " + (r.isPast()?"YES":"NO"));
+
 			if(r.isPast()) { //if the reservation is cancelled and in the past, 
 				idSb.append(r.getReservationCode()).append(", ");
 			}

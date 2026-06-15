@@ -234,6 +234,7 @@ public class SessionDBUtils {
 	                res.getInt("amount_Of_Participants")
 	            );
 	            allAvailableSessions.add(currentSession);
+
 	        }
 			return allAvailableSessions;
 		}catch(SQLException e) {
