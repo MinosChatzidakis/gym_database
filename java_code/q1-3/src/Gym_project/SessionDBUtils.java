@@ -94,7 +94,7 @@ public class SessionDBUtils {
 	        System.out.println("Error fetching session by ID:");
 	        e.printStackTrace();
 	    }
-	    return null; // Επιστρέφει null αν δεν βρεθεί το session
+	    return null;
 	}
 	
 	//gets sessions that match all criteria provided
