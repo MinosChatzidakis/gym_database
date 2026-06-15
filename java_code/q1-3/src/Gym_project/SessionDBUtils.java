@@ -214,7 +214,7 @@ public class SessionDBUtils {
 	}
 	
 	public static ArrayList<Session> getAllAvailableSessions(){
-		String sqlQ= "SELECT * FROM sessions WHERE availability=1";
+		String sqlQ= "SELECT * FROM session WHERE availability=1 ";
 		ArrayList<Session> allAvailableSessions= new ArrayList<>();
 		try(Connection conn= SQLConnector.getConnection();
 				Statement stm= conn.createStatement()) {
@@ -234,8 +234,8 @@ public class SessionDBUtils {
 	                res.getInt("amount_Of_Participants")
 	            );
 	            allAvailableSessions.add(currentSession);
-	            return allAvailableSessions;
 	        }
+			return allAvailableSessions;
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
