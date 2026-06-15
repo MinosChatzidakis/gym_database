@@ -69,7 +69,6 @@ public class SessionDBUtils {
 	    }
 	}
 	
-	// ΠΡΟΣΘΗΚΗ: Απαραίτητη συνάρτηση για να βρίσκει η Main το session
 	public static Session getSessionByID(int id) {
 	    String sql = "SELECT * FROM session WHERE session_Code = " + id + " LIMIT 1";
 	    try (Connection conn = SQLConnector.getConnection(); 
@@ -95,9 +94,10 @@ public class SessionDBUtils {
 	        System.out.println("Error fetching session by ID:");
 	        e.printStackTrace();
 	    }
-	    return null; // Επιστρέφει null αν δεν βρεθεί το session
+	    return null;
 	}
 	
+	//gets sessions that match all criteria provided
 	public static ArrayList<Session> searchSessions(SessionSearch s) {
 	    String gymServices = ServicesDBUtils.getUnifiedServicesByGymCode(s.getPreferredGymCode());
 	    String requestedServices = s.getAdditionalServices();
@@ -131,7 +131,7 @@ public class SessionDBUtils {
 	    if (!s.getTrainingType().isEmpty()) {
 	        sbQuery.append(" AND session_Type = '").append(s.getTrainingType()).append("'");
 	    }
-	    if (!s.getDate().isEmpty()) {
+	    if (s.getDate()!=null) {
 	        sbQuery.append(" AND date_And_Time LIKE '%").append(s.getDate()).append("%'");
 	    }
 	    if (s.getTrainerId() != -1) {
@@ -147,7 +147,6 @@ public class SessionDBUtils {
 	        
 	    	System.out.println("final query: " + sbQuery.toString());
 	        while (res.next()) {
-	            // ΔΙΟΡΘΩΘΗΚΕ: Προστέθηκε η 11η παράμετρος (amount_of_participants) στο τέλος του Constructor
 	            Session currentSession = new Session(
 	                res.getInt("session_code"),
 	                res.getString("session_type"),
@@ -159,7 +158,7 @@ public class SessionDBUtils {
 	                res.getInt("trainer_trainer_id"),
 	                res.getInt("gym_Gym_Code"),
 	                res.getObject("date_And_Time", LocalDateTime.class),
-	                res.getInt("amount_Of_Participants") // <-- Η προσθήκη έγινε εδώ
+	                res.getInt("amount_Of_Participants")
 	            );
 	            availableSessions.add(currentSession);
 	        }
@@ -169,20 +168,6 @@ public class SessionDBUtils {
 	        e.printStackTrace();
 	        return null; 
 	    }
-	}
-	
-	public static void testQuery() {
-		String sqlQuery = "SELECT * FROM session WHERE availability = 1 AND gym_Gym_Code = 7516 AND session_Type = 'PILATES' AND date_And_Time LIKE '%16/06/2026%' AND trainer_Trainer_ID = 2;";
-		try (Connection conn = SQLConnector.getConnection();
-			 Statement stm = conn.createStatement();
-			 ResultSet res = stm.executeQuery(sqlQuery)) {
-			while(res.next()) {
-				System.out.println(res.getInt("session_Code"));
-			}
-			System.out.println("Done");
-		} catch(SQLException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	public static void checkAndUpdateAvailability(Session session) {
@@ -210,8 +195,7 @@ public class SessionDBUtils {
 		}
 	}
 
-
-public static void freeUpSpaceInMultipleSessions(String sessionIds) throws SQLException{
+	public static void freeUpSpaceInMultipleSessions(String sessionIds) throws SQLException{
 	//if no IDs were passed => return
 	if (sessionIds == null || sessionIds.length() == 0) {
         System.out.println("No IDs provided.");
@@ -227,5 +211,35 @@ public static void freeUpSpaceInMultipleSessions(String sessionIds) throws SQLEx
         	System.out.println("Updated " + rowsAffected + " sessions successfully.");	        	
         }else System.out.println("No rows matches the criteria");
 	    }
+	}
+	
+	public static ArrayList<Session> getAllAvailableSessions(){
+		String sqlQ= "SELECT * FROM session WHERE availability=1";
+		ArrayList<Session> allAvailableSessions= new ArrayList<>();
+		try(Connection conn= SQLConnector.getConnection();
+				Statement stm= conn.createStatement()) {
+			ResultSet res= stm.executeQuery(sqlQ);
+			while (res.next()) {
+	            Session currentSession = new Session(
+	                res.getInt("session_code"),
+	                res.getString("session_type"),
+	                res.getString("description"),
+	                res.getInt("max_participants"),
+	                res.getInt("duration"),
+	                res.getFloat("price"),
+	                res.getInt("availability"),
+	                res.getInt("trainer_trainer_id"),
+	                res.getInt("gym_Gym_Code"),
+	                res.getObject("date_And_Time", LocalDateTime.class),
+	                res.getInt("amount_Of_Participants")
+	            );
+	            allAvailableSessions.add(currentSession);
+	            
+	        }
+			return allAvailableSessions;
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

@@ -1,7 +1,11 @@
 package Gym_project;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -72,7 +76,7 @@ public class Main {
 				case 2:
 					updateDataMenu();
 					break;
-				case 1010:
+				/*case 1010:
 					handleUnpaidReservations();
 					//manuallyRecordPayment();
 					break;
@@ -81,7 +85,7 @@ public class Main {
 					break;
 				case 1030:
 					handleCancelledReservations();
-					break;
+					break;*/
 				case 3:
 					System.out.println("\n Search Gyms");
 					searchAndDisplayGyms();
@@ -96,17 +100,24 @@ public class Main {
 				    break;
 				case 6:
 					System.out.println("\nView Pending Reservations");
-					manuallyRecordPayment(); 
+					displayPendingPayments(); 
 				    break;
 				case 7:
 					System.out.println("\nSearch Available Sessions");
-					//SearchAvailableSessions();
+					SearchAvailableSessions();
 					break;
 				case 9:
 					System.out.println("\nUpdate Reservations/Payments");
 					updateReservationsOrPayments();
+					break;
+				case 11:
+					System.out.println("\nManage Cancelled Reservations");
+					handleCancelledReservations();
+					break;
 				case 0:
-					return;
+					System.out.println("Returning to Main Menu... ");
+					adminRunning = false;
+					break;
 			}
 		}
 	}
@@ -135,7 +146,7 @@ public class Main {
 					break;
 				case 3:
 					System.out.println("\nSearch Available Sessions");
-					//SearchAvailableSessions();
+					SearchAvailableSessions();
 					break;
 					
 				case 4:
@@ -149,7 +160,7 @@ public class Main {
 	}
 	
 	private static void insertDataMenu() {
-		System.out.println("\nInsert/Update Data");
+		System.out.println("\nInsert Data");
 		System.out.println("1. Gym");
 		System.out.println("2. Trainers");
 		System.out.println("3. Sessions");
@@ -199,54 +210,62 @@ public class Main {
 	}
 	
 	private static void updateDataMenu() {
-		System.out.println("\nUpdate Data");
-		System.out.println("1. Gym");
-		System.out.println("2. Trainers");
-		System.out.println("3. Sessions");
-		System.out.println("4. Customers");
-		System.out.println("5. Reservations");
-		System.out.println("6. Reservation Payments");
-		System.out.println("0. Back to Main Menu");
 		
-		System.out.println("Select an option (0-6):");
 		
-		int choice3 = scanner.nextInt();
-		scanner.nextLine();
+		boolean updateDataRunning = true;
+		while(updateDataRunning) {
+			System.out.println("\nUpdate Data");
+			System.out.println("1. Gym");
+			System.out.println("2. Trainers");
+			System.out.println("3. Sessions");
+			System.out.println("4. Customers");
+			System.out.println("5. Reservations");
+			System.out.println("6. Reservation Payments");
+			System.out.println("0. Back to Main Menu");
+			
+			System.out.println("Select an option (0-6):");
 		
-		switch(choice3) {
-			case 1:
-				System.out.println("\nUpdate Gym");
-				updateGym(); 
-				break;
-			case 2:
-				System.out.println("\nUpdate Trainer");
-				updateTrainer();
-				break;
-			case 3:
-				System.out.println("\nUpdate Session ");
-				updateSession();
-				break;
-			case 4:
-                System.out.println("\nUpdate Customer");
-                updateCustomer();
-                break;
-			case 5:
-                System.out.println("\nUpdate Reservation ");
-                updateReservation();
-                break;
-			case 6:
-                System.out.println("\nUpdate Payment ");
-                break;
-			case 0:
-                System.out.println("Returning to Main Menu...");
-                return;
-                
-            default: 
-            	System.out.println("Invalid option. Returning to Main Menu.");
+			int choice3 = scanner.nextInt();
+			scanner.nextLine();
+		
+			
+			switch(choice3) {
+				case 1:
+					System.out.println("\nUpdate Gym");
+					updateGym(); 
+					break;
+				case 2:
+					System.out.println("\nUpdate Trainer");
+					updateTrainer();
+					break;
+				case 3:
+					System.out.println("\nUpdate Session ");
+					updateSession();
+					break;
+				case 4:
+	                System.out.println("\nUpdate Customer");
+	                updateCustomer();
+	                break;
+				case 5:
+	                System.out.println("\nUpdate Reservation ");
+	                updateReservation();
+	                break;
+				case 6:
+	                System.out.println("\nUpdate Payment ");
+	                updatePayment();
+	                break;
+				case 0:
+	                System.out.println("Returning to Main Menu...");
+	                updateDataRunning = false;
+	                return;
+	                
+	            default: 
+	            	System.out.println("Invalid option. Please try again!");
+			}
 		}
 	}
 	
-	/*private static void SearchAvailableSessions( ) {
+	private static void SearchAvailableSessions( ) {
 		
 		System.out.println("Enter City: ");
 		String selectedCity = scanner.nextLine();
@@ -275,12 +294,32 @@ public class Main {
 		
 		System.out.println("Enter Training Type: ");
 		String type = scanner.nextLine();
+		LocalDate userDate = null;
+        LocalTime userTime = null;
+        
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+
+        while (userDate == null) {
+            System.out.print("Enter Date (dd/MM/yyyy): ");
+            String dateInput = scanner.nextLine().trim();
+            try {
+                userDate = LocalDate.parse(dateInput, dateFormatter);
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid date format. Please use exactly dd/MM/yyyy (e.g., 25/12/2026).");
+            }
+        }
+        
+        while (userTime == null) {
+            System.out.print("Enter Time (HH:mm): ");
+            String timeInput = scanner.nextLine().trim();
+            try {
+                userTime = LocalTime.parse(timeInput, timeFormatter);
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid time format. Please use exactly HH:mm in 24-hour format (e.g., 14:30).");
+            }
+        }
 		
-		System.out.println("Enter Date e.g. DD/MM/YYYY: ");
-		String date = scanner.nextLine();
-		
-		System.out.println("Enter Time e.g. HH:MM: ");
-		String time = scanner.nextLine();
 		
 		int selectedTrainerId = 0;
 		if (selectedGymCode > 0) {
@@ -313,13 +352,18 @@ public class Main {
 		System.out.println("Enter Additional Services: ");
 		String services = scanner.nextLine();
 		
-		//-------------CORRECT THIS, I HAVE SOMETHING SIMILAR IN PLACE IN A DIFFERENT PART----------------------------------
-		System.out.println("Is Invoice Needed? (true = 1/false = 0):");
-		int invoice = scanner.nextInt();
-		scanner.nextLine();
+		char letter;
+	    do{ 
+	    	System.out.print("Will the customer need an invoice? (Y/N): ");
+			String choice= scanner.next();
+			letter= Character.toUpperCase(choice.charAt(0));
+		}while((letter!= 'Y' && letter != 'N'));
+	    
+	    
+	    int invoice = letter == 'Y'?1:0;
 		
 		//begin search and display results
-		SessionSearch criteria = new SessionSearch(selectedGymCode, selectedCity, type, date, time, selectedTrainerId, services,invoice);
+		SessionSearch criteria = new SessionSearch(selectedGymCode, selectedCity, type, userDate, userTime, selectedTrainerId, services, invoice==1);
 		ArrayList<Session> availableSessions = SessionDBUtils.searchSessions(criteria);
 		
 		HashMap<Integer, Session> sessionsMap= new HashMap<>(); //number presented on the screen, selectedSession
@@ -354,6 +398,7 @@ public class Main {
 		if(selectedSession != null) {
 			Customer c = new Customer(-1, "", "", "", "", selectedSession.getGymCode());
 			boolean err= true;
+			// Καταγραφή του ονόματος και του επωνύμου του πελάτη
 			while(err) {
 			    System.out.print("Enter your First Name: ");
 			    String firstName = scanner.nextLine();
@@ -377,8 +422,8 @@ public class Main {
 					c.setPhone(phone);
 					err= false;
 				}catch(IllegalArgumentException e) {
-					return;
 					e.printStackTrace();
+					return;
 				}				
 			}
 			err= true;
@@ -401,7 +446,7 @@ public class Main {
 	        System.out.println("Date and Time: " + selectedSession.getDateAndTime());
 	        System.out.println("Duration: " + selectedSession.getDuration() + " mins");
 	        System.out.println("Total Price: " + selectedSession.getPrice() + " €");
-	        System.out.println("Invoice Needed: " + (invoice ? "YES" : "NO"));
+	        System.out.println("Invoice Needed: " + (invoice==1 ? "YES" : "NO"));
 	        
 			Character ans= ' ';
 			while (Character.toUpperCase(ans) != 'Y' && Character.toUpperCase(ans) != 'N'){
@@ -460,7 +505,7 @@ public class Main {
 				
 				if(generatedCustomerId > 0) {
 					
-					
+					//----------SOLVE THE ERROR I MENTIONED IN LINE 316 FIRST AND THEN SOLVE THIS ONE---------------------
 					Reservation r = new Reservation(selectedSession.getDateAndTime(), invoice, reservationStatus, selectedSession.getSessionCode(), generatedCustomerId);
 					try {
 						int generatedReservationCode = ReservationDBUtils.addReservationAndGetCode(r);
@@ -476,7 +521,7 @@ public class Main {
 			}
 		}
 		
-	}*/
+	}
 	
 	private static void searchAndDisplayGyms() {
 		System.out.println("\n Λίστα Γυμναστηρίων");
@@ -733,18 +778,17 @@ public class Main {
 	    
 	    System.out.print("Enter Gym Code where this Customer is registered: ");
 	    int gymCode = scanner.nextInt();
-	    scanner.nextLine(); // Καθαρισμός του buffer 
+	    scanner.nextLine(); 
 
-	    // Έλεγχος αν το γυμναστήριο υπάρχει όντως στη βάση
 	    if (GymDBUtils.getGymById(gymCode) == null) {
 	        System.out.println("Error: No gym exists with code " + gymCode + ". Customer insertion aborted.");
 	        return;
 	    }
 	    
-	    // Δημιουργία του αντικειμένου Customer (0 για το AUTO_INCREMENT id)
-	    Customer newCustomer = new Customer(0, name, surname, email, phone, gymCode);
 	    
-	    // Κλήση της CustomerDBUtils
+	    Customer newCustomer = new Customer(0, surname, name, email, phone, gymCode);
+	    
+	    
 	    CustomerDBUtils.addCustomer(newCustomer);
 	}
 	
@@ -753,24 +797,23 @@ public class Main {
 	    
 	    System.out.print("Enter Customer ID to modify : ");
 	    int customerId = scanner.nextInt();
-	    scanner.nextLine(); // Καθαρισμός του buffer
+	    scanner.nextLine();
 	    
-	    //Αναζήτηση πελάτη 
+
 	    Customer existingCustomer = CustomerDBUtils.getCustomerByID(customerId);
 	    if (existingCustomer == null) {
 	        System.out.println("No customer was found with this ID.");
 	        return;
 	    }
-	    
-	    boolean subRunning = true;
-	    while (subRunning) {
-	        System.out.println("\nCurrent Customer Data : \n");
+	    System.out.println("\nCurrent Customer Data : \n");
 	        System.out.println("1. First Name: " + existingCustomer.getName());
 	        System.out.println("2. Surname: " + existingCustomer.getSurname());
 	        System.out.println("3. Phone: " + existingCustomer.getPhone());
 	        System.out.println("4. Email: " + existingCustomer.getEmail());
 	        System.out.println("5. Gym Code: " + existingCustomer.getGymCode());
 	        System.out.println("\n");
+	    boolean subRunning = true;
+	    while (subRunning) {
 	        
 	        System.out.println("Which field do you want to modify?");
 	        System.out.println("1. First Name");
@@ -782,7 +825,7 @@ public class Main {
 	        System.out.print("Choice (0-5): ");
 	        
 	        int subChoice = scanner.nextInt();
-	        scanner.nextLine(); // Καθαρισμός του buffer
+	        scanner.nextLine(); 
 	        
 	        switch (subChoice) {
 	            case 1:
@@ -823,6 +866,7 @@ public class Main {
 	    }
 	    
 	    CustomerDBUtils.updateCustomer(existingCustomer);
+	    return;
 	}
 	
 	public static void addSession() {
@@ -894,19 +938,30 @@ public class Main {
 	        System.out.println("No session was found with this Code.");
 	        return;
 	    }
-	    
+	    System.out.println("\nCurrent Session Data : \n");
+        System.out.println("1. Session Type: " + existingSession.getSessionType());
+        System.out.println("2. Description: " + existingSession.getDescription());
+        System.out.println("3. Max Participants: " + existingSession.getMaxParticipants());
+        System.out.println("4. Duration: " + existingSession.getDuration() + " mins");
+        System.out.println("5. Price: $" + existingSession.getPrice());
+        System.out.println("6. Date & Time: " + existingSession.getDateAndTime());
+        System.out.println("7. Gym Code: " + existingSession.getGymCode());
+        System.out.println("8. Trainer ID: " + existingSession.getTrainerTrainerID());
+        System.out.println("9. Availability: " + (existingSession.getAvailability()==1 ? "Yes" : "No"));
+        System.out.print("Choice (0-9): ");
+        
 	    boolean subRunning = true;
 	    while (subRunning) {
-	        System.out.println("\nCurrent Session Data : \n");
-	        System.out.println("1. Session Type: " + existingSession.getSessionType());
-	        System.out.println("2. Description: " + existingSession.getDescription());
-	        System.out.println("3. Max Participants: " + existingSession.getMaxParticipants());
-	        System.out.println("4. Duration: " + existingSession.getDuration() + " mins");
-	        System.out.println("5. Price: $" + existingSession.getPrice());
-	        System.out.println("6. Date & Time: " + existingSession.getDateAndTime());
-	        System.out.println("7. Gym Code: " + existingSession.getGymCode());
-	        System.out.println("8. Trainer ID: " + existingSession.getTrainerTrainerID());
-	        System.out.println("9. Availability: " + (existingSession.getAvailability()==1 ? "Yes" : "No"));
+	        System.out.println("\n\n\nWhich field do you want to modify?\n");
+	        System.out.println("1. Session Type");
+	        System.out.println("2. Description");
+	        System.out.println("3. Max Participants");
+	        System.out.println("4. Duration");
+	        System.out.println("5. Price");
+	        System.out.println("6. Date & Time");
+	        System.out.println("7. Gym Code");
+	        System.out.println("8. Trainer ID");
+	        System.out.println("9. Availability");
 	        System.out.println("0. Save Changes & Exit");
 	        System.out.print("Choice (0-9): ");
 	        
@@ -1021,22 +1076,22 @@ public class Main {
 	    }
 	    
 
-	    SessionSearch allSessionsCriteria = new SessionSearch(-1, "", "", "", "", -1, "", false);
+	    //SessionSearch allSessionsCriteria = new SessionSearch(-1, "", "", "", null, -1, "", false);
 	    
 
-	    ArrayList<Session> availableSessions = SessionDBUtils.searchSessions(allSessionsCriteria);
+	    ArrayList<Session> allAvailableSessions = SessionDBUtils.getAllAvailableSessions();
 	    
-	    if (availableSessions == null || availableSessions.isEmpty()) {
+	    if (allAvailableSessions == null || allAvailableSessions.isEmpty()) {
 	        System.out.println("There are currently no available sessions to book. Reservation aborted.");
 	        return;
 	    }
 	    
 
 	    System.out.println("\nAvailable Sessions Catalog:\n");
-	    System.out.printf("%-10s %-20s %-25s %-15s %-10s\n", "Code", "Type", "Date & Time", "Gym Code", "Price");
+	    System.out.printf("%-10s | %-25s | %-25s | %-15s | %-10s\n", "Code", "Type", "Date & Time", "Gym Code", "Price");
 	    
-	    for (Session s : availableSessions) {
-	        System.out.printf("%-10d %-20s %-25s %-15d $%-10d\n", 
+	    for (Session s : allAvailableSessions) {
+	        System.out.printf("%-10d | %-25s | %-25s | %-15d | €%-10.2f\n", 
 	            s.getSessionCode(), s.getSessionType(), s.getDateAndTime(), s.getGymCode(), s.getPrice());
 	    }
 	    System.out.println("\n");
@@ -1184,7 +1239,6 @@ public class Main {
 	                int newCustomerId = scanner.nextInt();
 	                scanner.nextLine();
 	                
-	                // Έλεγχος αν ο νέος πελάτης υπάρχει
 	                if (CustomerDBUtils.getCustomerByID(newCustomerId) == null) {
 	                    System.out.println("Error: Target Customer does not exist. Customer ID not changed.");
 	                } else {
@@ -1246,7 +1300,7 @@ public class Main {
 	            }
 	        }
 	        
-	        // Η πληρωμή είναι αυτόματα CONFIRMED αφού γίνεται ταυτόχρονα
+
 	        paymentStatusStr = "CONFIRMED";
 	        System.out.println("Payment Status automatically set to: CONFIRMED");
 	        
@@ -1322,23 +1376,79 @@ public class Main {
 	        return;
 	    }
 	    
-	    System.out.println("\nCurrent Status: " + existingPayment.getPaymentStatus());
-	    System.out.print("Enter New Payment Status (CONFIRMED, PENDING) or press Enter to keep current: ");
-	    String newStatus = scanner.nextLine().trim().toUpperCase();
+	    boolean isRunning = true;
 	    
-	    if (!newStatus.isEmpty()) {
-	        existingPayment.setPaymentStatus(PaymentStatus.valueOf(newStatus.toUpperCase()));
-	        
-	        // BUSINESS LOGIC: Αν άλλαξε σε CONFIRMED, πρέπει να ενημερώσουμε την κράτηση
-	        if (newStatus.equals(PaymentStatus.CONFIRMED.toString())) {
-	            Reservation existingRes = ReservationDBUtils.getReservationByID(existingPayment.getReservationCode());
-	            if (existingRes != null && existingRes.getReservationStatus()==ReservationStatus.PENDING) {
-	                existingRes.setReservationStatus(ReservationStatus.COMPLETE);
-	                ReservationDBUtils.updateReservation(existingRes);
-	                System.out.println("Auto-Update: Associated Reservation changed to COMPLETE.");
-	            }
+	    while(isRunning) {
+	    	System.out.println("Current Payment Data(Choose which you want to change)");
+		    System.out.println("1. Amount: " + existingPayment.getAmount() + "€");
+		    System.out.println("2. Payment Method: " + existingPayment.getPaymentMethod());
+		    System.out.println("3. Date: " + existingPayment.getPaymentDate());
+		    System.out.println("4. Payment Status: " + existingPayment.getPaymentStatus());
+		    System.out.println("0. Save Changes & exit.");
+		    System.out.print("Choice (0-5)");
+		    
+		    int subChoice = scanner.nextInt();
+	        scanner.nextLine();
+		    
+	        switch(subChoice) {
+	        	case 1:
+	        		System.out.println("Enter new Amount: ");
+	        		float newAmount = scanner.nextFloat();
+	        		scanner.nextLine();
+	        		existingPayment.setAmount(newAmount);
+	        		break;
+	        	case 2:
+	        		System.out.println("Enter new Payment Method: 1.CASH, 2.CREDIT_CARD 3. BANK_TRANSFER");
+	        		System.out.println("Your Choice: ");
+	        		int MeChoice = scanner.nextInt();
+	        		scanner.nextLine();
+	        		PaymentMethods newPaymentMethod;
+	        		if(MeChoice ==1) {
+	        			newPaymentMethod = PaymentMethods.CASH;
+	        		}else if(MeChoice == 2) {
+	        			newPaymentMethod = PaymentMethods.CREDIT_CARD;
+	        		}else if(MeChoice == 3) {
+	        			newPaymentMethod = PaymentMethods.BANK_TRANSFER;
+	        		}else {
+	        			System.out.println("Invalid number defaulting to Cash");
+	        			newPaymentMethod = PaymentMethods.CASH;
+	        		}
+	        		existingPayment.setPaymentMethod(newPaymentMethod);
+	        	case 3:
+	        		System.out.print("Enter New Date & Time (e.g., DD/MM/YYYY HH:MM): ");
+	        		String dateTimeInput = scanner.nextLine();
+	        		
+	        		java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+	        		
+	        		try {
+	        			java.time.LocalDateTime newDateTime = java.time.LocalDateTime.parse(dateTimeInput, formatter);
+	        			
+	        			existingPayment.setPaymentDate(newDateTime);
+	        		} catch (java.time.format.DateTimeParseException e) {
+	        			System.out.println("Error: Invalid date/time format. Field was NOT modified.");
+	        		}
+	        		break;
+	        	case 4:
+	        		System.out.println("Enter new Payment Status: 1.PENDING 2.CONFIRMED");
+	        		System.out.println("Your choice: ");
+	        		int StChoice = scanner.nextInt();
+	        		PaymentStatus newPaymentStatus; 
+	        		if(StChoice == 1) {
+	        			newPaymentStatus = PaymentStatus.PENDING;
+	        		}else if(StChoice == 2) {
+	        			newPaymentStatus = PaymentStatus.CONFIRMED;
+	        		}else {
+	        			System.out.println("Invalid Choice, defaulting to Pending");
+	        			newPaymentStatus = PaymentStatus.PENDING;
+	        		}
+	        		existingPayment.setPaymentStatus(newPaymentStatus);
+	        		break;
+	        	case 0:
+	        		System.out.println("Saving changes to the database...");
+	        		isRunning = false;
 	        }
-	    }
+		    
+	    }  
 	    
 	    PaymentDBUtils.updatePayment(existingPayment);
 	}
@@ -1408,21 +1518,13 @@ public class Main {
 		//in any other case the gym employee manually records the payment once it happens
 	}
 	
-	// handle a payment that has happened after the reservation
-	private static void manuallyRecordPayment() {
+	private static void displayPendingPayments() {
 		ArrayList<PendingPayment> pendingPayments= PaymentDBUtils.getPendingPayments();
 		System.out.println("Reservations that have not yet been paid for: ");
 		
 		System.out.printf("%-10s | %-9s | %-15s | %-10s | %-22s | %-20s | %-20s\n", 
                 "ID", "Amount", "Method", "Status", "Customer Name", "Booked On", "Session Date");
 		for(PendingPayment p : pendingPayments) {
-			/*System.out.println("payment id: " + p.getPaymentId());
-			System.out.println("payment amount: " + p.getAmount());
-			System.out.println("payment method: " + p.getPaymentMethod());
-			System.out.println("payment status: " + p.getPaymentStatus());
-			System.out.println("customer name: " + p.getCustomerFullName());
-			System.out.println("reservation date of : " + p.getDateOfReservation());
-			System.out.println("session date: " + p.getDateOfSession());*/
 			
 			System.out.printf("%-10d | %-9s | %-15s | %-10s | %-22s | %-20s | %-20s\n", 
                     p.getPaymentId(),
@@ -1433,6 +1535,11 @@ public class Main {
                     p.getDateOfReservation(),
                     p.getDateOfSession());
 		}
+	}
+	// handle a payment that has happened after the reservation
+	private static void manuallyRecordPayment() {
+		displayPendingPayments(); 
+		ArrayList<PendingPayment> pendingPayments= PaymentDBUtils.getPendingPayments();
 		
 		System.out.print("\nEnter the Payment ID you want to mark as PAID (or 0 to cancel): ");
 	    int selectedPaymentId = scanner.nextInt();
@@ -1462,82 +1569,92 @@ public class Main {
 	}
 	
 	private static void updateReservationsOrPayments() {
-		System.out.println("1. Cancel a Reservation ");
-		System.out.println("2. Update Reservation Status Manually ");
-		System.out.println("3. Update Payment Status Manually ");
-		System.out.println("4. Back to Admin Menu ");
 		
-		int choice = scanner.nextInt();
-		scanner.nextLine();
+		boolean isRunning = true;
 		
-		switch(choice) {
-			case 1:
-				viewActiveReservations();
-				System.out.println("Enter Reservation Code to Cancel");
-				int resCodeCancel = scanner.nextInt();
-				scanner.nextLine();
-				
-				boolean successCancel = ReservationDBUtils.cancelReservationInDB(resCodeCancel);
-				if(successCancel) {
-					System.out.println("Reservation " + resCodeCancel + " successfully Cancelled. ");
-				}else {
-					System.out.println("Could not cancel reservation. Check if Reservation ID is correct");
+		while(isRunning) {
+			System.out.println("1. Cancel a Reservation ");
+			System.out.println("2. Update Reservation Status Manually ");
+			System.out.println("3. Update Payment Status Manually ");
+			System.out.println("0. Back to Admin Menu ");
+			
+			int choice = scanner.nextInt();
+			scanner.nextLine();
+			
+			switch(choice) {
+				case 1:
+					viewActiveReservations();
+					System.out.println("Enter Reservation Code to Cancel:");
+					int resCodeCancel = scanner.nextInt();
+					scanner.nextLine();
+					
+					boolean successCancel = ReservationDBUtils.cancelReservationInDB(resCodeCancel);
+					if(successCancel) {
+						System.out.println("Reservation " + resCodeCancel + " successfully Cancelled. ");
+					}else {
+						System.out.println("Could not cancel reservation. Check if Reservation ID is correct");
+					}
+					break;
+					
+				case 2:
+					viewActiveReservations();
+					System.out.print("Enter Reservation Code: ");
+		            int resCode = scanner.nextInt();
+		            scanner.nextLine();
+		            System.out.println("Choose new status: 1. PENDING, 2. COMPLETE, 3. CANCELLED");
+		            int resStatusChoice = scanner.nextInt();
+		            scanner.nextLine();
+		            ReservationStatus chosenStatus = null;
+		            
+		            if(resStatusChoice == 1) {
+		            	chosenStatus = ReservationStatus.PENDING;
+		            }else if(resStatusChoice == 2) {
+		            	chosenStatus = ReservationStatus.COMPLETE;
+		            }else if(resStatusChoice == 3) {
+		            	chosenStatus = ReservationStatus.CANCELLED;
+		            }else {
+		            	System.out.println("Invalid choice. Defaulting to PENDING.");
+		            	chosenStatus = ReservationStatus.PENDING;
+		            }
+		            
+		            ReservationDBUtils.updateReservationStatus(resCode, chosenStatus);
+		            
+		            break;
+		            
+				case 3:
+					PaymentDBUtils.displayAllPaymentsInDB();
+					
+					System.out.println("\nEnter Payment ID to update: ");
+					int payId = scanner.nextInt();
+					scanner.nextLine();
+					
+					System.out.println("Choose new status: 1. PENDING, 2. CONFIRMED");
+		            System.out.print("Your choice: ");
+		            int payStatusChoice = scanner.nextInt();
+		            scanner.nextLine();
+		            
+		            PaymentStatus newPayStatus;
+		            
+		            if(payStatusChoice == 1) {
+		            	newPayStatus = PaymentStatus.PENDING;
+		            }else if(payStatusChoice == 2) {
+		            	newPayStatus = PaymentStatus.CONFIRMED;
+		            }else {
+		            	System.out.println("Invalid Choice. Defaulting to Pending");
+		            	newPayStatus = PaymentStatus.PENDING;
+		            }
+		            
+		            if(PaymentDBUtils.updatePaymentStatusd(payId, newPayStatus)) {
+		            	System.out.println("Payment Status updated to " + newPayStatus);
+		            }else {
+		            	System.out.println("Failed to Update Payment Status. Check if ID exists");
+		            }
+		            break;
+				case 0:
+					System.out.println("Returning to Admin Menu....");
+					isRunning = false;
 				}
-				break;
-				
-			case 2:
-				viewActiveReservations();
-				System.out.print("Enter Reservation Code: ");
-	            int resCode = scanner.nextInt();
-	            scanner.nextLine();
-	            System.out.println("Choose new status: 1. PENDING, 2. COMPLETE, 3. CANCELLED");
-	            int resStatusChoice = scanner.nextInt();
-	            scanner.nextLine();
-	            ReservationStatus chosenStatus = null;
-	            
-	            if(resStatusChoice == 1) {
-	            	chosenStatus = ReservationStatus.PENDING;
-	            }else if(resStatusChoice == 2) {
-	            	chosenStatus = ReservationStatus.COMPLETE;
-	            }else if(resStatusChoice == 3) {
-	            	chosenStatus = ReservationStatus.CANCELLED;
-	            }else {
-	            	System.out.println("Invalid choice. Defaulting to PENDING.");
-	            	chosenStatus = ReservationStatus.PENDING;
-	            }
-	            
-	            ReservationDBUtils.updateReservationStatus(resCode, chosenStatus);
-	            
-	            break;
-	            
-			case 3:
-				PaymentDBUtils.displayAllPaymentsInDB();
-				
-				System.out.println("\nEnter Payment ID to update: ");
-				int payId = scanner.nextInt();
-				scanner.nextLine();
-				
-				System.out.println("Choose new status: 1. PENDING, 2. CONFIRMED");
-	            System.out.print("Your choice: ");
-	            int payStatusChoice = scanner.nextInt();
-	            scanner.nextLine();
-	            
-	            PaymentStatus newPayStatus;
-	            
-	            if(payStatusChoice == 1) {
-	            	newPayStatus = PaymentStatus.PENDING;
-	            }else if(payStatusChoice == 2) {
-	            	newPayStatus = PaymentStatus.CONFIRMED;
-	            }else {
-	            	System.out.println("Invalid Choice. Defaulting to Pending");
-	            	newPayStatus = PaymentStatus.PENDING;
-	            }
-	            
-	            if(PaymentDBUtils.updatePaymentStatusd(payId, newPayStatus)) {
-	            	System.out.println("Payment Status updated to " + newPayStatus);
-	            }else {
-	            	System.out.println("Failed to Update Payment Status. Check if ID exists");
-	            }
+		
 		}
 	}
 	
@@ -1609,8 +1726,14 @@ public class Main {
 		StringBuilder idSb= new StringBuilder();
 		Integer num=0;
 		for(Reservation r:cancelledReservations) {
-			System.out.printf("%-15s | %-20s | %-25s | %-15s | %-30s | %-15s | %-15s\n",
-	                ++num+"ID: "+r.getReservationCode(), "Reserv. Date: "+r.getDateAndTime(), "Invoice needed: "+r.getInvoiceNeeded(), "Status: "+r.getReservationStatus().toString(), "Session Id:"+r.getSessionCode(), "Customer ID: " + r.getCustomerID() + "Is passed: " + (r.isPast()?"YES":"NO"));
+			System.out.printf("%-15s | %-20s | %-25s | %-15s | %-30s | %-25s | %-15s\n",
+	                "#" + (++num) +" | ID: "+r.getReservationCode(),
+	                "Reserv. Date: "+r.getDateAndTime(),
+	                "Invoice needed: "+r.getInvoiceNeeded(),
+	                "Status: "+r.getReservationStatus().toString(),
+	                "Session Id:"+r.getSessionCode(),
+	                "Customer ID: " + r.getCustomerID(),
+	                "Is passed: " + (r.isPast()?"YES":"NO"));
 			if(r.isPast()) { //if the reservation is cancelled and in the past, 
 				idSb.append(r.getReservationCode()).append(", ");
 			}

@@ -13,7 +13,7 @@ public class ReservationDBUtils {
 	    
 	    String sqlQuery = "UPDATE reservation SET "
 	            + "date_And_Time = '" + r.getDateAndTime() + "', "
-	            + "invoice_Needed = " + r.getInvoiceNeeded() + ", "
+	            + "invoice_Needed = " + (r.getInvoiceNeeded()) + ", "
 	            + "reservation_Status = '" + r.getReservationStatus() + "', "
 	            + "session_Session_Code = " + r.getSessionCode() + ", "
 	            + "customer_Customer_ID = " + r.getCustomerID()

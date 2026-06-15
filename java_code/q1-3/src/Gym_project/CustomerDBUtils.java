@@ -67,8 +67,8 @@ public class CustomerDBUtils { // Αφαιρέθηκε το ερωτηματικ
 	        if (res.next()) { 
 	            fetchedCustomer = new Customer(
 	                    res.getInt("customer_id"), 
-	                    res.getString("name"), 
 	                    res.getString("surname"), 
+	                    res.getString("name"), 
 	                    res.getString("email"), 
 	                    res.getString("phone"), 
 	                    res.getInt("gym_Gym_Code")
@@ -94,8 +94,8 @@ public class CustomerDBUtils { // Αφαιρέθηκε το ερωτηματικ
 				
 			    Customer currentCustomer = new Customer(
 			        res.getInt("customer_ID"),
-			        res.getString("name"),
 			        res.getString("surname"),
+			        res.getString("name"),
 			        res.getString("email"),
 			        res.getString("phone"),
 			        res.getInt("gym_Gym_Code")
