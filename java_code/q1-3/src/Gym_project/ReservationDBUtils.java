@@ -235,7 +235,7 @@ public class ReservationDBUtils {
 		
 		String updateSessionSql = "UPDATE session "
 								+ "SET availability = 1, amount_of_participants = amount_of_participants - 1 "
-								+ "WHERE session_Code = (SELECT session_Session_Code FROM reservation WHERE reservation_Code = " + resCode + ")";
+								+ "WHERE session_Code = (SELECT session_Session_Code FROM reservation WHERE reservation_Code = " + resCode + ");";
 		
 		try (Connection conn = SQLConnector.getConnection();
 				Statement stm = conn.createStatement()){
@@ -251,12 +251,17 @@ public class ReservationDBUtils {
 		return false;
 	}
 	
-	public static ArrayList<Reservation> displayReservationsByCustomerPhone(String phoneNumber) {
+	public static ArrayList<Reservation> getCancellableReservationsByPhone(String phoneNumber) {
 		String sqlQuery = "SELECT r.reservation_Code, r.date_And_Time, r.invoice_Needed, r.reservation_Status, r.session_Session_Code, r.customer_Customer_ID "
-                + "FROM reservation r "
-                + "JOIN customer c ON r.customer_Customer_ID = c.customer_ID "
-                + "WHERE c.phone = '" + phoneNumber + "' "
-                + "ORDER BY r.date_And_Time DESC;";
+				+ "FROM reservation r "
+				+ "JOIN customer c ON r.customer_Customer_ID = c.customer_ID "
+				+ "JOIN payment p ON p.reservation_Reservation_Code=r.reservation_Code "
+				+ "JOIN session s ON r.session_Session_Code = s.session_Code "
+				+ "WHERE c.phone = '" + phoneNumber +"' "
+				+ "AND r.reservation_Status = 'PENDING' "
+				+ "AND p.payment_Status = 'PENDING' "
+				+ "AND s.date_And_Time > NOW() + INTERVAL 24 HOUR " //only sessions that are 24h or more into the future
+				+ "ORDER BY r.date_And_Time DESC;";
 		
 		ArrayList<Reservation> reservationList = new ArrayList<>();
 		

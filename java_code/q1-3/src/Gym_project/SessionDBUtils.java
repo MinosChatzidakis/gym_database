@@ -195,14 +195,15 @@ public class SessionDBUtils {
 		}
 	}
 
+	//remove one participant from each session given and then check if it's still available
 	public static void freeUpSpaceInMultipleSessions(String sessionIds) throws SQLException{
 	//if no IDs were passed => return
 	if (sessionIds == null || sessionIds.length() == 0) {
         System.out.println("No IDs provided.");
         return;
     }
-	//remove one participant from each session and then check if it's still available
-	String sqlQuery = "UPDATE sessionn SET amount_Of_Participants= amount_Of_Participants -1, availability = CASE WHEN amount_Of<Participants < max_Participants THEN 1 WHEN amount_Of<Participants = max_Participants THEN 0 END WHERE session_Code IN (" + sessionIds + ");";
+	String sqlQuery = "UPDATE session SET amount_Of_Participants= amount_Of_Participants -1, availability = CASE WHEN amount_Of<Participants < max_Participants THEN 1 WHEN amount_Of<Participants = max_Participants THEN 0 END WHERE session_Code IN (" + sessionIds + ");";
+	//remove a customer from the session and check if its availability changed from that removal;
     try (Connection conn = SQLConnector.getConnection();
          Statement stmt = conn.createStatement()) {
         	
