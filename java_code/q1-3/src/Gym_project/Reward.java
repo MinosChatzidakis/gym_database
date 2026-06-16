@@ -1,17 +1,23 @@
 package Gym_project;
 
-public class Αvailable_rewards {
+public class Reward {
 	private int rewardID;
     private String description;
     private int validFor;
     private int ptsRequired;
 
 
-    public Αvailable_rewards(int rewardID, String description, int validFor, String phone, int ptsRequired) {
+    public Reward(int rewardID, String description, int validFor, int ptsRequired) {
         this.rewardID = rewardID;
         this.description = description;
         this.validFor = validFor;
         this.ptsRequired = ptsRequired;
+    }
+    
+    public Reward(String description, int validFor, int ptsRequired) {
+    	this.description = description;
+        this.ptsRequired = ptsRequired;
+        this.validFor= validFor;
     }
 
     public int getRewardID() {
