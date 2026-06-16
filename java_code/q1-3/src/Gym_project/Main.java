@@ -9,6 +9,7 @@ import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -413,7 +414,7 @@ public class Main {
 				System.out.println("Enter your phone number: ");
 				String phone= scanner.nextLine();
 				if(!checkPhone(phone)) {
-					System.out.println("Invalid phone given. Your email must be exactly 10 characters long.");
+					System.out.println("Invalid phone given. Your email must be exactly 10 characters long and only contain numbers");
 					return;
 				}
 				try {
@@ -998,7 +999,7 @@ public class Main {
         System.out.println("3. Max Participants: " + existingSession.getMaxParticipants());
         System.out.println("4. Duration: " + existingSession.getDuration() + " mins");
         System.out.println("5. Price: $" + existingSession.getPrice());
-        System.out.println("6. Date & Time: " + existingSession.getDateAndTime());
+        System.out.println("6. Date & Time: " + existingSession.getDateAndTime().toLocalDate()+ ", "+existingSession.getDateAndTime().toLocalTime());
         System.out.println("7. Gym Code: " + existingSession.getGymCode());
         System.out.println("8. Trainer ID: " + existingSession.getTrainerTrainerID());
         System.out.println("9. Availability: " + (existingSession.getAvailability()==1 ? "Yes" : "No"));
@@ -1019,8 +1020,14 @@ public class Main {
 	        System.out.println("0. Save Changes & Exit");
 	        System.out.print("Choice (0-9): ");
 	        
-	        int subChoice = scanner.nextInt();
-	        scanner.nextLine();
+	        int subChoice;
+		    try{
+		    	subChoice = scanner.nextInt();
+		    }catch(InputMismatchException e) {
+		    	System.out.println("Invalid input.");
+		    	return;
+		    }
+		    scanner.nextLine();
 
 	        
 	        switch (subChoice) {
@@ -1063,7 +1070,13 @@ public class Main {
 	                break;
 	            case 7:
 	                System.out.print("Enter New Gym Code: ");
-	                int newGymCode = scanner.nextInt();
+	                int newGymCode;
+	        	    try{
+	        	    	newGymCode = scanner.nextInt();
+	        	    }catch(InputMismatchException e) {
+	        	    	System.out.println("Invalid input.");
+	        	    	return;
+	        	    }
 	                scanner.nextLine();
 	                
 	                if (GymDBUtils.getGymById(newGymCode) == null) {
@@ -1074,7 +1087,14 @@ public class Main {
 	                break;
 	            case 8:
 	                System.out.print("Enter New Trainer ID: ");
-	                int newTrainerId = scanner.nextInt();
+	                int newTrainerId;
+	        	    try{
+	        	    	newTrainerId = scanner.nextInt();
+	        	    }catch(InputMismatchException e) {
+	        	    	System.out.println("Invalid input.");
+	        	    	return;
+	        	    }
+	        	    scanner.nextLine();
 	                scanner.nextLine();
 	                
 	                if (TrainerDBUtils.getTrainerByID(newTrainerId) == null) {
@@ -1118,30 +1138,34 @@ public class Main {
 	//new reservation
 	public static void addReservation() {
 	    System.out.print("Please enter the Customer ID making the reservation: ");
-	    int customerId = scanner.nextInt();
-	    scanner.nextLine(); 
+	    int customerId;
+	    try{
+	    	customerId = scanner.nextInt();
+	    }catch(InputMismatchException e) {
+	    	System.out.println("Invalid input.");
+	    	return;
+	    }
+	    scanner.nextLine();
 	    
 
-	    if (CustomerDBUtils.getCustomerByID(customerId) == null) {
-	        System.out.println("Error: Customer with ID " + customerId + " does not exist. Reservation aborted.");
+	    Customer selectedCustomer= CustomerDBUtils.getCustomerByID(customerId);
+	    if (selectedCustomer == null) {
+	        System.out.println("Error: Customer with ID " + customerId + " does not exist. Reservation aborted.");//check if the customer exists
 	        return;
 	    }
-	    
-
-
-	    ArrayList<Session> allAvailableSessions = SessionDBUtils.getAllAvailableSessions();
-	    if (allAvailableSessions == null || allAvailableSessions.isEmpty()) {
+	    ArrayList<Session> availableSessions = SessionDBUtils.getAvailableSessionsByGym(selectedCustomer.getGymCode());
+	    if (availableSessions == null || availableSessions.isEmpty()) {
 	        System.out.println("There are currently no available sessions to book. Reservation aborted.");
 	        return;
 	    }
 	    
 
-	    System.out.println("\nAvailable Sessions Catalog:\n");
+	    System.out.println("\nAvailable Sessions Catalog in the customer's gym(" + selectedCustomer.getGymCode()+"): ");
 	 System.out.printf("%-10s %-25s %-15s %-10s %-15s %-10s\n", 
 	     "Code", "Type", "Date", "Time", "Gym Code", "Price");
 	 System.out.println("--------------------------------------------------------------------------------------");
 
-	 for (Session s : allAvailableSessions) {
+	 for (Session s : availableSessions) {
 	     System.out.printf("%-10d %-25s %-15s %-10s %-15d €%-9.2f\n",
 	         s.getSessionCode(), 
 	         s.getSessionType(), 
@@ -1155,7 +1179,13 @@ public class Main {
 	    
 
 	    System.out.print("Please select a Session Code from the list above: ");
-	    int sessionCode = scanner.nextInt();
+	    int sessionCode;
+	    try{
+	    	 sessionCode = scanner.nextInt();
+	    }catch(InputMismatchException e) {
+	    	System.out.println("Invalid input.");
+	    	return;
+	    }
 	    scanner.nextLine();
 	    
 	    Session selectedSession= SessionDBUtils.getSessionByID(sessionCode);
@@ -1231,7 +1261,13 @@ public class Main {
 	    System.out.println("\nUpdate Reservation Data\n");
 	    
 	    System.out.print("Please enter the Reservation Code to modify: ");
-	    int reservationCode = scanner.nextInt();
+	    int reservationCode;
+	    try{
+	    	reservationCode = scanner.nextInt();
+	    }catch(InputMismatchException e) {
+	    	System.out.println("Invalid input.");
+	    	return;
+	    }
 	    scanner.nextLine(); 
 	    
 
@@ -1252,8 +1288,14 @@ public class Main {
 	        System.out.println("0. Save Changes & Exit");
 	        System.out.print("\nChoice (0-5): ");
 	        
-	        int subChoice = scanner.nextInt();
-	        scanner.nextLine();
+	        int subChoice;
+		    try{
+		    	subChoice = scanner.nextInt();
+		    }catch(InputMismatchException e) {
+		    	System.out.println("Invalid input.");
+		    	return;
+		    }
+		    scanner.nextLine();
 	        
 	        switch (subChoice) {
 	            case 1:
@@ -1307,7 +1349,13 @@ public class Main {
 	                break;
 	            case 4:
 	                System.out.print("Enter New Session Code: ");
-	                int newSessionCode = scanner.nextInt();
+	                int newSessionCode;
+	        	    try{
+	        	    	newSessionCode = scanner.nextInt();
+	        	    }catch(InputMismatchException e) {
+	        	    	System.out.println("Invalid input.");
+	        	    	return;
+	        	    }
 	                scanner.nextLine();
 	                
 
@@ -1332,8 +1380,14 @@ public class Main {
 	                break;
 	            case 5:
 	                System.out.print("Enter New Customer ID: ");
-	                int newCustomerId = scanner.nextInt();
-	                scanner.nextLine();
+	                int newCustomerId;
+	        	    try{
+	        	    	newCustomerId = scanner.nextInt();
+	        	    }catch(InputMismatchException e) {
+	        	    	System.out.println("Invalid input.");
+	        	    	return;
+	        	    }
+	        	    scanner.nextLine();
 	                
 	                //checks if the customer exists
 
@@ -1359,7 +1413,13 @@ public class Main {
 	    System.out.println("\n--- Update Payment Data ---\n");
 	    
 	    System.out.print("Enter Payment ID to modify: ");
-	    int paymentId = scanner.nextInt();
+	    int paymentId;
+	    try{
+	    	paymentId = scanner.nextInt();
+	    }catch(InputMismatchException e) {
+	    	System.out.println("Invalid input.");
+	    	return;
+	    }
 	    scanner.nextLine();
 	    
 	    Payment existingPayment = PaymentDBUtils.getPaymentByID(paymentId);
@@ -1379,7 +1439,13 @@ public class Main {
 		    System.out.println("0. Save Changes & exit.");
 		    System.out.print("Choice (0-5)");
 		    
-		    int subChoice = scanner.nextInt();
+		    int subChoice;
+		    try{
+		    	subChoice = scanner.nextInt();
+		    }catch(InputMismatchException e) {
+		    	System.out.println("Invalid input.");
+		    	return;
+		    }
 	        scanner.nextLine();
 		    
 	        switch(subChoice) {
@@ -1392,7 +1458,13 @@ public class Main {
 	        	case 2:
 	        		System.out.println("Enter new Payment Method: 1.CASH, 2.CREDIT_CARD 3. BANK_TRANSFER");
 	        		System.out.println("Your Choice: ");
-	        		int MeChoice = scanner.nextInt();
+	        		int MeChoice;
+	        	    try{
+	        	    	 MeChoice = scanner.nextInt();
+	        	    }catch(InputMismatchException e) {
+	        	    	System.out.println("Invalid input.");
+	        	    	return;
+	        	    }
 	        		scanner.nextLine();
 	        		PaymentMethods newPaymentMethod;
 	        		if(MeChoice ==1) {
@@ -1423,7 +1495,14 @@ public class Main {
 	        	case 4:
 	        		System.out.println("Enter new Payment Status: 1.PENDING 2.CONFIRMED");
 	        		System.out.println("Your choice: ");
-	        		int StChoice = scanner.nextInt();
+	        		int StChoice;
+	        	    try{
+	        	    	StChoice = scanner.nextInt();
+	        	    }catch(InputMismatchException e) {
+	        	    	System.out.println("Invalid input.");
+	        	    	return;
+	        	    }
+	        	    scanner.nextLine();
 	        		PaymentStatus newPaymentStatus; 
 	        		if(StChoice == 1) {
 	        			newPaymentStatus = PaymentStatus.PENDING;
@@ -1553,7 +1632,13 @@ public class Main {
 		}
 		
 		System.out.print("\nEnter the Payment ID you want to mark as PAID (or 0 to cancel): ");
-	    int selectedPaymentId = scanner.nextInt();
+	    int selectedPaymentId;
+	    try{
+	    	selectedPaymentId = scanner.nextInt();
+	    }catch(InputMismatchException e) {
+	    	System.out.println("Invalid input.");
+	    	return;
+	    }
 	    scanner.nextLine();
 	    
 	    if(selectedPaymentId == 0) {
@@ -1590,7 +1675,13 @@ public class Main {
 			System.out.println("3. Update Payment Status Manually ");
 			System.out.println("0. Back to Admin Menu ");
 			
-			int choice = scanner.nextInt();
+			int choice;
+		    try{
+		    	 choice = scanner.nextInt();
+		    }catch(InputMismatchException e) {
+		    	System.out.println("Invalid input.");
+		    	return;
+		    }
 			scanner.nextLine();
 			
 			switch(choice) {
@@ -1637,7 +1728,13 @@ public class Main {
 					PaymentDBUtils.displayAllPaymentsInDB();
 					
 					System.out.println("\nEnter Payment ID to update: ");
-					int payId = scanner.nextInt();
+					int payId;
+				    try{
+				    	payId = scanner.nextInt();
+				    }catch(InputMismatchException e) {
+				    	System.out.println("Invalid input.");
+				    	return;
+				    }
 					scanner.nextLine();
 					
 					System.out.println("Choose new status: 1. PENDING, 2. CONFIRMED");
@@ -1699,7 +1796,12 @@ public class Main {
 		int resCode=-1;
 		do {
 			System.out.println("Enter the Reservation Code you wish to Cancel: ");
-			resCode = scanner.nextInt();
+		    try{
+		    	 resCode = scanner.nextInt();
+		    }catch(InputMismatchException e) {
+		    	System.out.println("Invalid input.");
+		    	return;
+		    }
 			scanner.nextLine();			
 		}while(!idMap.containsKey(resCode)); //make sure the id given is valid
 		
@@ -1789,7 +1891,16 @@ public class Main {
 	}
 	
 	private static boolean checkPhone(String phone) {
-		return phone.length()==10;
+		    if (phone == null || phone.isEmpty()) {
+		        return false; //check if it is empty
+		    }
+		    
+		    for (char c : phone.toCharArray()) {
+		        if (!Character.isDigit(c)) { 
+		            return false;//check if it contains anything other than numbers
+		        }
+		    }
+		return phone.length()==10; //check if it is exactly 10 character long
 	}
 	
 }
