@@ -182,12 +182,13 @@ public class SessionDBUtils {
 		                int realParticipantsCount = res.getInt(1);
 		                
 		                session.setAmountOfParticipants(realParticipantsCount);
-		                if (session.getAmountOfParticipants() >= session.getMaxParticipants()) {
-		                    session.setAvailability(0);
-		                    String updateQuery = "UPDATE session SET availability = 0 WHERE session_code = " + session.getSessionCode() + ";";
-		                    stm.executeUpdate(updateQuery);
+		                int isAvailable = (realParticipantsCount < session.getMaxParticipants()) ? 1 : 0;
+		                session.setAvailability(isAvailable);
+		                String updateQuery = "UPDATE session SET amount_Of_Participants = " + realParticipantsCount + 
+		                                     ", availability = " + isAvailable + 
+		                                     " WHERE session_code = " + session.getSessionCode() + ";";
+		                stm.executeUpdate(updateQuery);
 		                }
-		            }
 		        }
 	
 		}catch(SQLException e) {
@@ -202,7 +203,7 @@ public class SessionDBUtils {
         return;
     }
 	//remove one participant from each session and then check if it's still available
-	String sqlQuery = "UPDATE sessionn SET amount_Of_Participants= amount_Of_Participants -1, availability = CASE WHEN amount_Of<Participants < max_Participants THEN 1 WHEN amount_Of<Participants = max_Participants THEN 0 END WHERE session_Code IN (" + sessionIds + ");";
+	String sqlQuery = "UPDATE session SET amount_Of_Participants= amount_Of_Participants -1, availability = CASE WHEN amount_Of<Participants < max_Participants THEN 1 WHEN amount_Of<Participants = max_Participants THEN 0 END WHERE session_Code IN (" + sessionIds + ");";
     try (Connection conn = SQLConnector.getConnection();
          Statement stmt = conn.createStatement()) {
         	
