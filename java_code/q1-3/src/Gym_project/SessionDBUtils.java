@@ -182,12 +182,13 @@ public class SessionDBUtils {
 		                int realParticipantsCount = res.getInt(1);
 		                
 		                session.setAmountOfParticipants(realParticipantsCount);
-		                if (session.getAmountOfParticipants() >= session.getMaxParticipants()) {
-		                    session.setAvailability(0);
-		                    String updateQuery = "UPDATE session SET availability = 0 WHERE session_code = " + session.getSessionCode() + ";";
-		                    stm.executeUpdate(updateQuery);
+		                int isAvailable = (realParticipantsCount < session.getMaxParticipants()) ? 1 : 0;
+		                session.setAvailability(isAvailable);
+		                String updateQuery = "UPDATE session SET amount_Of_Participants = " + realParticipantsCount + 
+		                                     ", availability = " + isAvailable + 
+		                                     " WHERE session_code = " + session.getSessionCode() + ";";
+		                stm.executeUpdate(updateQuery);
 		                }
-		            }
 		        }
 	
 		}catch(SQLException e) {
