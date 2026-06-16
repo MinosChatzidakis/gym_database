@@ -11,7 +11,6 @@ import java.util.ArrayList;
 
 public abstract class PaymentDBUtils { 
 	
-	//Κάνει το UPDATE στη βάση
 	public static void updatePayment(Payment p) {
 	    String sqlQuery = "UPDATE payment SET "
 	            + "amount = " + p.getAmount() + ", "
@@ -128,8 +127,12 @@ public abstract class PaymentDBUtils {
 	    } 
 	}
 	
-	public static boolean confirmPaymentChangeInDB(int paymentId) {
-		String updatePaymentSql = "UPDATE payment set payment_Status = 'COMPLETE' WHERE payment_ID = " + paymentId + ";"; //handle reservation status
+	public static boolean confirmPaymentChangeInDB(int paymentId, LocalDateTime dateOfPayment) {
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); //declare the type of format we want 
+		String formattedDate = dateOfPayment.format(formatter); //convert LocalDateTime object to the format we chose
+
+		String updatePaymentSql = "UPDATE payment SET payment_Status = 'COMPLETE', date_And_Time = '" + formattedDate + "' WHERE payment_ID = " + paymentId; //handle reservation status + update the date from null to the current one
 		String updateReservationSql = "UPDATE reservation "
 									+ "SET reservation_Status = 'COMPLETE' "
 									+ "WHERE reservation_Code = (SELECT reservation_Reservation_Code FROM payment WHERE payment_ID = " + paymentId + ");"; //handle payment status;
@@ -139,11 +142,11 @@ public abstract class PaymentDBUtils {
 			
 			stm.executeUpdate(updatePaymentSql);
 			stm.executeUpdate(updateReservationSql);
-			return true;
+			return true; //everything went well
 			
 		}catch(SQLException e){
 			e.printStackTrace();
-			return false;
+			return false; //there was an error
 		}
 		
 	}
