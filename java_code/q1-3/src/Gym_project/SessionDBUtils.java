@@ -243,4 +243,36 @@ public class SessionDBUtils {
 		}
 		return null;
 	}
+	
+	public static ArrayList<Session> getAvailableSessionsByGym(int gymId){
+		String sqlQ= "SELECT * FROM session WHERE availability=1 AND gym_Gym_Code = "+gymId + " ;";
+		ArrayList<Session> allAvailableSessions= new ArrayList<>();
+		try(Connection conn= SQLConnector.getConnection();
+				Statement stm= conn.createStatement()) {
+			ResultSet res= stm.executeQuery(sqlQ);
+			while (res.next()) {
+	            Session currentSession = new Session(
+	                res.getInt("session_code"),
+	                res.getString("session_type"),
+	                res.getString("description"),
+	                res.getInt("max_participants"),
+	                res.getInt("duration"),
+	                res.getFloat("price"),
+	                res.getInt("availability"),
+	                res.getInt("trainer_trainer_id"),
+	                res.getInt("gym_Gym_Code"),
+	                res.getObject("date_And_Time", LocalDateTime.class),
+	                res.getInt("amount_Of_Participants")
+	            );
+	            allAvailableSessions.add(currentSession);
+
+	        }
+			return allAvailableSessions;
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	
 }
