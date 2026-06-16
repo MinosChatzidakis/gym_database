@@ -1163,6 +1163,12 @@ public class Main {
 	        System.out.println("Error: Invalid Session Code. Reservation aborted.");
 	        return;
 	    }
+	    
+	    if(selectedSession.getAvailability()==0) {
+	    	System.out.println("Error: The selected session is not Available");
+	    	return;
+	    }
+	    
 	    LocalDateTime now= LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES); //only keep hours and minutes in the date-time object
 	    System.out.println("Booking timestamp automatically recorded as: " + now);
 	    
@@ -1181,7 +1187,7 @@ public class Main {
 	    do{ 
 	    	System.out.print("Will the customer pay now or later? (Type 'NOW' or 'LATER'): ");
 	    	paymentChoice = scanner.nextLine().trim().toUpperCase();
-		}while((paymentChoice.equals("NOW") && paymentChoice.equals("LATER")));
+		}while(!paymentChoice.equals("NOW") && !paymentChoice.equals("LATER"));
 	    
 	    //String selectedPaymentMethod;
 	    PaymentMethods method = null;
@@ -1211,6 +1217,7 @@ public class Main {
 	        int generatedCode = ReservationDBUtils.addReservationAndGetCode(newReservation); //store new reservation in the database
 	        newReservation.setReservationCode(generatedCode); //record new id in the Reservation object
 	        System.out.println("Reservation created successfully in database with Code: " + generatedCode);
+	        SessionDBUtils.checkAndUpdateAvailability(selectedSession);
 	        PaymentStatus payStatus= resStatus==ReservationStatus.COMPLETE ? PaymentStatus.CONFIRMED : PaymentStatus.PENDING;
     		handleNewPayment(newReservation, selectedSession, method, payStatus);
 	    } catch (SQLException e) {
@@ -1282,7 +1289,12 @@ public class Main {
 	                }while (List.of("PENDING", "COMPLETE", "CANCELLED").contains(status.toUpperCase()));
 	                if(status=="PENDING")resStatus=ReservationStatus.PENDING;
 	                if(status=="COMPLETE")resStatus=ReservationStatus.COMPLETE;
-	                if(status=="CANCELLED")resStatus=ReservationStatus.CANCELLED;
+	                if(status=="CANCELLED") {
+	                	resStatus=ReservationStatus.CANCELLED;
+	                	ReservationDBUtils.cancelReservationInDB(existingReservation.getReservationCode());
+	                    System.out.println("Reservation formally cancelled and session capacity freed up.");
+	                    return;
+	                }
 	                try{
 	                	if(resStatus!=null) {
 	                		existingReservation.setReservationStatus(resStatus);	                		
@@ -1305,12 +1317,17 @@ public class Main {
 	                if (targetSession == null) {
 	                    System.out.println("Error: Target Session does not exist. Session Code not changed.");
 	                } else if (targetSession.getAvailability() == 0) {
-
-	                	
 	                	System.out.println("Error: The requested Session (Code: " + newSessionCode + ") is currently unavailable or full. Session Code not changed.");
 	                } else {
-	                    existingReservation.setSessionCode(newSessionCode);
-	                    System.out.println("Success: Session Code provisionally updated to " + newSessionCode + ".");
+	                	int oldSessionCode = existingReservation.getSessionCode();
+		                boolean success = ReservationDBUtils.transferReservationSession(existingReservation.getReservationCode(), oldSessionCode, newSessionCode);
+		                
+		                if (success) {
+		                    existingReservation.setSessionCode(newSessionCode);
+		                    System.out.println("Success: Customer successfully transferred to Session " + newSessionCode + " and capacities updated.");
+		                } else {
+		                    System.out.println("Error: Could not transfer customer to the new session.");
+		                }
 	                }
 	                break;
 	            case 5:
@@ -1335,7 +1352,6 @@ public class Main {
 	        }
 	    }
 	    
-	    // Κλήση της ReservationDBUtils για την εκτέλεση του UPDATE
 	    ReservationDBUtils.updateReservation(existingReservation);
 	}
 	

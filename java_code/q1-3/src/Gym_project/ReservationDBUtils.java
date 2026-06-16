@@ -12,6 +12,9 @@ public class ReservationDBUtils {
 	
 	public static void updateReservation(Reservation r) {
 	    
+		Reservation oldRes = getReservationByID(r.getReservationCode());
+	    int oldSessionCode = (oldRes != null) ? oldRes.getSessionCode() : -1;
+	    
 	    String sqlQuery = "UPDATE reservation SET "
 	            + "date_And_Time = '" + r.getDateAndTime() + "', "
 	            + "invoice_Needed = " + (r.getInvoiceNeeded()) + ", "
@@ -26,6 +29,18 @@ public class ReservationDBUtils {
 	        int rowsAffected = stm.executeUpdate(sqlQuery);
 	        if (rowsAffected > 0) {
 	            System.out.println("Reservation data updated successfully in the database.");
+	            Session newSession = SessionDBUtils.getSessionByID(r.getSessionCode());
+	            if (newSession != null) {
+	                SessionDBUtils.checkAndUpdateAvailability(newSession);
+	            }
+	            
+
+	            if (oldSessionCode != -1 && oldSessionCode != r.getSessionCode()) {
+	                Session oldSession = SessionDBUtils.getSessionByID(oldSessionCode);
+	                if (oldSession != null) {
+	                    SessionDBUtils.checkAndUpdateAvailability(oldSession);
+	                }
+	            }
 	        } else {
 	            System.out.println("No changes were made (data might be identical).");
 	        }
@@ -128,6 +143,8 @@ public class ReservationDBUtils {
 	}
 
 	public static void updateReservationStatus(int id, ReservationStatus status) {
+		
+		Reservation currentRes = getReservationByID(id);
 		String sql= "UPDATE reservation SET reservation_Status = '"+status+"' WHERE reservation_Code = " +id+";";
 		try(Connection conn = SQLConnector.getConnection(); //establish connection via the class we created
 				Statement stm= conn.createStatement();) {
@@ -135,6 +152,12 @@ public class ReservationDBUtils {
 			 
 			if(rowsAffected>0) {
 				System.out.println("Reservation was added to db successfully");
+				if (currentRes != null) {
+					Session relatedSession = SessionDBUtils.getSessionByID(currentRes.getSessionCode());
+					if (relatedSession != null) {
+						SessionDBUtils.checkAndUpdateAvailability(relatedSession);
+					}
+				}
 			}else {
 				System.out.println("Something went wrong and the reservation could not be added to db.");
 			}
@@ -299,6 +322,47 @@ public class ReservationDBUtils {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public static boolean transferReservationSession(int reservationCode, int oldSessionCode, int newSessionCode) {
+	    String decreaseOld = "UPDATE session SET availability = 1, amount_of_participants = amount_of_participants - 1 "
+	                       + "WHERE session_Code = " + oldSessionCode + " AND amount_of_participants > 0;";
+	                       
+	    String increaseNew = "UPDATE session SET amount_of_participants = amount_of_participants + 1 "
+	                       + "WHERE session_Code = " + newSessionCode + ";";
+	                       
+	    String updateAvailability = "UPDATE session SET availability = 0 "
+	                              + "WHERE session_Code = " + newSessionCode + " AND amount_of_participants >= maxPart;";
+	                              
+	    String updateRes = "UPDATE reservation SET session_Session_Code = " + newSessionCode + " "
+	                     + "WHERE reservation_Code = " + reservationCode + ";";
+
+	    try (Connection conn = SQLConnector.getConnection();
+	         Statement stm = conn.createStatement()) {
+	        
+	        conn.setAutoCommit(false);
+	        
+	        try {
+	            stm.executeUpdate(decreaseOld);
+	            stm.executeUpdate(increaseNew);
+	            stm.executeUpdate(updateAvailability);
+	            stm.executeUpdate(updateRes);
+	            
+	            conn.commit(); 
+	            return true;
+	        } catch (SQLException e) {
+	            conn.rollback(); 
+	            System.out.println("Transaction failed. Rolling back changes.");
+	            e.printStackTrace();
+	            return false;
+	        } finally {
+	            conn.setAutoCommit(true); 
+	        }
+	        
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return false;
+	    }
 	}
 	
 }
