@@ -111,6 +111,7 @@ public class GymDBUtils {
 	
 	public static ArrayList<Gym> getAllGymsSortedByCity() { 
 	    ArrayList<Gym> gyms = new ArrayList<>();
+	    //get all gyms with the services they provide
 	    String sqlQuery = 
 	        "SELECT g.*, GROUP_CONCAT(s.service_Name SEPARATOR ', ') AS unified_services " +
 	        "FROM gym g " +

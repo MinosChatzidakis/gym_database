@@ -165,7 +165,6 @@ public class Main {
 		System.out.println("3. Sessions");
 		System.out.println("4. Customers");
 		System.out.println("5. Reservations");
-		System.out.println("6. Reservation Payments");
 		System.out.println("0. Back to Main Menu");
 		
 		System.out.println("Select an option (0-6):");
@@ -194,10 +193,6 @@ public class Main {
 			case 5:
                 System.out.println("\nAdd New Reservation");
                 addReservation();
-                break;
-			case 6:
-                System.out.println("\nAdd New Payment ");
-                addPayment();
                 break;
 			case 0:
                 System.out.println("Returning to Main Menu...");
@@ -417,6 +412,10 @@ public class Main {
 				//record customer's phone
 				System.out.println("Enter your phone number: ");
 				String phone= scanner.nextLine();
+				if(!checkPhone(phone)) {
+					System.out.println("Invalid phone given. Your email must be exactly 10 characters long.");
+					return;
+				}
 				try {
 					c.setPhone(phone);
 					err= false;
@@ -430,6 +429,10 @@ public class Main {
 				//record customer's email
 				System.out.println("Enter your email address: ");
 				String email= scanner.nextLine();
+				if(!checkEmail(email)) {
+					System.out.println("Invalid email given. Your email must contain '@' and '.'");
+					return;
+				}
 				try {
 					c.setEmail(email);
 					err= false;
@@ -522,7 +525,7 @@ public class Main {
 	}
 	
 	private static void searchAndDisplayGyms() {
-		System.out.println("\n Λίστα Γυμναστηρίων");
+		System.out.println("\n Gyms list:");
 		
 			ArrayList<Gym> gyms = GymDBUtils.getAllGymsSortedByCity();
 		
@@ -558,9 +561,18 @@ public class Main {
     
     	System.out.print("Enter Phone: ");
     	String phone = scanner.nextLine();
+    	if(!checkEmail(phone)) {
+			System.out.println("Invalid email given. Your email must contain '@' and '.'");
+			return;
+		}
     	
     	System.out.print("Enter Email: ");
     	String email = scanner.nextLine();
+    	if(!checkEmail(email)) {
+			System.out.println("Invalid email given. Your email must contain '@' and '.'");
+			return;
+		}
+    	
     
     	// Περνάμε 0 ως ID, καθώς θα παραχθεί αυτόματα από τη MySQL
     	Gym newGym = new Gym(city, "None", address, name, email, phone, 0);
@@ -619,11 +631,21 @@ public class Main {
                 	break;
             	case 4:
                 	System.out.print("Enter New Phone: ");
-                	existingGym.setPhone(scanner.nextLine());
+                	String phone= scanner.nextLine();
+                	if(!checkEmail(phone)) {
+            			System.out.println("Invalid email given. Your email must contain '@' and '.'");
+            			return;
+            		}
+                	existingGym.setPhone(phone);
                 	break;
             	case 5:
                 	System.out.print("Enter New Email: ");
-                	existingGym.setEmail(scanner.nextLine());
+                	String email= scanner.nextLine();
+                	if(!checkEmail(email)) {
+    					System.out.println("Invalid email given. Your email must contain '@' and '.'");
+    					return;
+    				}
+                	existingGym.setEmail(email);
                 	break;
             	case 0:
                 	System.out.println("Saving changes to the database...");
@@ -652,9 +674,17 @@ public class Main {
 	    
 	    System.out.print("Enter Phone: ");
 	    String phone = scanner.nextLine();
+	    if(!checkEmail(phone)) {
+			System.out.println("Invalid email given. Your email must contain '@' and '.'");
+			return;
+		}
 	    
 	    System.out.print("Enter Email: ");
 	    String email = scanner.nextLine();
+	    if(!checkEmail(email)) {
+			System.out.println("Invalid email given. Your email must contain '@' and '.'");
+			return;
+		}
 	    
 	    System.out.print("Enter Gym Code where this trainer works: ");
 	    int gymCode = scanner.nextInt();
@@ -726,11 +756,21 @@ public class Main {
                 break;
             case 4:
                 System.out.print("Enter New Phone: ");
-                existingTrainer.setPhone(scanner.nextLine());
+                String phone= scanner.nextLine();
+                if(!checkEmail(phone)) {
+        			System.out.println("Invalid email given. Your email must contain '@' and '.'");
+        			return;
+        		}
+                existingTrainer.setPhone(phone);
                 break;
             case 5:
                 System.out.print("Enter New Email: ");
-                existingTrainer.setEmail(scanner.nextLine());
+                String email= scanner.nextLine();
+                if(!checkEmail(email)) {
+					System.out.println("Invalid email given. Your email must contain '@' and '.'");
+					return;
+				}
+                existingTrainer.setEmail(email);
                 break;
             case 6:
                 System.out.print("Enter New Gym Code: ");
@@ -768,9 +808,17 @@ public class Main {
 	    
 	    System.out.print("Enter Phone: ");
 	    String phone = scanner.nextLine();
+	    if(!checkEmail(phone)) {
+			System.out.println("Invalid email given. Your email must contain '@' and '.'");
+			return;
+		}
 	    
 	    System.out.print("Enter Email: ");
 	    String email = scanner.nextLine();
+	    if(!checkEmail(email)) {
+			System.out.println("Invalid email given. Your email must contain '@' and '.'");
+			return;
+		}
 	    
 	    System.out.print("Enter Gym Code where this Customer is registered: ");
 	    int gymCode = scanner.nextInt();
@@ -834,11 +882,21 @@ public class Main {
 	                break;
 	            case 3:
 	                System.out.print("Enter New Phone: ");
-	                existingCustomer.setPhone(scanner.nextLine());
+	                String phone= scanner.nextLine();
+	                if(!checkEmail(phone)) {
+	        			System.out.println("Invalid email given. Your email must contain '@' and '.'");
+	        			return;
+	        		}
+	                existingCustomer.setPhone(phone);
 	                break;
 	            case 4:
 	                System.out.print("Enter New Email: ");
-	                existingCustomer.setEmail(scanner.nextLine());
+	                String email= scanner.nextLine();
+	                if(!checkEmail(email)) {
+						System.out.println("Invalid email given. Your email must contain '@' and '.'");
+						return;
+					}
+	                existingCustomer.setEmail(email);
 	                break;
 	            case 5:
 	                System.out.print("Enter New Gym Code: ");
@@ -1057,6 +1115,7 @@ public class Main {
 	    SessionDBUtils.updateSession(existingSession);
 	}
 	
+	//new reservation
 	public static void addReservation() {
 	    System.out.print("Please enter the Customer ID making the reservation: ");
 	    int customerId = scanner.nextInt();
@@ -1130,6 +1189,7 @@ public class Main {
 	    	paymentChoice = scanner.nextLine().trim().toUpperCase();
 		}while(!paymentChoice.equals("NOW") && !paymentChoice.equals("LATER"));
 	    
+	    //String selectedPaymentMethod;
 	    PaymentMethods method = null;
 
 	    do { 
@@ -1295,110 +1355,6 @@ public class Main {
 	    ReservationDBUtils.updateReservation(existingReservation);
 	}
 	
-	public static void addPayment() {
-	    System.out.println("\n--- Create New Payment ---\n");
-	    
-	    System.out.print("Please enter the Reservation Code for this payment: ");
-	    int reservationCode = scanner.nextInt();
-	    scanner.nextLine();
-	    
-	    Reservation existingRes = ReservationDBUtils.getReservationByID(reservationCode);
-	    if (existingRes == null) {
-	        System.out.println("Error: Reservation not found. Payment aborted.");
-	        return;
-	    }
-	    
-	    Session bookedSession = SessionDBUtils.getSessionByID(existingRes.getSessionCode());
-	    if (bookedSession == null) {
-	        System.out.println("Error: The associated Session could not be found. Payment aborted.");
-	        return;
-	    }
-	    float amount = bookedSession.getPrice();
-	    System.out.println("Amount to pay (Auto-retrieved from Session): $" + amount);
-	    
-	    String paymentMethodStr;
-	    String paymentStatusStr;
-	    
-	    ReservationStatus currentResStatus = existingRes.getReservationStatus();
-	    
-	    if (currentResStatus==ReservationStatus.COMPLETE) {
-	        System.out.println("\nSimultaneous Online Payment Detected");
-	        System.out.println("Rule: For immediate payments, only CREDIT_CARD or BANK_TRANSFER are accepted.");
-	        
-	        boolean valid = false;
-	        while (!valid) {
-	            System.out.print("Enter Payment Method (CREDIT_CARD, BANK_TRANSFER): ");
-	            paymentMethodStr = scanner.nextLine().trim().toUpperCase();
-	            if (paymentMethodStr.equals("CREDIT_CARD") || paymentMethodStr.equals("BANK_TRANSFER")) {
-	                valid = true;
-	            } else {
-	                System.out.println("Invalid input. Cash is not accepted for online simultaneous payments.");
-	            }
-	        }
-	        
-
-	        paymentStatusStr = "CONFIRMED";
-	        System.out.println("Payment Status automatically set to: CONFIRMED");
-	        
-	    } else {
-	        System.out.println("\n[Deferred Payment / Pending Reservation Detected]");
-	        System.out.println("Rule: For pending reservations, all payment methods (including CASH) are accepted.");
-	        
-	        // 1. Validate Payment Method using the Enum
-	        PaymentMethods selectedMethod = null;
-	        while (selectedMethod == null) {
-	            System.out.print("Enter Payment Method (CASH, CREDIT_CARD, BANK_TRANSFER): ");
-	            String methodInput = scanner.nextLine().trim().toUpperCase();
-	            try {
-	                // This instantly checks if the input matches an Enum value and converts it!
-	                selectedMethod = PaymentMethods.valueOf(methodInput);
-	            } catch (IllegalArgumentException e) {
-	                System.out.println("Invalid input. Please enter exactly CASH, CREDIT_CARD, or BANK_TRANSFER.");
-	                return;
-	            }
-	        }
-	        
-	        // 2. Validate Payment Status using the Enum
-	        PaymentStatus selectedStatus = null;
-	        while (selectedStatus == null) {
-	            System.out.print("Enter Payment Status (CONFIRMED, PENDING): ");
-	            String statusInput = scanner.nextLine().trim().toUpperCase();
-	            try {
-	                selectedStatus = PaymentStatus.valueOf(statusInput);
-	            } catch (IllegalArgumentException e) {
-	                System.out.println("Invalid input. Please enter exactly CONFIRMED or PENDING.");
-	                return;
-	            }
-	        }
-	        
-	        System.out.print("Enter Points Transaction ID (or 0 if none): ");
-	        int transID = scanner.nextInt();
-	        scanner.nextLine(); 
-	        
-	        // 3. Keep the LocalDateTime as an object for the constructor, just format it for the print statement
-	        LocalDateTime now = LocalDateTime.now();
-	        java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-	        System.out.println("Payment timestamp automatically recorded as: " + now.format(formatter));
-	        
-	        // 4. Pass the strictly typed variables into the constructor
-	        Payment newPayment = new Payment(
-	                amount, selectedMethod, now, reservationCode, selectedStatus
-	        );
-	        try {
-				PaymentDBUtils.addPayment(newPayment);
-			} catch (SQLException e) {
-				e.printStackTrace();
-				return;
-			}
-	        
-	        // Upgrade reservation if needed
-	        if (currentResStatus.equals("PENDING") && selectedStatus == PaymentStatus.CONFIRMED) {
-	            existingRes.setReservationStatus(ReservationStatus.COMPLETE); 
-	            ReservationDBUtils.updateReservation(existingRes);
-	            System.out.println("Associated Reservation status automatically updated to COMPLETE.");
-	        }}
-	    }
-	
 	public static void updatePayment() {
 	    System.out.println("\n--- Update Payment Data ---\n");
 	    
@@ -1490,7 +1446,7 @@ public class Main {
 	}
 
 	private static void searchAndDisplayTrainers() {
-		System.out.println("\n Trainer's List");
+		System.out.println("\n Trainers List");
 		
 		ArrayList<Trainer> trainers = TrainerDBUtils.getAllTrainers();
 		
@@ -1537,15 +1493,15 @@ public class Main {
 		Payment newPayment= new Payment(
 					selectedSession.getPrice(),
 					selectedPaymentMethod,
-					paymentStatus == PaymentStatus.CONFIRMED ? LocalDateTime.now() : null, //DateTime
+					paymentStatus == PaymentStatus.CONFIRMED ? LocalDateTime.now() : null, //current time if the customer paid now or null if they haven't paid yet
 					selectedReservation.getReservationCode(),
 					paymentStatus
 				);
-		try { // try adding payment to data base
+		try { //add payment to data base
 			int newPaymentId= PaymentDBUtils.addPayment(newPayment); // add new payment to the database
 			System.out.println("Successfully added new payment to the database with Code: "+newPaymentId);
 			newPayment.setPaymentID(newPaymentId); // update local payment instance with the id returned from the database
-		}catch(SQLException e) {
+		}catch(SQLException e) { // errors
 			e.printStackTrace();
 			System.out.println("Something went worng in recording your payment. Please try again later");
 			return;
@@ -1561,24 +1517,21 @@ public class Main {
 		 */
 		//in any other case the gym employee manually records the payment once it happens
 	}
-	
 
-	private static void displayPendingPayments() {
+	private static ArrayList<PendingPayment> displayPendingPayments() {
 		ArrayList<PendingPayment> pendingPayments= PaymentDBUtils.getPendingPayments();
+		if (pendingPayments == null || pendingPayments.isEmpty()) {
+			System.out.println("No pending payments found.");
+			return null;
+		}
 		System.out.println("Reservations that have not yet been paid for: ");
 		
 		System.out.printf("%-10s | %-9s | %-15s | %-10s | %-22s | %-20s | %-20s\n", 
                 "ID", "Amount", "Method", "Status", "Customer Name", "Booked On", "Session Date");
-		
-		if (pendingPayments == null || pendingPayments.isEmpty()) {
-			System.out.println("No pending payments found.");
-			return;
-		}
-		
-		java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
 		for(PendingPayment p : pendingPayments) {
-			String bookedOnStr = p.getDateOfReservation() != null ? p.getDateOfReservation().format(formatter) : "-";
-			String sessionDateStr = p.getDateOfSession() != null ? p.getDateOfSession().format(formatter): "-";
+			String bookedOnStr = p.getDateOfReservation() != null ? p.getDateOfReservation().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) : "-";
+			String sessionDateStr = p.getDateOfSession() != null ? p.getDateOfSession().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")): "-";
 			
 			System.out.printf("%-10d | %-9s | %-15s | %-10s | %-22s | %-20s | %-20s\n", 
 	                p.getPaymentId(), 
@@ -1589,13 +1542,15 @@ public class Main {
 	                bookedOnStr, 
 	                sessionDateStr);
 		}
-			
+		return pendingPayments;	
 	}
 	
 	// handle a payment that has happened after the reservation
 	private static void manuallyRecordPayment() {
-		displayPendingPayments(); 
-		ArrayList<PendingPayment> pendingPayments= PaymentDBUtils.getPendingPayments();
+		ArrayList<PendingPayment> pendingPayments= displayPendingPayments(); //display and return pending payments
+		if(pendingPayments == null || pendingPayments.isEmpty()) {
+			return;
+		}
 		
 		System.out.print("\nEnter the Payment ID you want to mark as PAID (or 0 to cancel): ");
 	    int selectedPaymentId = scanner.nextInt();
@@ -1613,7 +1568,7 @@ public class Main {
 	    }
 	    
 	    if (idExists) {
-	    	boolean success = PaymentDBUtils.confirmPaymentChangeInDB(selectedPaymentId);
+	    	boolean success = PaymentDBUtils.confirmPaymentChangeInDB(selectedPaymentId, LocalDateTime.now());//change the status and the payment date in the database
 	    	if(success) {
 	    		System.out.println("Payment " + selectedPaymentId + " is now marked as COMPLETE.");
 	    	}else {
@@ -1717,28 +1672,42 @@ public class Main {
 	
 	//cancel reservation
 	private static void manageCustomerCancellation() {
-		System.out.println("Enter your phone Number: ");
+		System.out.println("Enter your phone number: ");
 		String inputPhone = scanner.nextLine();
+		if(!checkEmail(inputPhone)) {
+			System.out.println("Invalid email given. Your email must contain '@' and '.'");
+			return;
+		}
 		
-		ArrayList<Reservation> myReservations = ReservationDBUtils.displayReservationsByCustomerPhone(inputPhone);
-		
+		ArrayList<Reservation> myReservations = ReservationDBUtils.getCancellableReservationsByPhone(inputPhone);
+		HashMap<Integer, Reservation> idMap= new HashMap<>(); // data structure used to select a reservation to cancel
 		if(myReservations == null || myReservations.isEmpty()) {
 			System.out.println("No reservations found for: " + inputPhone);
 		}else {
-			
+			System.out.println("Your reservations that you are allowed to cancel:");
 			System.out.printf("%-18s | %-22s | %-12s \n", "Reservation Code","Reservation Date/Time", "Status");
-			
+			Integer num= 0;
 			for (Reservation r : myReservations) {
 				System.out.printf("%-18s | %-22s | %-12s \n",
 						r.getReservationCode(),
-						r.getDateAndTime(),
+						r.getDateAndTime().format(DateTimeFormatter.ofPattern("dd-MM-yyyy, HH:mm")),
 						r.getReservationStatus());
+				idMap.put(r.getReservationCode(), r);
 			}
 		}
 		
-		System.out.println("Enter the Reservation Code you wish to Cancel: ");
-		int resCode = scanner.nextInt();
-		scanner.nextLine();
+		int resCode=-1;
+		do {
+			System.out.println("Enter the Reservation Code you wish to Cancel: ");
+			resCode = scanner.nextInt();
+			scanner.nextLine();			
+		}while(!idMap.containsKey(resCode)); //make sure the id given is valid
+		
+		Reservation selectedRes= idMap.get(resCode);
+		if(selectedRes.getReservationStatus() == ReservationStatus.COMPLETE) {
+			System.out.println("Cannot cancel a reservation which has already been paid for.");
+			return;
+		}
 		
 		boolean success = ReservationDBUtils.cancelReservationInDB(resCode);
 		
@@ -1815,4 +1784,12 @@ public class Main {
 		}
 	}
 
+	private static boolean checkEmail(String email) {
+		return email.contains("@") && email.contains(".");
+	}
+	
+	private static boolean checkPhone(String phone) {
+		return phone.length()==10;
+	}
+	
 }
