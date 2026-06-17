@@ -44,7 +44,7 @@ public abstract class PaymentDBUtils {
 	                res.getInt("payment_ID"),
 	                res.getFloat("amount"),
 	                PaymentMethods.valueOf(res.getString("payment_Method").toUpperCase()),
-	                res.getObject("payment_Date", LocalDateTime.class),
+	                res.getObject("date_And_Time", LocalDateTime.class),
 	                res.getInt("reservation_Reservation_Code"),
 	                //res.getInt("pts_Transactions_Trans_ID"),
 	                PaymentStatus.valueOf(res.getString("payment_Status").toUpperCase())
@@ -102,15 +102,12 @@ public abstract class PaymentDBUtils {
 	        dateValueForSQL = "'" + java.sql.Timestamp.valueOf(p.getPaymentDate()) + "'"; //actual date
 	    }
 	    
-	    String sqlQuery = "INSERT INTO payment (amount, payment_Method, payment_Date, payment_Status, reservation_Reservation_Code) VALUES (" 
+	    String sqlQuery = "INSERT INTO payment (amount, payment_Method, date_And_Time, payment_Status, reservation_Reservation_Code) VALUES (" 
 	            + p.getAmount() + ", '" 
 	            + p.getPaymentMethod().name() + "', " 
 	            + dateValueForSQL + ", '" 
 	            + p.getPaymentStatus().name() + "', " 
 	            + p.getReservationCode()+ ")";
-	            //  +", " + p.getTransID()  reservation_Reservation_Code,
-	    // (10.0, 'CASH', NULL, 'PENDING', 0)
-	    //---------------------------CONTINUE HERE BITCH ASS NIGGER!!!!!!
 
 	    try (Connection conn = SQLConnector.getConnection();
 	         Statement stmt = conn.createStatement()) {
@@ -132,7 +129,7 @@ public abstract class PaymentDBUtils {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); //declare the type of format we want 
 		String formattedDate = dateOfPayment.format(formatter); //convert LocalDateTime object to the format we chose
 
-		String updatePaymentSql = "UPDATE payment SET payment_Status = 'COMPLETE', date_And_Time = '" + formattedDate + "' WHERE payment_ID = " + paymentId; //handle reservation status + update the date from null to the current one
+		String updatePaymentSql = "UPDATE payment SET payment_Status = 'CONFIRMED ', date_And_Time = '" + formattedDate + "' WHERE payment_ID = " + paymentId; //handle reservation status + update the date from null to the current one
 		String updateReservationSql = "UPDATE reservation "
 									+ "SET reservation_Status = 'COMPLETE' "
 									+ "WHERE reservation_Code = (SELECT reservation_Reservation_Code FROM payment WHERE payment_ID = " + paymentId + ");"; //handle payment status;
