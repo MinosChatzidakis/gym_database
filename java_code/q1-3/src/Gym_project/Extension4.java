@@ -120,32 +120,34 @@ public class Extension4 {
 	
 	
 	private static void executeRedemption(int customerId, Reward reward, Connection conn) throws SQLException {
-		
-		try(Statement stm = conn.createStatement()){
-			conn.setAutoCommit(false);
-				LocalDate today = LocalDate.now();
-				String todayStr = today.format(DATE_FORMATTER);
-				String validUntilStr = today.plusDays(reward.getValidForDays()).format(DATE_FORMATTER);
-				
-				String insertTxSql = "INSERT INTO pts_transactions (amount, source, date, description, customer_Customer_ID, payment_Payment_ID) " +
-                        "VALUES (" + (-reward.getPointsRequired()) + ", 'Redeem', '" + todayStr + "', 'Εξαργύρωση: " + reward.getDescription() + "', " + customerId + ", NULL)";
-				
-				String insertDistrSql = "INSERT INTO rewards_distribution (available_Rewards_Reward_ID, is_Used, date_Obtained, date_Used, valid_Until, customer_Customer_ID) " +
-                        "VALUES (" + reward.getRewardId() + ", 0, '" + todayStr + "', NULL, '" + validUntilStr + "', " + customerId + ")";
-				
-				stm.executeUpdate(insertTxSql);
-                stm.executeUpdate(insertDistrSql);
-                
+
+        try(Statement stm = conn.createStatement()){
+            conn.setAutoCommit(false); //Stops the Auto Commit in case one of the two .executeUpdate fails
+
+
+                LocalDate today = LocalDate.now();
+                String todayString = today.format(DATE_FORMATTER);
+                String validUntil = today.plusDays(reward.getValidForDays()).format(DATE_FORMATTER);
+
+                String PointsSql = "INSERT INTO pts_transactions (amount, source, date, description, customer_Customer_ID, payment_Payment_ID) " +
+                        "VALUES (" + (-reward.getPointsRequired()) + ", 'Redeem', '" + todayString + "', 'Εξαργύρωση: " + reward.getDescription() + "', " + customerId + ", NULL)";
+
+                String RewardsSql = "INSERT INTO rewards_distribution (available_Rewards_Reward_ID, is_Used, date_Obtained, date_Used, valid_Until, customer_Customer_ID) " +
+                        "VALUES (" + reward.getRewardId() + ", 0, '" + todayString + "', NULL, '" + validUntil + "', " + customerId + ")";
+
+                stm.executeUpdate(PointsSql);
+                stm.executeUpdate(RewardsSql);
+
                 System.out.println("Reward Successfully redeemed!");
-                conn.commit();
-			
-		}catch(SQLException e) {
-			conn.rollback();
-			throw e;
-		}finally {
-			conn.setAutoCommit(true);
-		}
-	}
+                conn.commit();//commits after both .executeUpdate was executed successfully
+
+        }catch(SQLException e) {
+            conn.rollback();//returns the database to the state before the two .executeUpdate
+            throw e;
+        }finally {
+            conn.setAutoCommit(true);//return setAutoCommit to normal value "true"
+        }
+    }
 	
 	//get available rewards for user
 	public static ArrayList<Reward> getAvailableRewards(int customerId){
