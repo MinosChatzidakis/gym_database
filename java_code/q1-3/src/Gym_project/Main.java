@@ -930,7 +930,7 @@ public class Main {
 		CustomerDBUtils.updateCustomer(existingCustomer);
 		return;
 	}
-
+//etst
 	public static void addSession() {
 		System.out.println("Insert New Session : \n");
 
