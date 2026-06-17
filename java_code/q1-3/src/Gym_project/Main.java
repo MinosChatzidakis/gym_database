@@ -494,8 +494,8 @@ public class Main {
 				paymentMethod = null;
 				while (paymentMethod == null) {
 					System.out.println("\nHow do you intend to pay?");
-					System.out.println("1. Card");
-					System.out.println("2. Cash");
+					System.out.println("1. Cash");
+					System.out.println("2. Card");
 					System.out.println("3. Bank Transfer");
 
 					int methodChoice = scanner.nextInt();

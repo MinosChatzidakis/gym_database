@@ -142,7 +142,7 @@ public class CustomerDBUtils { // Αφαιρέθηκε το ερωτηματικ
 	
 	public static int addCustomerAndGetId(Customer c) {
 		
-		String sqlQuery = "INSERT INTO customer (name, email, phone, gym_Gym_Code) VALUES ('" + c.getName() + "', '" + c.getEmail() + "', '" + c.getPhone() + "', " + c.getGymCode() + ")";
+		String sqlQuery = "INSERT INTO customer (name, surname, email, phone, gym_Gym_Code) VALUES ('" + c.getName() + "', '" + c.getSurname() + "', '" + c.getEmail() + "', '" + c.getPhone() + "', " + c.getGymCode() + ")";
 		
 		try(Connection conn = SQLConnector.getConnection();
 				Statement stm = conn.createStatement()) {
