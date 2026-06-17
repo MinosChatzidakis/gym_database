@@ -179,8 +179,8 @@ public class ReservationDBUtils {
 	        
 	        int rowsAffected = stmt.executeUpdate(sqlQuery);
 	        if(rowsAffected>0) {
-	        	System.out.println("Updated " + rowsAffected + " reservations successfully.");	        	
-	        }else System.out.println("No rows matches the criteria");
+	        	System.out.println("Cancelled " + rowsAffected + " reservations successfully.");	        	
+	        }else System.out.println("No reservations match the criteria");
 	    }
 	}
 	
