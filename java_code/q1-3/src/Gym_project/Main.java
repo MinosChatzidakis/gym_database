@@ -117,6 +117,9 @@ public class Main {
 					System.out.println("\nManage Cancelled Reservations");
 					handleCancelledReservations();
 					 break;
+				case 13:
+				    testLoyaltySystemMenu();
+				    break;
 				case 0:
 					System.out.println("Returning to Main Menu... ");
 					adminRunning = false;
@@ -1907,5 +1910,65 @@ public class Main {
 		    }
 		return phone.length()==10; //check if it is exactly 10 character long
 	}
+	
+	
+	// 🧪 ΠΡΟΣΩΡΙΝΗ ΜΕΘΟΔΟΣ ΔΟΚΙΜΗΣ ΓΙΑ ΤΟ ΖΗΤΟΥΜΕΝΟ 4
+		private static void testLoyaltySystemMenu() {
+			System.out.print("\n[TEST] Εισάγετε το Customer ID για τη δοκιμή: ");
+			int testCustomerId = scanner.nextInt();
+			scanner.nextLine(); // καθαρισμός buffer
+			
+			boolean testRunning = true;
+			while (testRunning) {
+				System.out.println("\n--- 🧪 Δοκιμή Συστήματος Πόντων (Extension4) ---");
+				System.out.println("1. Δοκιμή onSuccessfulPayment (Προσθήκη Πόντων από Πληρωμή)");
+				System.out.println("2. Δοκιμή viewCurrentStatus (Υπόλοιπο & Εξαργύρωση Δώρου)");
+				System.out.println("3. Δοκιμή viewHistory (Ιστορικό Κινήσεων & Δώρων)");
+				System.out.println("4. Δοκιμή viewGymAvailableRewards (Κατάλογος Δώρων Γυμναστηρίου)");
+				System.out.println("0. Έξοδος από το Test");
+				System.out.print("Επιλογή (0-4): ");
+				
+				int testChoice = scanner.nextInt();
+				scanner.nextLine();
+				
+				switch (testChoice) {
+					case 1:
+						System.out.print("Δώστε το ποσό πληρωμής (π.χ. 20 για 20€ = 20 πόντοι): ");
+						int mockAmount = scanner.nextInt();
+						System.out.print("Δώστε ένα υποτιθέμενο Payment ID (ή 0 αν δεν συνδέεται): ");
+						int mockPaymentId = scanner.nextInt();
+						scanner.nextLine();
+						
+						// Κλήση της 1ης μεθόδου
+						//Extension4.onSuccessfulPayment(testCustomerId, mockPaymentId, mockAmount);
+						break;
+						
+					case 2:
+						// Κλήση της 2ης μεθόδου (εμφανίζει num και κάνει executeRedemption)
+						Extension4.viewCurrentStatus(testCustomerId);
+						break;
+						
+					case 3:
+						// Κλήση της 3ης μεθόδου
+					//	Extension4.viewHistory(testCustomerId);
+						break;
+						
+					case 4:
+						// Κλήση της 4ης μεθόδου
+						System.out.println("Enter gym code");
+						int testGymCode = scanner.nextInt();
+						scanner.nextLine();
+						Extension4.viewAllAvailableRewardsForGym(testGymCode);
+						break;
+						
+					case 0:
+						System.out.println("Έξοδος από το δοκιμαστικό μενού.");
+						testRunning = false;
+						break;
+					default:
+						System.out.println("Μη έγκυρη επιλογή!");
+				}
+			}
+		}
 	
 }
