@@ -331,16 +331,18 @@ public class Main {
 				for (Trainer t : rsTrainers) {
 					int tId = t.getTrainerID();
 					String tName = t.getName();
-
-					trainerMap.put(tName.toLowerCase(), tId); //make it easy for the user to select their trainer
-					System.out.println(tName);
+					String tSurname = t.getSurname();
+					trainerMap.put(tName.toLowerCase(), tId);
+					trainerMap.put(tSurname.toLowerCase(), tId);
+					System.out.print(tName);
+					System.out.println(" " + tSurname);
 				}
-
-				System.out.println("Enter your preferred trainer's name: ");
-				String inputTrainerName = scanner.nextLine();
-
-				if (!inputTrainerName.isEmpty() && trainerMap.containsKey(inputTrainerName.toLowerCase())) {
-					selectedTrainerId = trainerMap.get(inputTrainerName.toLowerCase());
+				
+				System.out.println("Enter your preferred trainer's Surname: ");
+				String inputTrainerSurName = scanner.nextLine();
+				
+				if(!inputTrainerSurName.isEmpty() && trainerMap.containsKey(inputTrainerSurName.toLowerCase())) {
+					selectedTrainerId = trainerMap.get(inputTrainerSurName.toLowerCase());
 				}
 			} else {
 				System.out.println("No trainers found for this gym.");
@@ -352,17 +354,17 @@ public class Main {
 		String services = scanner.nextLine();
 
 		char letter;
-		do {
-			System.out.print("Will the customer need an invoice? (Y/N): ");
-			String choice = scanner.next();
-			letter = Character.toUpperCase(choice.charAt(0));
-		} while ((letter != 'Y' && letter != 'N'));
-
-		int invoice = letter == 'Y' ? 1 : 0;
-
-		// begin search and display results
-		SessionSearch criteria = new SessionSearch(selectedGymCode, selectedCity, type, userDate, userTime,
-				selectedTrainerId, services, invoice == 1);
+	    do{ 
+	    	System.out.print("Will the customer need an invoice? (Y/N): ");
+			String choice= scanner.next();
+			letter= Character.toUpperCase(choice.charAt(0));
+		}while((letter!= 'Y' && letter != 'N'));
+	    
+	    
+	    boolean invoice = (letter == 'Y');
+		
+		//begin search and display results
+		SessionSearch criteria = new SessionSearch(selectedGymCode, selectedCity, type, userDate, userTime, selectedTrainerId, services, invoice);
 		ArrayList<Session> availableSessions = SessionDBUtils.searchSessions(criteria);
 
 		HashMap<Integer, Session> sessionsMap = new HashMap<>(); // number presented on the screen, selectedSession
@@ -452,14 +454,14 @@ public class Main {
 			}
 
 			System.out.println("Gym Code: " + selectedSession.getGymCode());
-			System.out.println("Training Type: " + selectedSession.getSessionType());
-			System.out.println("Date and Time: " + selectedSession.getDateAndTime());
-			System.out.println("Duration: " + selectedSession.getDuration() + " mins");
-			System.out.println("Total Price: " + selectedSession.getPrice() + " €");
-			System.out.println("Invoice Needed: " + (invoice == 1 ? "YES" : "NO"));
-
-			Character ans = ' ';
-			while (Character.toUpperCase(ans) != 'Y' && Character.toUpperCase(ans) != 'N') {
+	        System.out.println("Training Type: " + selectedSession.getSessionType());
+	        System.out.println("Date and Time: " + selectedSession.getDateAndTime());
+	        System.out.println("Duration: " + selectedSession.getDuration() + " mins");
+	        System.out.println("Total Price: " + selectedSession.getPrice() + " €");
+	        System.out.println("Invoice Needed: " + (invoice ? "YES" : "NO"));
+	        
+			Character ans= ' ';
+			while (Character.toUpperCase(ans) != 'Y' && Character.toUpperCase(ans) != 'N'){
 				System.out.println("Confirm reservation? (Y/N)");
 				String input = scanner.nextLine().trim();
 				if (!input.isEmpty()) {
@@ -510,13 +512,21 @@ public class Main {
 						paymentMethod = PaymentMethods.BANK_TRANSFER;
 						break;
 					}
+				} 
+				Customer existingCustomer = CustomerDBUtils.getCustomerByPhone(c.getPhone());
+				int finalCustomerId;
+				
+				if(existingCustomer == null) {
+					finalCustomerId = CustomerDBUtils.addCustomerAndGetId(c);
+					System.out.println("New customer profile successfully created!");
+				}else {
+					finalCustomerId = existingCustomer.getCustomerID(); 
+					System.out.println("Welcome back! Existing customer profile located.");
 				}
-				int generatedCustomerId = CustomerDBUtils.addCustomerAndGetId(c);
-
-				if (generatedCustomerId > 0) {
-
-					Reservation r = new Reservation(selectedSession.getDateAndTime(), invoice, reservationStatus,
-							selectedSession.getSessionCode(), generatedCustomerId);
+				
+				if(finalCustomerId > 0) {
+					
+					Reservation r = new Reservation(selectedSession.getDateAndTime(), invoice, reservationStatus, selectedSession.getSessionCode(), finalCustomerId);
 					try {
 						int generatedReservationCode = ReservationDBUtils.addReservationAndGetCode(r);
 						SessionDBUtils.checkAndUpdateAvailability(selectedSession);
@@ -932,58 +942,59 @@ public class Main {
 	}
 //etst
 	public static void addSession() {
-		System.out.println("Insert New Session : \n");
+	    System.out.println("Insert New Session : \n");
+	    
+	    System.out.print("Enter Session Type (e.g., Yoga, CrossFit): ");
+	    String type = scanner.nextLine();
+	    
+	    System.out.print("Enter Description: ");
+	    String description = scanner.nextLine();
+	    
+	    System.out.print("Enter Max Participants: ");
+	    int maxPart = scanner.nextInt();
+	    
+	    System.out.print("Enter Duration (in minutes): ");
+	    int duration = scanner.nextInt();
+	    
+	    System.out.print("Enter Price ($): ");
+	    float price = scanner.nextFloat();
 
-		System.out.print("Enter Session Type (e.g., Yoga, CrossFit): ");
-		String type = scanner.nextLine();
+	    scanner.nextLine(); 
+	    
+	    System.out.print("Enter Date and Time (e.g., DD/MM/YYYY HH:MM): ");
+	    String dateTime = scanner.nextLine();
+	    
+	    java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+	    java.time.LocalDateTime sessionDateTime;
+	    
+	    try {
+	        sessionDateTime = java.time.LocalDateTime.parse(dateTime, formatter);
+	    } catch (java.time.format.DateTimeParseException e) {
+	        System.out.println("❌ Error: Invalid date/time format. Session creation aborted.");
+	        return; 
+	    }
+	    System.out.print("Enter Gym Code for this session: ");
+	    int gymCode = scanner.nextInt();
+	    
+	   
+	    if (GymDBUtils.getGymById(gymCode) == null) {
+	        System.out.println("Error: Gym with code " + gymCode + " does not exist. Session creation aborted.");
+	        return;
+	    }
+	    
+	    System.out.print("Enter Trainer ID for this session: ");
+	    int trainerId = scanner.nextInt();
+	    scanner.nextLine(); 
 
-		System.out.print("Enter Description: ");
-		String description = scanner.nextLine();
+	    if (TrainerDBUtils.getTrainerByID(trainerId) == null) {
+	        System.out.println("Error: Trainer with ID " + trainerId + " does not exist. Session creation aborted.");
+	        return;
+	    }
+	    
+	    Session newSession = new Session(0, type, description, maxPart, duration, price, true, trainerId, gymCode, sessionDateTime, 0);
 
-		System.out.print("Enter Max Participants: ");
-		int maxPart = scanner.nextInt();
-
-		System.out.print("Enter Duration (in minutes): ");
-		int duration = scanner.nextInt();
-
-		System.out.print("Enter Price ($): ");
-		float price = scanner.nextFloat();
-
-		scanner.nextLine();
-
-		System.out.print("Enter Date and Time (e.g., DD/MM/YYYY HH:MM): ");
-		String dateTime = scanner.nextLine();
-
-		java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-		java.time.LocalDateTime sessionDateTime;
-
-		try {
-			sessionDateTime = java.time.LocalDateTime.parse(dateTime, formatter);
-		} catch (java.time.format.DateTimeParseException e) {
-			System.out.println("❌ Error: Invalid date/time format. Session creation aborted.");
-			return;
-		}
-		System.out.print("Enter Gym Code for this session: ");
-		int gymCode = scanner.nextInt();
-
-		if (GymDBUtils.getGymById(gymCode) == null) {
-			System.out.println("Error: Gym with code " + gymCode + " does not exist. Session creation aborted.");
-			return;
-		}
-
-		System.out.print("Enter Trainer ID for this session: ");
-		int trainerId = scanner.nextInt();
-		scanner.nextLine();
-
-		if (TrainerDBUtils.getTrainerByID(trainerId) == null) {
-			System.out.println("Error: Trainer with ID " + trainerId + " does not exist. Session creation aborted.");
-			return;
-		}
-
-		Session newSession = new Session(0, type, description, maxPart, duration, price, 1, trainerId, gymCode,
-				sessionDateTime, 0);
-
-		SessionDBUtils.addSession(newSession);
+	    
+	    SessionDBUtils.addSession(newSession);
 	}
 
 	public static void updateSession() {
@@ -1578,10 +1589,14 @@ public class Main {
 					"Time", "Invoice Needed", "Status", "Session Code", "Customer ID");
 
 			for (Reservation res : activeReservation) {
-				System.out.printf("%-18d | %-20s | %-15s | %-12s | %-12s | %-12d | %-12d\n", res.getReservationCode(),
-						res.getDateAndTime().toLocalDate(), res.getDateAndTime().toLocalTime(),
-						(res.getInvoiceNeeded() == 1 ? "YES" : "NO"), res.getReservationStatus().name(),
-						res.getSessionCode(), res.getCustomerID());
+				System.out.printf("%-18d | %-20s | %-15s | %-12s | %-12s | %-12d | %-12d\n", 
+						res.getReservationCode(),
+						res.getDateAndTime().toLocalDate(),
+						res.getDateAndTime().toLocalTime(),
+						(res.getInvoiceNeeded() ? "YES" : "NO"),
+						res.getReservationStatus().name(),
+						res.getSessionCode(),
+						res.getCustomerID());
 			}
 
 		}

@@ -6,12 +6,12 @@ public class Reservation {
 	
 	private int reservationCode;
 	private LocalDateTime  dateAndTime;
-	private int invoiceNeeded;
+	private boolean invoiceNeeded;
 	private ReservationStatus reservationStatus;
 	private int sessionCode;
 	private int customerID;
 	
-	public Reservation(int reservationCode, LocalDateTime  dateAndTime, int invoiceNeeded, ReservationStatus reservationStatus, int sessionCode, int customerID) {
+	public Reservation(int reservationCode, LocalDateTime  dateAndTime, boolean invoiceNeeded, ReservationStatus reservationStatus, int sessionCode, int customerID) {
 		this.reservationCode = reservationCode;
 		this.dateAndTime = dateAndTime;
 		this.invoiceNeeded = invoiceNeeded;
@@ -20,7 +20,7 @@ public class Reservation {
 		this.customerID = customerID;
 	}
 	
-	public Reservation(LocalDateTime  dateAndTime, int invoiceNeeded, ReservationStatus reservationStatus, int sessionCode, int customerID) {
+	public Reservation(LocalDateTime  dateAndTime, boolean invoiceNeeded, ReservationStatus reservationStatus, int sessionCode, int customerID) {
 		this.dateAndTime = dateAndTime;
 		this.invoiceNeeded = invoiceNeeded;
 		this.reservationStatus = reservationStatus;
@@ -49,12 +49,11 @@ public class Reservation {
 		this.dateAndTime = dateAndTime;
 	}
 	
-	public int getInvoiceNeeded() {
+	public boolean getInvoiceNeeded() {
 		return invoiceNeeded;
 	}
 	
-	public void setInvoiceNeeded(int invoiceNeeded) {
-		if(invoiceNeeded!=1&&invoiceNeeded!=0) throw new IllegalArgumentException("Invalid input.");
+	public void setInvoiceNeeded(boolean invoiceNeeded) {
 		this.invoiceNeeded = invoiceNeeded;
 	}
 	

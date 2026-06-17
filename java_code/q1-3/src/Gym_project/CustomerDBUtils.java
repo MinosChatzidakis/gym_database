@@ -168,4 +168,29 @@ public class CustomerDBUtils { // Αφαιρέθηκε το ερωτηματικ
 		return -1;
 	}
 	
+	public static Customer getCustomerByPhone(String phone) {
+		String sql = "SELECT * FROM customer WHERE phone = '" + phone + "' LIMIT 1";
+		try (Connection conn = SQLConnector.getConnection(); 
+		        Statement stm = conn.createStatement()) {		
+			Customer fetchedCustomer = null;
+		       
+			ResultSet res = stm.executeQuery(sql);
+			if (res.next()) { 
+				fetchedCustomer = new Customer(
+						res.getInt("customer_id"), 
+						res.getString("surname"), 
+		                res.getString("name"), 
+		                res.getString("email"), 
+		                res.getString("phone"), 
+		                res.getInt("gym_Gym_Code")
+		            );
+		        }				    
+			return fetchedCustomer;
+		} catch (SQLException e) {
+			System.out.println("Error fetching customer by Phone:");
+			e.printStackTrace();
+			return null;
+		    }
+		}
+	
 }

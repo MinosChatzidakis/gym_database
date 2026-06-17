@@ -60,7 +60,7 @@ public class ReservationDBUtils {
 	            return new Reservation(
 	                res.getInt("reservation_Code"),
 	                res.getObject("date_And_Time", LocalDateTime.class),
-	                res.getInt("invoice_Needed"),
+	                res.getBoolean("invoice_Needed"),
 	                ReservationStatus.valueOf(res.getString("reservation_Status").toUpperCase()),
 	                res.getInt("session_Session_Code"),
 	                res.getInt("customer_Customer_ID")
@@ -75,7 +75,7 @@ public class ReservationDBUtils {
 
 	public static int addReservationAndGetCode(Reservation r) throws SQLException {
 	    
-	    int invoiceVal = r.getInvoiceNeeded();
+	    boolean invoiceVal = r.getInvoiceNeeded();
 	    String sqlQuery = "INSERT INTO reservation (date_And_Time, invoice_Needed, reservation_Status, session_Session_Code, customer_Customer_ID) VALUES ('"
 	            + java.sql.Timestamp.valueOf(r.getDateAndTime()) + "', " // Converted to SQL date format safely
 	            + invoiceVal + ", '"
@@ -126,7 +126,7 @@ public class ReservationDBUtils {
                 Reservation currentReservation = new Reservation(
 						res.getInt("reservation_Code"),
 						datetime,
-						res.getInt("invoice_Needed"),
+						res.getBoolean("invoice_Needed"),
 						status,
 						res.getInt("session_Session_Code"),
 						res.getInt("customer_Customer_ID")
@@ -195,7 +195,7 @@ public class ReservationDBUtils {
 				Reservation currentReservation= new Reservation(
 						res.getInt("reservation_Code"),
 						res.getObject("date_And_Time", LocalDateTime.class),
-						res.getInt("invoice_Needed"),
+						res.getBoolean("invoice_Needed"),
 						ReservationStatus.valueOf(res.getString("reservation_Status").toUpperCase()),
 						res.getInt("session_Session_Code"),
 						res.getInt("customer_Customer_ID")
@@ -221,7 +221,7 @@ public class ReservationDBUtils {
 				Reservation currRes= new Reservation(
 						res.getInt("reservation_Code"),
 						res.getObject("date_And_Time", LocalDateTime.class),
-						res.getInt("invoice_Needed"),
+						res.getBoolean("invoice_Needed"),
 						ReservationStatus.valueOf(res.getString("reservation_Status").toUpperCase()),
 						res.getInt("session_Session_Code"),
 						res.getInt("customer_Customer_ID")
@@ -308,7 +308,7 @@ public class ReservationDBUtils {
 				Reservation currentReservation = new Reservation(
 						res.getInt("reservation_Code"),
 						res.getObject("date_And_Time", LocalDateTime.class),
-						res.getInt("invoice_Needed"),
+						res.getBoolean("invoice_Needed"),
 						status,
 						res.getInt("session_Session_Code"),
 						res.getInt("customer_Customer_ID")
