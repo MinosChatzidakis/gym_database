@@ -1019,7 +1019,7 @@ public class Main {
 				+ existingSession.getDateAndTime().toLocalTime());
 		System.out.println("7. Gym Code: " + existingSession.getGymCode());
 		System.out.println("8. Trainer ID: " + existingSession.getTrainerTrainerID());
-		System.out.println("9. Availability: " + (existingSession.getAvailability() == 1 ? "Yes" : "No"));
+		System.out.println("9. Availability: " + (existingSession.getAvailability()? "Yes" : "No"));
 		System.out.print("Choice (0-9): ");
 
 		boolean subRunning = true;
@@ -1124,11 +1124,11 @@ public class Main {
 				break;
 			case 9:
 				char ans;
-				int availability;
+				boolean availability;
 				do {
 					System.out.print("Is it available? (Y/N): ");
 					ans = Character.toUpperCase(scanner.next().charAt(0));
-					availability = ans == 'Y' ? 1 : 0;
+					availability = ans == 'Y' ;
 				} while (ans != 'Y' && ans != 'N');
 				try {
 					existingSession.setAvailability(availability);
@@ -1205,7 +1205,7 @@ public class Main {
 			return;
 		}
 
-		if (selectedSession.getAvailability() == 0) {
+		if (!selectedSession.getAvailability()) {
 			System.out.println("Error: The selected session is not Available");
 			return;
 		}
@@ -1222,7 +1222,7 @@ public class Main {
 			letter = Character.toUpperCase(choice.charAt(0));
 		} while ((letter != 'Y' && letter != 'N'));
 
-		int invoice = letter == 'Y' ? 1 : 0;
+		boolean invoice = letter == 'Y';
 		scanner.nextLine();
 
 		String paymentChoice;
@@ -1254,9 +1254,7 @@ public class Main {
 			resStatus = ReservationStatus.PENDING;
 		}
 
-		Reservation newReservation = new Reservation(now, invoice, resStatus, sessionCode, customerId); // create new
-																										// reservation
-																										// object
+		Reservation newReservation = new Reservation(now, invoice, resStatus, sessionCode, customerId); // create new reservation object
 		try {
 			int generatedCode = ReservationDBUtils.addReservationAndGetCode(newReservation); // store new reservation in
 																								// the database
@@ -1298,7 +1296,7 @@ public class Main {
 			System.out.println("\nCurrent Reservation Data:\n");
 			System.out.println("1. Date & Time: " + existingReservation.getDateAndTime().toLocalDate() + ", "
 					+ existingReservation.getDateAndTime().toLocalTime());
-			System.out.println("2. Invoice Needed: " + (existingReservation.getInvoiceNeeded() == 1 ? "Yes" : "No"));
+			System.out.println("2. Invoice Needed: " + (existingReservation.getInvoiceNeeded()? "Yes" : "No"));
 			System.out.println("3. Status: " + existingReservation.getReservationStatus());
 			System.out.println("4. Session Code: " + existingReservation.getSessionCode());
 			System.out.println("5. Customer ID: " + existingReservation.getCustomerID());
@@ -1338,7 +1336,7 @@ public class Main {
 					String choice = scanner.next();
 					letter = Character.toUpperCase(choice.charAt(0));
 				} while ((letter != 'Y' && letter != 'N'));
-				int invoice = letter == 'Y' ? 1 : 0;
+				boolean invoice = letter == 'Y';
 				existingReservation.setInvoiceNeeded(invoice);
 				break;
 			case 3:
@@ -1355,12 +1353,6 @@ public class Main {
 				if (status.equals("CANCELLED")) {
 					System.out.println("status is cancelled");
 					resStatus = ReservationStatus.CANCELLED;
-					/*
-					 * ReservationDBUtils.cancelReservationInDB(existingReservation.
-					 * getReservationCode()); //cancel reservation System.out.
-					 * println("Reservation formally cancelled and session capacity freed up.");
-					 * return;
-					 */
 				}
 				try {
 					if (resStatus != null) {
@@ -1388,7 +1380,7 @@ public class Main {
 
 				if (targetSession == null) {
 					System.out.println("Error: Target Session does not exist. Session Code not changed.");
-				} else if (targetSession.getAvailability() == 0) {
+				} else if (!targetSession.getAvailability()) {
 					System.out.println("Error: The requested Session (Code: " + newSessionCode
 							+ ") is currently unavailable or full. Session Code not changed.");
 				} else {
@@ -1608,9 +1600,7 @@ public class Main {
 			PaymentMethods selectedPaymentMethod, PaymentStatus paymentStatus) {
 		System.out.println("Automatically creating new payment for this reservations...");
 		Payment newPayment = new Payment(selectedSession.getPrice(), selectedPaymentMethod,
-				paymentStatus == PaymentStatus.CONFIRMED ? LocalDateTime.now() : null, // current time if the customer
-																						// paid now or null if they
-																						// haven't paid yet
+				paymentStatus == PaymentStatus.CONFIRMED ? LocalDateTime.now() : null, // current time if the customer paid now or null if they haven't paid yet													
 				selectedReservation.getReservationCode(), paymentStatus);
 		try { // add payment to data base
 			int newPaymentId = PaymentDBUtils.addPayment(newPayment); // add new payment to the database
@@ -1817,7 +1807,6 @@ public class Main {
 		} else {
 			System.out.println("Your reservations that you are allowed to cancel:");
 			System.out.printf("%-18s | %-22s | %-12s \n", "Reservation Code", "Reservation Date/Time", "Status");
-			Integer num = 0;
 			for (Reservation r : myReservations) {
 				System.out.printf("%-18s | %-22s | %-12s \n", r.getReservationCode(),
 						r.getDateAndTime().format(DateTimeFormatter.ofPattern("dd-MM-yyyy, HH:mm")),
@@ -1874,7 +1863,7 @@ public class Main {
 				System.out.printf("%-15s | %-20s | %-25s | %-15s | %-15s | %-10s\n", "ID: " + ur.getReservationCode(),
 						"Reservation made on: "
 								+ (ur.getDateAndTime().toLocalDate() + ", " + ur.getDateAndTime().toLocalTime()),
-						"Invoice needed: " + (ur.getInvoiceNeeded() == 1 ? "YES" : "NO"),
+						"Invoice needed: " + (ur.getInvoiceNeeded()? "YES" : "NO"),
 						"Status: " + ur.getReservationStatus().toString(), "Session Id:" + ur.getSessionCode(),
 						"Customer ID: " + ur.getCustomerID());
 				resIdsString.append(ur.getReservationCode()).append(", "); // gather all IDs that need changing in their

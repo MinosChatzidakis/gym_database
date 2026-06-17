@@ -123,7 +123,7 @@ public class SessionDBUtils {
 	    }
 	    
 	    StringBuilder sbQuery = new StringBuilder();
-	    sbQuery.append("SELECT * FROM session WHERE availability = 1");
+	    sbQuery.append("SELECT * FROM session WHERE availability = 1 AND date_And_Time > NOW()"); //only selects and returns the sessions that have not taken place yet
 	    if (s.getPreferredGymCode() != -1) {
 	        sbQuery.append(" AND gym_Gym_Code = ").append(s.getPreferredGymCode());
 	    }
