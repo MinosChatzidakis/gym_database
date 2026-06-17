@@ -7,9 +7,9 @@ public class Payment {
 	private int paymentID;
 	private float amount;
 	private PaymentMethods paymentMethod;
+	private PaymentStatus paymentStatus;
 	private LocalDateTime  paymentDate;
 	private int reservationCode;
-	private PaymentStatus paymentStatus;
 	private int transID;
 	
 	
