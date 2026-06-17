@@ -115,8 +115,8 @@ public class Main {
 					handleCancelledReservations();
 					 break;
 				case 13:
-				    testLoyaltySystemMenu();
-				    break;
+					testLoyaltySystemMenu();
+					break;
 				case 0:
 					System.out.println("Returning to Main Menu... ");
 					adminRunning = false;
@@ -330,16 +330,18 @@ public class Main {
 				for (Trainer t : rsTrainers) {
 					int tId = t.getTrainerID(); 
 					String tName = t.getName();
-					
+					String tSurname = t.getSurname();
 					trainerMap.put(tName.toLowerCase(), tId);
-					System.out.println(tName);
+					trainerMap.put(tSurname.toLowerCase(), tId);
+					System.out.print(tName);
+					System.out.println(" " + tSurname);
 				}
 				
-				System.out.println("Enter your preferred trainer's name: ");
-				String inputTrainerName = scanner.nextLine();
+				System.out.println("Enter your preferred trainer's Surname: ");
+				String inputTrainerSurName = scanner.nextLine();
 				
-				if(!inputTrainerName.isEmpty() && trainerMap.containsKey(inputTrainerName.toLowerCase())) {
-					selectedTrainerId = trainerMap.get(inputTrainerName.toLowerCase());
+				if(!inputTrainerSurName.isEmpty() && trainerMap.containsKey(inputTrainerSurName.toLowerCase())) {
+					selectedTrainerId = trainerMap.get(inputTrainerSurName.toLowerCase());
 				}
 			} else {
 				System.out.println("No trainers found for this gym.");
@@ -358,10 +360,10 @@ public class Main {
 		}while((letter!= 'Y' && letter != 'N'));
 	    
 	    
-	    int invoice = letter == 'Y'?1:0;
+	    boolean invoice = (letter == 'Y');
 		
 		//begin search and display results
-		SessionSearch criteria = new SessionSearch(selectedGymCode, selectedCity, type, userDate, userTime, selectedTrainerId, services, invoice==1);
+		SessionSearch criteria = new SessionSearch(selectedGymCode, selectedCity, type, userDate, userTime, selectedTrainerId, services, invoice);
 		ArrayList<Session> availableSessions = SessionDBUtils.searchSessions(criteria);
 		
 		HashMap<Integer, Session> sessionsMap= new HashMap<>(); //number presented on the screen, selectedSession
@@ -452,7 +454,7 @@ public class Main {
 	        System.out.println("Date and Time: " + selectedSession.getDateAndTime());
 	        System.out.println("Duration: " + selectedSession.getDuration() + " mins");
 	        System.out.println("Total Price: " + selectedSession.getPrice() + " €");
-	        System.out.println("Invoice Needed: " + (invoice==1 ? "YES" : "NO"));
+	        System.out.println("Invoice Needed: " + (invoice ? "YES" : "NO"));
 	        
 			Character ans= ' ';
 			while (Character.toUpperCase(ans) != 'Y' && Character.toUpperCase(ans) != 'N'){
@@ -507,11 +509,20 @@ public class Main {
 							break;
 					}
 				} 
-				int generatedCustomerId = CustomerDBUtils.addCustomerAndGetId(c);
+				Customer existingCustomer = CustomerDBUtils.getCustomerByPhone(c.getPhone());
+				int finalCustomerId;
 				
-				if(generatedCustomerId > 0) {
+				if(existingCustomer == null) {
+					finalCustomerId = CustomerDBUtils.addCustomerAndGetId(c);
+					System.out.println("New customer profile successfully created!");
+				}else {
+					finalCustomerId = existingCustomer.getCustomerID(); 
+					System.out.println("Welcome back! Existing customer profile located.");
+				}
+				
+				if(finalCustomerId > 0) {
 					
-					Reservation r = new Reservation(selectedSession.getDateAndTime(), invoice, reservationStatus, selectedSession.getSessionCode(), generatedCustomerId);
+					Reservation r = new Reservation(selectedSession.getDateAndTime(), invoice, reservationStatus, selectedSession.getSessionCode(), finalCustomerId);
 					try {
 						int generatedReservationCode = ReservationDBUtils.addReservationAndGetCode(r);
 						SessionDBUtils.checkAndUpdateAvailability(selectedSession);
@@ -977,7 +988,7 @@ public class Main {
 	        return;
 	    }
 	    
-	    Session newSession = new Session(0, type, description, maxPart, duration, price, 1, trainerId, gymCode, sessionDateTime, 0);
+	    Session newSession = new Session(0, type, description, maxPart, duration, price, true, trainerId, gymCode, sessionDateTime, 0);
 
 	    
 	    SessionDBUtils.addSession(newSession);
@@ -1005,7 +1016,7 @@ public class Main {
         System.out.println("6. Date & Time: " + existingSession.getDateAndTime().toLocalDate()+ ", "+existingSession.getDateAndTime().toLocalTime());
         System.out.println("7. Gym Code: " + existingSession.getGymCode());
         System.out.println("8. Trainer ID: " + existingSession.getTrainerTrainerID());
-        System.out.println("9. Availability: " + (existingSession.getAvailability()==1 ? "Yes" : "No"));
+        System.out.println("9. Availability: " + (existingSession.getAvailability() ? "Yes" : "No"));
         System.out.print("Choice (0-9): ");
         
 	    boolean subRunning = true;
@@ -1108,11 +1119,11 @@ public class Main {
 	                break;
 	            case 9:
 	                char ans;
-	                int availability;
+	                boolean availability;
 	            	do {
 	                	System.out.print("Is it available? (Y/N): ");
 	                	ans= Character.toUpperCase(scanner.next().charAt(0));
-	                	availability= ans=='Y'?1:0;
+	                	availability= (ans=='Y');
 	                }while(ans!='Y'&&ans!='N');
 	                try{
 	                	existingSession.setAvailability(availability);
@@ -1197,7 +1208,7 @@ public class Main {
 	        return;
 	    }
 	    
-	    if(selectedSession.getAvailability()==0) {
+	    if(selectedSession.getAvailability()==false) {
 	    	System.out.println("Error: The selected session is not Available");
 	    	return;
 	    }
@@ -1213,7 +1224,7 @@ public class Main {
 		}while((letter!= 'Y' && letter != 'N'));
 	    
 	    
-	    int invoice = letter == 'Y'?1:0;
+	    boolean invoice = (letter == 'Y');
 	    scanner.nextLine();
 
 	    String paymentChoice;
@@ -1284,7 +1295,7 @@ public class Main {
 	    while (subRunning) {
 	        System.out.println("\nCurrent Reservation Data:\n");
 	        System.out.println("1. Date & Time: " + existingReservation.getDateAndTime());
-	        System.out.println("2. Invoice Needed: " + (existingReservation.getInvoiceNeeded()==1 ? "Yes" : "No"));
+	        System.out.println("2. Invoice Needed: " + (existingReservation.getInvoiceNeeded()? "Yes" : "No"));
 	        System.out.println("3. Status: " + existingReservation.getReservationStatus());
 	        System.out.println("4. Session Code: " + existingReservation.getSessionCode());
 	        System.out.println("5. Customer ID: " + existingReservation.getCustomerID());
@@ -1322,7 +1333,7 @@ public class Main {
 	        			String choice= scanner.next();
 	        			letter= Character.toUpperCase(choice.charAt(0));
 	        		}while((letter!= 'Y' && letter != 'N'));
-	        	    int invoice = letter == 'Y'?1:0;
+	        	    boolean invoice = (letter == 'Y');
 	                existingReservation.setInvoiceNeeded(invoice);
 	                break;
 	            case 3:
@@ -1331,7 +1342,7 @@ public class Main {
 	                do {
 	                	System.out.print("Enter New Status (e.g., PENDING, COMPLETE, CANCELLED): ");
 	                	status= scanner.next().toUpperCase();
-	                }while (List.of("PENDING", "COMPLETE", "CANCELLED").contains(status.toUpperCase()));
+	                }while (!List.of("PENDING", "COMPLETE", "CANCELLED").contains(status.toUpperCase()));
 	                if(status=="PENDING")resStatus=ReservationStatus.PENDING;
 	                if(status=="COMPLETE")resStatus=ReservationStatus.COMPLETE;
 	                if(status=="CANCELLED") {
@@ -1367,7 +1378,7 @@ public class Main {
 
 	                if (targetSession == null) {
 	                    System.out.println("Error: Target Session does not exist. Session Code not changed.");
-	                } else if (targetSession.getAvailability() == 0) {
+	                } else if (targetSession.getAvailability() == false) {
 	                	System.out.println("Error: The requested Session (Code: " + newSessionCode + ") is currently unavailable or full. Session Code not changed.");
 	                } else {
 	                	int oldSessionCode = existingReservation.getSessionCode();
@@ -1520,6 +1531,7 @@ public class Main {
 	        	case 0:
 	        		System.out.println("Saving changes to the database...");
 	        		isRunning = false;
+	        		break;
 	        }
 		    
 	    }  
@@ -1559,7 +1571,7 @@ public class Main {
 						res.getReservationCode(),
 						res.getDateAndTime().toLocalDate(),
 						res.getDateAndTime().toLocalTime(),
-						(res.getInvoiceNeeded()==1 ? "YES" : "NO"),
+						(res.getInvoiceNeeded() ? "YES" : "NO"),
 						res.getReservationStatus().name(),
 						res.getSessionCode(),
 						res.getCustomerID());
@@ -1906,10 +1918,9 @@ public class Main {
 		return phone.length()==10; //check if it is exactly 10 character long
 	}
 	
-	
-	// 🧪 ΠΡΟΣΩΡΙΝΗ ΜΕΘΟΔΟΣ ΔΟΚΙΜΗΣ ΓΙΑ ΤΟ ΖΗΤΟΥΜΕΝΟ 4
+	// 🧪 ΕΝΗΜΕΡΩΜΕΝΗ ΜΕΘΟΔΟΣ ΔΟΚΙΜΗΣ ΓΙΑ ΤΟ ΖΗΤΟΥΜΕΝΟ 4
 		private static void testLoyaltySystemMenu() {
-			System.out.print("\n[TEST] Εισάγετε το Customer ID για τη δοκιμή: ");
+			System.out.print("\n[TEST] Εισάγετε το Customer ID για τη δοκιμή (π.χ. 68): ");
 			int testCustomerId = scanner.nextInt();
 			scanner.nextLine(); // καθαρισμός buffer
 			
@@ -1917,9 +1928,9 @@ public class Main {
 			while (testRunning) {
 				System.out.println("\n--- 🧪 Δοκιμή Συστήματος Πόντων (Extension4) ---");
 				System.out.println("1. Δοκιμή onSuccessfulPayment (Προσθήκη Πόντων από Πληρωμή)");
-				System.out.println("2. Δοκιμή viewCurrentStatus (Υπόλοιπο & Εξαργύρωση Δώρου)");
+				System.out.println("2. Δοκιμή viewCurrentStatus (Υπόλοιπο & Εξαργύρωση Δώρου με 'num')");
 				System.out.println("3. Δοκιμή viewHistory (Ιστορικό Κινήσεων & Δώρων)");
-				System.out.println("4. Δοκιμή viewGymAvailableRewards (Κατάλογος Δώρων Γυμναστηρίου)");
+				System.out.println("4. Δοκιμή viewAllAvailableRewardsForGym (Κατάλογος Δώρων με βάση το Gym ID)");
 				System.out.println("0. Έξοδος από το Test");
 				System.out.print("Επιλογή (0-4): ");
 				
@@ -1939,21 +1950,22 @@ public class Main {
 						break;
 						
 					case 2:
-						// Κλήση της 2ης μεθόδου (εμφανίζει num και κάνει executeRedemption)
+						// Κλήση της 2ης μεθόδου (με το optionsMap και το num επιλογής)
 						Extension4.viewCurrentStatus(testCustomerId);
 						break;
 						
 					case 3:
-						// Κλήση της 3ης μεθόδου
-					//	Extension4.viewHistory(testCustomerId);
+						// Κλήση της 3ης μεθόδου για το ιστορικό
+						//Extension4.viewHistory(testCustomerId);
 						break;
 						
 					case 4:
-						// Κλήση της 4ης μεθόδου
-						System.out.println("Enter gym code");
-						int testGymCode = scanner.nextInt();
+						// 🟢 ΕΝΗΜΕΡΩΜΕΝΟ: Ζητάει Gym Code για τη νέα viewAllAvailableRewardsForGym με το LEFT JOIN
+						System.out.print("Εισάγετε το Gym Code για προβολή των δώρων του (e.g., 7515): ");
+						int testGymId = scanner.nextInt();
 						scanner.nextLine();
-						Extension4.viewAllAvailableRewardsForGym(testGymCode);
+						
+						Extension4.viewAllAvailableRewardsForGym(testGymId);
 						break;
 						
 					case 0:
@@ -1965,5 +1977,4 @@ public class Main {
 				}
 			}
 		}
-	
 }

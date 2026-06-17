@@ -9,13 +9,13 @@ public class Session {
 	    private int maxParticipants;
 	    private int duration;
 	    private float price;
-	    private int availability;
+	    private boolean availability;
 	    private int trainerID;
 	    private int gymCode;
 		private LocalDateTime dateAndTime;
 		private int amountOfParticipants;
 	
-	    public Session(int sessionCode, String sessionType, String description, int maxParticipants , int duration , float price , int availability , int trainerID , int gymCode , LocalDateTime dateAndTime, int amountOfParticipants) {
+	    public Session(int sessionCode, String sessionType, String description, int maxParticipants , int duration , float price , boolean availability , int trainerID , int gymCode , LocalDateTime dateAndTime, int amountOfParticipants) {
 	        this.sessionCode = sessionCode;
 	        this.sessionType = sessionType;
 	        this.description = description;
@@ -30,7 +30,7 @@ public class Session {
 	    }
 	    
 	
-	    public Session(String sessionType, String description, int maxParticipants , int duration , float price , int availability , int trainerID , int gymCode , LocalDateTime dateAndTime, int amountOfParticipants) {
+	    public Session(String sessionType, String description, int maxParticipants , int duration , float price , boolean availability , int trainerID , int gymCode , LocalDateTime dateAndTime, int amountOfParticipants) {
 	        this.sessionType = sessionType;
 	        this.description = description;
 	        this.maxParticipants = maxParticipants;
@@ -100,12 +100,11 @@ public class Session {
 	        this.price = price;
 	    }
 	    
-	    public int getAvailability() {
+	    public boolean getAvailability() {
 	        return availability;
 	    }
 	    
-	    public void setAvailability(int availability) {
-	        if(availability != 1 && availability !=0) throw new  IllegalArgumentException("Invalid input");
+	    public void setAvailability(boolean availability) {
 	    	this.availability = availability;
 	    }
 	    

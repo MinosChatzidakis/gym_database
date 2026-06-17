@@ -118,30 +118,30 @@ public class Extension4 {
 	private static void executeRedemption(int customerId, Reward reward, Connection conn) throws SQLException {
 		
 		try(Statement stm = conn.createStatement()){
-			conn.setAutoCommit(false);
+			conn.setAutoCommit(false); //Stops the Auto Commit in case one of the two .executeUpdate fails
 			 
 				
 				LocalDate today = LocalDate.now();
-				String todayStr = today.format(DATE_FORMATTER);
-				String validUntilStr = today.plusDays(reward.getValidForDays()).format(DATE_FORMATTER);
+				String todayString = today.format(DATE_FORMATTER);
+				String validUntil = today.plusDays(reward.getValidForDays()).format(DATE_FORMATTER);
 				
-				String insertTxSql = "INSERT INTO pts_transactions (amount, source, date, description, customer_Customer_ID, payment_Payment_ID) " +
-                        "VALUES (" + (-reward.getPointsRequired()) + ", 'Redeem', '" + todayStr + "', 'Εξαργύρωση: " + reward.getDescription() + "', " + customerId + ", NULL)";
+				String PointsSql = "INSERT INTO pts_transactions (amount, source, date, description, customer_Customer_ID, payment_Payment_ID) " +
+                        "VALUES (" + (-reward.getPointsRequired()) + ", 'Redeem', '" + todayString + "', 'Εξαργύρωση: " + reward.getDescription() + "', " + customerId + ", NULL)";
 				
-				String insertDistrSql = "INSERT INTO rewards_distribution (available_Rewards_Reward_ID, is_Used, date_Obtained, date_Used, valid_Until, customer_Customer_ID) " +
-                        "VALUES (" + reward.getRewardId() + ", 0, '" + todayStr + "', NULL, '" + validUntilStr + "', " + customerId + ")";
+				String RewardsSql = "INSERT INTO rewards_distribution (available_Rewards_Reward_ID, is_Used, date_Obtained, date_Used, valid_Until, customer_Customer_ID) " +
+                        "VALUES (" + reward.getRewardId() + ", 0, '" + todayString + "', NULL, '" + validUntil + "', " + customerId + ")";
 				
-				stm.executeUpdate(insertTxSql);
-                stm.executeUpdate(insertDistrSql);
+				stm.executeUpdate(PointsSql);
+                stm.executeUpdate(RewardsSql);
                 
                 System.out.println("Reward Successfully redeemed!");
-                conn.commit();
+                conn.commit();//commits after both .executeUpdate was executed succesfully
 			
 		}catch(SQLException e) {
-			conn.rollback();
+			conn.rollback();//returns the database to the state before the two .executeUpdate
 			throw e;
 		}finally {
-			conn.setAutoCommit(true);
+			conn.setAutoCommit(true);//return setAutoCommit to normal value "true"
 		}
 	}
 	
@@ -203,7 +203,7 @@ public class Extension4 {
 			}
 			if(!hasRewards) {
 				System.out.println("This gym doesn't have any Point Rewards yet");
-			}
+			} 
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}

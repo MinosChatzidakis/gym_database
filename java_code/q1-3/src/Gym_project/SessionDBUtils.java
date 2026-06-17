@@ -83,7 +83,7 @@ public class SessionDBUtils {
 	                res.getInt("max_Participants"),
 	                res.getInt("duration"),
 	                res.getFloat("price"),
-	                res.getInt("availability"),
+	                res.getBoolean("availability"),
 	                res.getInt("trainer_Trainer_ID"),
 	                res.getInt("gym_Gym_Code"),
 	                res.getObject("date_And_Time", LocalDateTime.class),
@@ -154,7 +154,7 @@ public class SessionDBUtils {
 	                res.getInt("max_participants"),
 	                res.getInt("duration"),
 	                res.getFloat("price"),
-	                res.getInt("availability"),
+	                res.getBoolean("availability"),
 	                res.getInt("trainer_trainer_id"),
 	                res.getInt("gym_Gym_Code"),
 	                res.getObject("date_And_Time", LocalDateTime.class),
@@ -182,10 +182,10 @@ public class SessionDBUtils {
 		                int realParticipantsCount = res.getInt(1);
 		                
 		                session.setAmountOfParticipants(realParticipantsCount);
-		                int isAvailable = (realParticipantsCount < session.getMaxParticipants()) ? 1 : 0;
+		                boolean isAvailable = (realParticipantsCount < session.getMaxParticipants());
 		                session.setAvailability(isAvailable);
 		                String updateQuery = "UPDATE session SET amount_Of_Participants = " + realParticipantsCount + 
-		                                     ", availability = " + isAvailable + 
+		                                     ", availability = " + (isAvailable ? 1 : 0) + 
 		                                     " WHERE session_code = " + session.getSessionCode() + ";";
 		                stm.executeUpdate(updateQuery);
 		                }
@@ -229,7 +229,7 @@ public class SessionDBUtils {
 	                res.getInt("max_participants"),
 	                res.getInt("duration"),
 	                res.getFloat("price"),
-	                res.getInt("availability"),
+	                res.getBoolean("availability"),
 	                res.getInt("trainer_trainer_id"),
 	                res.getInt("gym_Gym_Code"),
 	                res.getObject("date_And_Time", LocalDateTime.class),
@@ -259,7 +259,7 @@ public class SessionDBUtils {
 	                res.getInt("max_participants"),
 	                res.getInt("duration"),
 	                res.getFloat("price"),
-	                res.getInt("availability"),
+	                res.getBoolean("availability"),
 	                res.getInt("trainer_trainer_id"),
 	                res.getInt("gym_Gym_Code"),
 	                res.getObject("date_And_Time", LocalDateTime.class),
