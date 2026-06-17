@@ -14,7 +14,7 @@ public class Payment {
 	
 	
 	
-	public Payment(int paymentID , float amount, PaymentMethods paymentMethod, LocalDateTime paymentDate, int reservationCode,/* int transID ,*/ PaymentStatus paymentStatus) {
+	public Payment(int paymentID , float amount, PaymentMethods paymentMethod, LocalDateTime paymentDate, int reservationCode, PaymentStatus paymentStatus) {
 		this.paymentID = paymentID;
 		this.amount = amount;
 		this.paymentMethod = paymentMethod;
@@ -26,7 +26,7 @@ public class Payment {
 	}
 	
 	public Payment(
-			float amount, PaymentMethods paymentMethod, LocalDateTime paymentDate, int reservationCode,/* int transID ,*/ PaymentStatus paymentStatus) {
+			float amount, PaymentMethods paymentMethod, LocalDateTime paymentDate, int reservationCode, PaymentStatus paymentStatus) {
 		this.amount = amount;
 		this.paymentMethod = paymentMethod;
 		this.paymentDate = paymentDate;

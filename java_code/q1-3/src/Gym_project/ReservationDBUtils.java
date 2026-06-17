@@ -101,7 +101,7 @@ public class ReservationDBUtils {
 	}
 	
 	public static ArrayList<Reservation> getActiveReservations() {
-		String sqlQuery= "SELECT * FROM reservation WHERE reservation_Status = 'PENDING' ORDER BY reservation_Status ASC;";
+		String sqlQuery= "SELECT * FROM reservation WHERE reservation_Status = 'PENDING' OR reservation_Status = 'COMPLETE' ORDER BY reservation_Status ASC;";
 		
 		ArrayList<Reservation> activeList = new ArrayList<>();
 		

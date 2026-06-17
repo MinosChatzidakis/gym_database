@@ -217,10 +217,10 @@ public class SessionDBUtils {
          Statement stmt = conn.createStatement()) {
         int rowsAffected = stmt.executeUpdate(sqlQuery);
         if(rowsAffected>0) {
-        	System.out.println("Updated " + rowsAffected + " sessions successfully.");	        	
-        }else System.out.println("No rows matches the criteria");
-	    }
+        	System.out.println("Updated " + rowsAffected + " sessions successfully.");
+        }
 	}
+    }
 	
 	public static ArrayList<Session> getAllAvailableSessions(){
 		String sqlQ= "SELECT * FROM session WHERE availability=1 ";
@@ -253,7 +253,7 @@ public class SessionDBUtils {
 	}
 	
 	public static ArrayList<Session> getAvailableSessionsByGym(int gymId){
-		String sqlQ= "SELECT * FROM session WHERE availability=1 AND gym_Gym_Code = "+gymId + " ;";
+		String sqlQ= "SELECT * FROM session WHERE availability=1 AND gym_Gym_Code = "+gymId + " AND date_And_Time > NOW();"; //only selects and returns the sessions that have not taken place yet
 		ArrayList<Session> allAvailableSessions= new ArrayList<>();
 		try(Connection conn= SQLConnector.getConnection();
 				Statement stm= conn.createStatement()) {
