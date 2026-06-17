@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+
 public class Extension4 {
 	
 	private static Scanner scanner = new Scanner(System.in);
@@ -68,7 +69,7 @@ public class Extension4 {
 		System.out.println("My Loyalty Status");
 		//String rewardsSql = "SELECT * FROM available_rewards ORDER BY pts_Required ASC";
 		
-		try(Connection conn =SQLConnector.getConnection()){
+		try(Connection conn =SQLConnector.getConnection()){`
 			
 			int currentBalance = getCustomerPoints(customerId, conn);
 			
@@ -168,7 +169,8 @@ public class Extension4 {
         }
     }
 	
-	public static void viewAllAvailableRewardsForGym(int gymId) {
+	public static void 
+    (int gymId) {
 				
 		String sqlQuery = "SELECT name, city, reward_ID, description, pts_Required, valid_For " +
 								"FROM gym " +
@@ -208,4 +210,88 @@ public class Extension4 {
 			e.printStackTrace();
 		}
 	}
-}
+		
+		//this method should be called when a new payment goes through.
+		public void onSuccessfulPayment(int customerId, Payment p) {
+			//ADD POINTS TO USER
+			//CHECK IF THEY ARE ENOUGH FOR A REWARD
+			//INFORM USER
+			
+			String formattedDate = p.getPaymentDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")); //convert date to wanted format for the database
+			String sql = "INSERT INTO pts_transactions (amount, source, date, customer_Customer_ID, payment_Payment_ID) " 
+			           + "VALUES (" 
+			           + p.getAmount() + ", " 		  // payment ID
+			           + "'class booking', "          // source
+			           + "'" + formattedDate + "', "  // date
+			           + customerId + ", "            // customer ID
+			           + p.getPaymentID()             // payment ID
+			           + ");";
+			try(Connection conn= SQLConnector.getConnection();
+					Statement stm= conn.createStatement()) {
+				int rowsAffected= stm.executeUpdate(sql);
+				System.out.println("Rows Affected:" + rowsAffected);
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+
+			ArrayList<Reward> availableRewards= getAvailableRewards(customerId);
+			if(availableRewards==null||availableRewards.isEmpty()) {
+				return;
+			}
+			System.out.println("You have "+availableRewards.size()+" rewards available. You can view them in your current status menu");
+		}
+		
+		//view points history and rewards
+		public static void viewHistory(int customerId) {
+			//get points history (earned and redeemed)
+			String pointsQuery= "SELECT p.amount, p.source, p.date"
+					+ " FROM pts_transactions p"
+					+ " WHERE customer_Customer_ID =" + customerId
+					+ " ORDER BY p.date DESC;";
+			
+			//get rewards history (redeemed or not)
+			String rewardsQuery= "SELECT r.is_Used, r.date_Obtained, r.date_Used, r.valid_Until, a.description, a.pts_Required"
+					+ " FROM rewards_distribution r"
+					+ " JOIN available_rewards a ON r.available_Rewards_Reward_ID = a.reward_ID"
+					+ " WHERE r.customer_Customer_ID = " + customerId
+					+ " ORDER BY r.dateObtained";
+			
+			try(Connection conn= SQLConnector.getConnection();
+					Statement stm= conn.createStatement()){
+				//points
+				ResultSet res= stm.executeQuery(pointsQuery);
+				System.out.println("Points history:\n");
+				while (res.next()) {
+					float pointsAmount= res.getFloat("amount");
+					System.out.printf("%-10s | %-9.2f | %-15s | %-10s\n\n", 
+			               pointsAmount>0?"Earned":"Redeemed",
+			               pointsAmount,
+			               res.getString("source"),
+			               res.getObject("date", LocalDateTime.class).toLocalDate());
+				}
+				
+				//rewards history
+				System.out.println("Rewards history:\n");
+				res= stm.executeQuery(rewardsQuery);
+				while (res.next()) {
+					String statusDisplay; //calculate if the reward has been used yet or not 
+					Object dateUsed = res.getObject("date_Used");
+				    if (dateUsed == null) {
+				        
+				        statusDisplay = "Valid until: " + res.getObject("valid_Until", LocalDateTime.class).toLocalDate();
+				        // If null, show the expiration date
+				    } else {
+				        statusDisplay = "Used on: " + ((java.sql.Timestamp) dateUsed).toLocalDateTime().toLocalDate();
+				        // If not null, show the usage date
+				    }
+					System.out.printf("%-25s | Earned on %-12s | %-10s | %-5spoints\n", 
+							  res.getString("description"),
+							  res.getObject("date_Obtained", LocalDateTime.class).toLocalDate(),
+		                      statusDisplay, 
+		                      res.getInt("pts_Required"));
+				}
+				
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}

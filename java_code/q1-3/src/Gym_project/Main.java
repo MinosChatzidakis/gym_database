@@ -1,5 +1,6 @@
 package Gym_project;
 
+
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -18,6 +19,8 @@ public class Main {
 	private static Scanner scanner = new Scanner(System.in);
 	
 	public static void main(String[] args) {
+		
+		
 		
 		boolean isRunning = true;
 		
@@ -263,7 +266,7 @@ public class Main {
 		}
 	}
 	
-	private static void SearchAvailableSessions( ) {
+	private static void SearchAvailableSessions() {
 		
 		System.out.println("Enter City: ");
 		String selectedCity = scanner.nextLine();
@@ -1549,7 +1552,7 @@ public class Main {
 		ArrayList<Reservation> activeReservation = ReservationDBUtils.getActiveReservations();
 		
 		if (activeReservation == null || activeReservation.isEmpty()) {
-			System.out.println("No active reservations found in the system.");
+			System.out.println("No active reservations found in the system."); //check if something was returned
 		}else {
 			System.out.printf("%-18s | %-20s | %-15s | %-15s | %-12s | %-12s | %-12s\n", 
                     "Reservation Code", "Date", "Time", "Invoice Needed", "Status", "Session Code", "Customer ID");
@@ -1688,7 +1691,8 @@ public class Main {
 			scanner.nextLine();
 			
 			switch(choice) {
-				case 1:
+			//REMOVED THIS
+			/*case 1:
 					viewActiveReservations();
 					System.out.println("Enter Reservation Code to Cancel:");
 					int resCodeCancel = scanner.nextInt();
@@ -1701,7 +1705,7 @@ public class Main {
 						System.out.println("Could not cancel reservation. Check if Reservation ID is correct");
 					}
 					break;
-					
+					*/
 				case 2:
 					viewActiveReservations();
 					System.out.print("Enter Reservation Code: ");
@@ -1836,7 +1840,7 @@ public class Main {
 			
 			for (Reservation ur : unpaidReservations){ // display all overdue reservations 
 				System.out.printf("%-15s | %-20s | %-25s | %-15s | %-15s | %-10s\n",
-						"ID: "+ur.getReservationCode(), "Reserv. Date: "+(ur.getDateAndTime().toLocalDate()+", "+ur.getDateAndTime().toLocalTime()), "Invoice needed: "+ur.getInvoiceNeeded(), "Status: "+ur.getReservationStatus().toString(), "Session Id:"+ur.getSessionCode(), "Customer ID: " + ur.getCustomerID());
+						"ID: "+ur.getReservationCode(), "Reservation made on: "+(ur.getDateAndTime().toLocalDate()+", "+ur.getDateAndTime().toLocalTime()), "Invoice needed: "+(ur.getInvoiceNeeded()==1?"YES":"NO"), "Status: "+ur.getReservationStatus().toString(), "Session Id:"+ur.getSessionCode(), "Customer ID: " + ur.getCustomerID());
 				resIdsString.append(ur.getReservationCode()).append(", "); //gather all IDs that need changing in their status
 				sesIdsString.append(ur.getSessionCode()).append(", ");
 			}
@@ -1844,9 +1848,10 @@ public class Main {
 			sesIdsString.delete(sesIdsString.length()-2, sesIdsString.length()); //remove trailing comma
 			try {
 				ReservationDBUtils.cancelMultipleReservations(resIdsString.toString()); // change reservation status to cancelled
-				SessionDBUtils.freeUpSpaceInMultipleSessions(sesIdsString.toString()); 
+				SessionDBUtils.freeUpSpaceInMultipleSessions(sesIdsString.toString());
 			}catch(SQLException e) {
 				System.out.println("An error occured while canceling unpaid reservations. Please try again later.");
+				e.printStackTrace();
 				return;
 			}
 		}
